@@ -1,0 +1,6 @@
+[submodule "external/SDK"]
+	path = external/SDK
+	url = https://github.com/ArteryTek/AT32F421_Firmware_Library
+[submodule "external/printf"]
+	path = external/printf
+	url = https://github.com/mpaland/printf
