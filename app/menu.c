@@ -932,7 +932,7 @@ void MENU_Redraw(bool bClear)
 	MENU_PlayAudio(gMenuIndex);
 }
 
-void MENU_KeyHandler(KEY_t Key)
+void MENU_KeyHandler(uint8_t Key)
 {
 	switch (Key) {
 	case KEY_0: case KEY_1: case KEY_2: case KEY_3:
@@ -994,7 +994,7 @@ void MENU_Next(uint8_t Key)
 	}
 }
 
-void MENU_SettingKeyHandler(KEY_t Key)
+void MENU_SettingKeyHandler(uint8_t Key)
 {
 	switch (Key) {
 	case KEY_MENU:
