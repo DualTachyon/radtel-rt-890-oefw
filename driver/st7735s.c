@@ -92,7 +92,7 @@ void ST7735S_Init(void)
 	gColorBackground = COLOR_BLACK;
 	// Not used?
 	//DAT_20001118 = 0xFFFF;
-	gColorForeground = COLOR_RGB(31, 63, 31);
+	gColorForeground = COLOR_WHITE
 
 	gpio_bits_set(GPIOF, GPIO_PINS_0);
 	DELAY_WaitMS(1);
