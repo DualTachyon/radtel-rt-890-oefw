@@ -141,11 +141,11 @@ void CSS_SetStandardCode(uint8_t CodeType, uint16_t Code, uint8_t Encrypt, bool 
 		} else {
 			BK4819_WriteRegister(0x51, gFrequencyBandInfo.TxGain1Tuning0Wide | 0x9000);
 		}
-		BK4819_WriteRegister(0x07, ((Code * 413) / 200) & 0x3FF);
+		BK4819_WriteRegister(0x07, ((Code * 413) / 200) & 0x1FFF);
 		break;
 
 	case CODE_TYPE_OFF:
-		BK4819_WriteRegister(0x51, 0);
+		BK4819_WriteRegister(0x51, 0x0000);
 		break;
 
 	case CODE_TYPE_DCS_N:
