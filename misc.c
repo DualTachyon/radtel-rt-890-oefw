@@ -22,7 +22,7 @@ uint8_t gFskDataReceived;
 bool gDataDisplay;
 bool gDTMF_InputMode;
 uint8_t gDTMF_WriteIndex;
-uint8_t gVfoMode;
+VFO_Mode_t gVfoMode;
 bool gFrequencyDetectMode;
 bool gEnableBlink;
 bool gRedrawScreen;
