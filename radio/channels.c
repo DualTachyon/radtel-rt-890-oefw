@@ -383,7 +383,7 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 		if (Key == KEY_UP) {
 			pInfo->RX.Frequency += gFrequencyStep;
 			if (gSettings.bFLock) {
-				if (pInfo->RX.Frequency > 1360000 && pInfo->RX.Frequency < 14400000) {
+				if (pInfo->RX.Frequency > 13600000 && pInfo->RX.Frequency < 14400000) {
 					pInfo->RX.Frequency = 14400000;
 				}
 				if (pInfo->RX.Frequency > 14600000 && pInfo->RX.Frequency < 43000000) {
@@ -401,7 +401,7 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->RX.Frequency < 10800000) {
 					pInfo->RX.Frequency = 44000000;
 				}
-				if (pInfo->RX.Frequency > 1360000 && pInfo->RX.Frequency < 14400000) {
+				if (pInfo->RX.Frequency > 13600000 && pInfo->RX.Frequency < 14400000) {
 					pInfo->RX.Frequency = 13600000;
 				}
 				if (pInfo->RX.Frequency > 14600000 && pInfo->RX.Frequency < 43000000) {
@@ -422,7 +422,7 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 		if (Key == KEY_UP) {
 			pInfo->TX.Frequency += gFrequencyStep;
 			if (gSettings.bFLock) {
-				if (pInfo->TX.Frequency > 1360000 && pInfo->TX.Frequency < 14400000) {
+				if (pInfo->TX.Frequency > 13600000 && pInfo->TX.Frequency < 14400000) {
 					pInfo->TX.Frequency = 14400000;
 				}
 				if (pInfo->TX.Frequency > 14600000 && pInfo->TX.Frequency < 43000000) {
@@ -440,7 +440,7 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->TX.Frequency < 10800000) {
 					pInfo->TX.Frequency = 44000000;
 				}
-				if (pInfo->TX.Frequency > 1360000 && pInfo->TX.Frequency < 14400000) {
+				if (pInfo->TX.Frequency > 13600000 && pInfo->TX.Frequency < 14400000) {
 					pInfo->TX.Frequency = 13600000;
 				}
 				if (pInfo->TX.Frequency > 14600000 && pInfo->TX.Frequency < 43000000) {
