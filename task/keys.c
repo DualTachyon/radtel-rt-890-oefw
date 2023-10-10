@@ -390,7 +390,7 @@ static void HandlerLong(KEY_t Key)
 
 			case KEY_5:
 				gMenuIndex = MENU_SQ_LEVEL;
-				DISPLAY_Fill(0, 159, 1, 81, 0);
+				DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
 				DISPLAY_DrawRectangle0(0, 56, 160, 1, gSettings.BorderColor);
 				MENU_DrawSetting();
 				break;
@@ -407,7 +407,7 @@ static void HandlerLong(KEY_t Key)
 
 			case KEY_8:
 				gMenuIndex = MENU_FREQ_STEP;
-				DISPLAY_Fill(0, 159, 1, 81, 0);
+				DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
 				DISPLAY_DrawRectangle0(0, 56, 160, 1, gSettings.BorderColor);
 				MENU_DrawSetting();
 				break;

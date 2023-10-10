@@ -81,15 +81,15 @@ void SETTINGS_LoadCalibration(void)
 	gpio_bits_set(GPIOA, BOARD_GPIOA_LCD_RESX);
 
 	while (1) {
-		DISPLAY_Fill(0, 159, 0, 96, 0x0000);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_BLACK);
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, 0xFFFF);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_WHITE);
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, 0x001F);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_RED);
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, 0x0400);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_RGB(0, 32, 0));
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, 0xF800);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_BLUE);
 		DELAY_WaitMS(1000);
 	}
 }
