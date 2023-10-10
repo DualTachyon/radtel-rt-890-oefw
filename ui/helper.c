@@ -490,7 +490,7 @@ static void DrawRadio(uint8_t Vfo)
 	uint8_t i;
 
 	for (i = 0; i < 9; i++) {
-		uint16_t Pixel = IconRadio[i];
+		uint32_t Pixel = IconRadio[i];
 		uint8_t j;
 
 		ST7735S_SetPosition(4 + i, 56 - (Vfo * 41));
