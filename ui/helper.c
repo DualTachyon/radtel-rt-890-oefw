@@ -358,7 +358,7 @@ void UI_DrawVfoFrame(uint8_t Y)
 
 void UI_DrawName(uint8_t Vfo, const char *pName)
 {
-	gColorForeground = COLOR_RGB(16, 32, 16);
+	gColorForeground = COLOR_GREY;
 	UI_DrawString(34, 81 - (Vfo * 41), pName, 10);
 }
 
@@ -555,7 +555,7 @@ void UI_DrawFMFrequency(uint16_t Frequency)
 
 void UI_DrawFM(void)
 {
-	gColorForeground = COLOR_RGB(16, 32, 16);
+	gColorForeground = COLOR_GREY;
 	DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
 	DISPLAY_DrawRectangle0(0, 81, 160, 1, gSettings.BorderColor);
 	UI_DrawFrame(12, 150, 6, 74, 2, gColorForeground);
