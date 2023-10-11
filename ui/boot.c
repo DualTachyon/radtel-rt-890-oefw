@@ -28,6 +28,16 @@ static void PlayStartupTone(void)
 {
 	if (gSettings.StartupRingTone) {
 		BEEP_Enable();
+	#ifdef MOTO_STARTUP_TONE
+		BEEP_SetFrequency(784);
+		SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
+		DELAY_WaitMS(250);
+		BEEP_SetFrequency(660);
+		DELAY_WaitMS(250);
+		BEEP_SetFrequency(1046);
+		DELAY_WaitMS(250);
+		BEEP_Disable();
+	#else
 		BEEP_SetFrequency(1000);
 		SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
 		DELAY_WaitMS(100);
@@ -36,6 +46,7 @@ static void PlayStartupTone(void)
 		BEEP_SetFrequency(1000);
 		SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
 		DELAY_WaitMS(100);
+	#endif
 		BEEP_Disable();
 	}
 }
