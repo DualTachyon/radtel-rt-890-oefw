@@ -229,7 +229,7 @@ static void MuteCtcssScan(void)
 	}
 }
 
-static void Loop(void)
+static void DETECTOR_Loop(void)
 {
 	bool bCtdcScan;
 	bool bScan;
@@ -373,6 +373,6 @@ void RADIO_FrequencyDetect(void)
 	VFO_ClearCss();
 	VFO_ClearMute();
 	BK4819_UpdateGpioOut(true);
-	Loop();
+	DETECTOR_Loop();
 }
 
