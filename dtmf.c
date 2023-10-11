@@ -129,11 +129,11 @@ static void PlayDTMF(uint8_t Code)
 	}
 }
 
-void DTMF_InitReceive(uint8_t Unused)
+void DTMF_FSK_InitReceive(uint8_t Unused)
 {
-	BK4819_WriteRegister(0x3F, 0x2800);
-	BK4819_WriteRegister(0x59, 0x4028);
-	BK4819_WriteRegister(0x59, 0x3028);
+	BK4819_WriteRegister(0x3F, 0x2800); // Enable Interrupts for DTMF/5TONE Found and FSK RX
+	BK4819_WriteRegister(0x59, 0x4028); // Clear RX FIFO
+	BK4819_WriteRegister(0x59, 0x3028); // Enable FSK Scramble, FSK RX, 2 byte preamble, 4 sync bytes
 	if (gMainVfo->Scramble) {
 		DTMF_Disable();
 	} else {
