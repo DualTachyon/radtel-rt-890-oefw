@@ -14,11 +14,10 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "app/uart.h"
+#include "bsp/tmr.h"
 #include "driver/audio.h"
 #include "driver/beep.h"
-#include "bsp/tmr.h"
 #include "driver/key.h"
 #include "misc.h"
 #include "radio/scheduler.h"

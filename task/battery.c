@@ -14,7 +14,6 @@
  *     limitations under the License.
  */
 
-#include "app/radio.h"
 #include "driver/battery.h"
 #include "misc.h"
 #include "radio/hardware.h"
@@ -25,7 +24,6 @@
 #include "ui/dialog.h"
 #include "ui/helper.h"
 #include "ui/main.h"
-#include "unknown.h"
 
 static uint8_t BatteryLevel;
 static uint8_t ChargeTimer;

@@ -14,20 +14,17 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
-#include <string.h>
 #include "app/radio.h"
 #include "driver/pins.h"
-#include "ui/gfx.h"
 #include "driver/delay.h"
 #include "driver/key.h"
 #include "driver/serial-flash.h"
 #include "dtmf.h"
 #include "misc.h"
 #include "radio/hardware.h"
-#include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/scanner.h"
+#include "ui/gfx.h"
 
 Calibration_t gCalibration;
 char gDeviceName[16];

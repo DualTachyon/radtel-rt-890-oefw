@@ -15,7 +15,6 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "driver/pins.h"
 #include "driver/speaker.h"
 

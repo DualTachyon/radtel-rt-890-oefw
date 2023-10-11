@@ -14,9 +14,7 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "app/radio.h"
-#include "ui/gfx.h"
 #include "bsp/gpio.h"
 #include "driver/battery.h"
 #include "driver/crm.h"
@@ -29,6 +27,7 @@
 #include "driver/uart.h"
 #include "radio/hardware.h"
 #include "radio/scheduler.h"
+#include "ui/gfx.h"
 
 typedef struct {
 	IRQn_Type Irq;

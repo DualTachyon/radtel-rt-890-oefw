@@ -14,7 +14,6 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "app/radio.h"
 #include "driver/pins.h"
 #include "driver/bk4819.h"
@@ -23,7 +22,6 @@
 #include "radio/settings.h"
 #include "task/incoming.h"
 #include "task/ptt.h"
-#include "unknown.h"
 
 void Task_CheckIncoming(void)
 {

@@ -14,7 +14,6 @@
  *     limitations under the License.
  */
 
-#include "app/radio.h"
 #include "misc.h"
 #include "radio/channels.h"
 #include "task/noaa.h"

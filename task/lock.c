@@ -17,10 +17,8 @@
 #include "app/lock.h"
 #include "helper/helper.h"
 #include "misc.h"
-#include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/lock.h"
-#include "unknown.h"
 
 uint32_t gLockTimer;
 

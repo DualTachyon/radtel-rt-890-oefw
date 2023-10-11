@@ -15,7 +15,6 @@
  */
 
 #include "app/fm.h"
-#include "app/radio.h"
 #include "misc.h"
 #include "radio/scheduler.h"
 #include "task/screen.h"

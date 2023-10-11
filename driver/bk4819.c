@@ -14,17 +14,15 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "app/css.h"
 #include "app/radio.h"
-#include "driver/pins.h"
 #include "bsp/gpio.h"
+#include "driver/pins.h"
 #include "driver/bk4819.h"
 #include "driver/delay.h"
 #include "driver/speaker.h"
 #include "misc.h"
 #include "radio/settings.h"
-#include "unknown.h"
 
 static const uint8_t gSquelchGlitchLevel[11] = {
 	0x16,

@@ -28,7 +28,6 @@
 #include "ui/helper.h"
 #include "ui/noaa.h"
 #include "ui/vfo.h"
-#include "unknown.h"
 
 static const ChannelInfo_t VfoTemplate[2] = {
 	{

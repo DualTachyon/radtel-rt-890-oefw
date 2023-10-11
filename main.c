@@ -22,7 +22,6 @@
 #include "driver/delay.h"
 #include "driver/key.h"
 #include "driver/uart.h"
-#include "external/printf/printf.h"
 #include "misc.h"
 #include "radio/data.h"
 #include "radio/hardware.h"
@@ -46,8 +45,6 @@
 #include "task/voice.h"
 #include "task/vox.h"
 #include "unknown.h"
-
-#include "ui/helper.h"
 
 extern const uint8_t StackVector[];
 

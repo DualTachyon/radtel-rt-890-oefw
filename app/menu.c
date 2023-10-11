@@ -18,7 +18,6 @@
 #include "app/menu.h"
 #include "app/radio.h"
 #include "app/t9.h"
-#include "ui/gfx.h"
 #include "driver/audio.h"
 #include "driver/beep.h"
 #include "driver/key.h"
@@ -27,16 +26,14 @@
 #include "helper/helper.h"
 #include "helper/inputbox.h"
 #include "misc.h"
-#include "radio/channels.h"
-#include "radio/frequencies.h"
 #include "radio/hardware.h"
 #include "radio/settings.h"
 #include "task/cursor.h"
+#include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/main.h"
 #include "ui/menu.h"
 #include "ui/version.h"
-#include "unknown.h"
 
 static const char Menu[47][16] = {
 	"Startup Logo  01",

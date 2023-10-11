@@ -14,11 +14,8 @@
  *     limitations under the License.
  */
 
-#include "app/menu.h"
-#include "bsp/tmr.h"
 #include "driver/audio.h"
 #include "driver/pwm.h"
-#include "driver/serial-flash.h"
 #include "driver/speaker.h"
 #include "misc.h"
 #include "radio/settings.h"

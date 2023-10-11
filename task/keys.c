@@ -14,12 +14,10 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "app/fm.h"
 #include "app/lock.h"
 #include "app/menu.h"
 #include "app/radio.h"
-#include "ui/gfx.h"
 #include "driver/audio.h"
 #include "driver/beep.h"
 #include "driver/bk1080.h"
@@ -40,6 +38,7 @@
 #include "task/screen.h"
 #include "task/vox.h"
 #include "ui/dialog.h"
+#include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/main.h"
 #include "ui/vfo.h"

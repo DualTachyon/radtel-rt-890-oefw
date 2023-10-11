@@ -20,7 +20,6 @@
 #include "driver/pins.h"
 #include "driver/speaker.h"
 #include "misc.h"
-#include "radio/scheduler.h"
 #include "task/alarm.h"
 
 uint16_t gAlarmFrequency = 800;

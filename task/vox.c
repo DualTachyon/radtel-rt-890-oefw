@@ -18,7 +18,6 @@
 #include "driver/bk4819.h"
 #include "misc.h"
 #include "radio/scheduler.h"
-#include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/vox.h"
 #include "ui/helper.h"

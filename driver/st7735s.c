@@ -14,7 +14,6 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "driver/delay.h"
 #include "driver/pins.h"
 #include "driver/st7735s.h"

@@ -15,14 +15,12 @@
  */
 
 #include "app/radio.h"
-#include "driver/bk4819.h"
 #include "driver/speaker.h"
 #include "misc.h"
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/idle.h"
 #include "task/vox.h"
-#include "unknown.h"
 
 void Task_Idle(void)
 {
