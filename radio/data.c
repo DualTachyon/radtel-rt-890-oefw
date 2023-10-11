@@ -87,7 +87,7 @@ void DATA_ReceiverInit(void)
 {
 	BK4819_SetupFSK(true);
 	DTMF_ClearString();
-	DTMF_InitReceive(0);
+	DTMF_FSK_InitReceive(0);
 }
 
 bool DATA_ReceiverCheck(void)

@@ -54,7 +54,7 @@ extern DTMF_String_t gDTMF_Stun;
 extern DTMF_String_t gDTMF_Wake;
 extern bool gDTMF_Playing;
 
-void DTMF_InitReceive(uint8_t Unused);
+void DTMF_FSK_InitReceive(uint8_t Unused);
 char DTMF_GetCharacterFromKey(uint8_t Key);
 void DTMF_PlayTone(uint8_t Key);
 void DTMF_PlayContact(const DTMF_String_t *pContact);

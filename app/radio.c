@@ -327,7 +327,7 @@ void FUN_08006b38(void)
 	BK4819_StartAudio();
 	if (!gFrequencyDetectMode) {
 		DTMF_ClearString();
-		DTMF_InitReceive(0);
+		DTMF_FSK_InitReceive(0);
 		VOX_Timer = 0;
 		Task_UpdateScreen();
 		SCREEN_TurnOn();
