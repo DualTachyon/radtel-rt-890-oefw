@@ -32,8 +32,8 @@ typedef struct __attribute__((packed)) {
 	uint8_t TxGain1Tuning1Narrow;
 	uint8_t TxGain1Tuning1_L;
 	uint16_t RX_DAC_GainNarrow;
-	uint8_t TxPowerLevelLow[16];
 	uint8_t TxPowerLevelHigh[16];
+	uint8_t TxPowerLevelLow[16];
 	uint8_t SquelchNoiseThresholdWide[16];
 	uint8_t SquelchRSSIThresholdWide[16];
 	uint8_t SquelchNoiseThresholdNarrow[16];
