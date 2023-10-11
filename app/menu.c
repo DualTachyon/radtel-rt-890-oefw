@@ -551,6 +551,13 @@ void MENU_AcceptSetting(void)
 	case MENU_SAVE_CH:
 		CHANNELS_SaveChannel((gSettingCurrentValue + gSettingIndex) % gSettingMaxValues, &gVfoState[gSettings.CurrentVfo]);
 		CHANNELS_CheckFreeChannels();
+		// TODO: This "if" block doesn't exist in the original, but there's a bug where VFO A is cleared by the previous line
+		// TODO: but somehow the original FW doesn't show a corrupted VFO like OEFW does. Still hunting this bug down.
+		if (gSettings.WorkMode) {
+			CHANNELS_LoadChannel(gSettings.VfoChNo[0], 0);
+		} else {
+			CHANNELS_LoadChannel(999, 0);
+		}
 		RADIO_Retune();
 		break;
 
