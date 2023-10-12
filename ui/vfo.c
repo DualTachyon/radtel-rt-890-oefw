@@ -42,18 +42,18 @@ void UI_DrawVfo(uint8_t Vfo)
 	if (Vfo == gCurrentVfo) {
 		if (gRadioMode == RADIO_MODE_RX) {
 			UI_DrawRX(Vfo);
-			UI_DrawExtra(2, gVfoState[Vfo].bIsAM, Vfo);
+			UI_DrawExtra(2, gVfoState[Vfo].gModulationType, Vfo);
 			gColorForeground = COLOR_BLUE;
 		} else if (gRadioMode == RADIO_MODE_TX) {
 			UI_DrawRX(Vfo);
-			UI_DrawExtra(1, gVfoState[Vfo].bIsAM, Vfo);
+			UI_DrawExtra(1, gVfoState[Vfo].gModulationType, Vfo);
 			gColorForeground = COLOR_RED;
 		} else {
-			UI_DrawExtra(0, gVfoState[Vfo].bIsAM, Vfo);
+			UI_DrawExtra(0, gVfoState[Vfo].gModulationType, Vfo);
 			gColorForeground = COLOR_WHITE;
 		}
 	} else {
-		UI_DrawExtra(0, gVfoState[Vfo].bIsAM, Vfo);
+		UI_DrawExtra(0, gVfoState[Vfo].gModulationType, Vfo);
 		gColorForeground = COLOR_WHITE;
 	}
 

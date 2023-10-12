@@ -41,7 +41,7 @@ void UI_DrawRoger(void);
 void UI_DrawVoltage(uint8_t Vfo);
 void UI_DrawVfoFrame(uint8_t Y);
 void UI_DrawName(uint8_t Vfo, const char *pName);
-void UI_DrawExtra(uint8_t Mode, bool bIsAM, uint8_t Vfo);
+void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo);
 void UI_DrawFrequency(uint32_t Frequency, uint8_t Vfo, uint16_t Color);
 void UI_DrawBigDigit(uint8_t X, uint8_t Y, uint8_t Digit);
 void UI_DrawCss(uint8_t CodeType, uint16_t Code, uint8_t Encrypt, bool bMute, uint8_t Vfo);

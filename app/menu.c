@@ -35,7 +35,7 @@
 #include "ui/menu.h"
 #include "ui/version.h"
 
-static const char Menu[47][16] = {
+static const char Menu[48][16] = {
 	"Startup Logo  01",
 	"Voltage       02",
 	"Ringtone      03",
@@ -63,26 +63,27 @@ static const char Menu[47][16] = {
 	"RX CTCSS/DCS  25",
 	"TX CTCSS/DCS  26",
 	"TX Power      27",
-	"Band Width    28",
-	"Busy Lock     29",
-	"Scrambler     30",
-	"DCS Encrypt   31",
-	"Mute Code     32",
-	"CH Name       33",
-	"Save CH       34",
-	"Delete CH     35",
-	"K1 Long       36",
-	"K1 Short      37",
-	"K2 Long       38",
-	"K2 Short      39",
-	"DTMF Delay    40",
-	"DTMF Interval 41",
-	"DTMF Mode     42",
-	"DTMF Select   43",
-	"DTMF Display  44",
-	"Initialize    45",
-	"Version       46",
-	"Instruction   47",
+	"Modulation    28",
+	"Band Width    29",
+	"Busy Lock     30",
+	"Scrambler     31",
+	"DCS Encrypt   32",
+	"Mute Code     33",
+	"CH Name       34",
+	"Save CH       35",
+	"Delete CH     36",
+	"K1 Long       37",
+	"K1 Short      38",
+	"K2 Long       39",
+	"K2 Short      40",
+	"DTMF Delay    41",
+	"DTMF Interval 42",
+	"DTMF Mode     43",
+	"DTMF Select   44",
+	"DTMF Display  45",
+	"Initialize    46",
+	"Version       47",
+	"Instruction   48",
 };
 
 static const uint8_t BitmapQR[] = {
@@ -117,8 +118,7 @@ static const ChannelInfo_t EmptyChannel = {
 	.Encrypt = 3,
 
 	.Available = 1,
-	.Unknown3 = 1,
-	.bIsAM = 1,
+	.gModulationType = 2,
 	.BCL = BUSY_LOCK_INVALID,
 	.ScanAdd = 1,
 	.bIsLowPower = 1,
@@ -488,6 +488,11 @@ void MENU_AcceptSetting(void)
 		CHANNELS_SaveVfo();
 		break;
 
+	case MENU_MODULATION:
+		gVfoState[gSettings.CurrentVfo].gModulationType = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
+		CHANNELS_SaveVfo();
+		break;
+
 	case MENU_BAND_WIDTH:
 		gVfoState[gSettings.CurrentVfo].bIsNarrow = gSettingIndex;
 		CHANNELS_SaveVfo();
@@ -686,7 +691,7 @@ void MENU_DrawSetting(void)
 
 	case MENU_FREQ_STEP:
 		gSettingCurrentValue = gSettings.FrequencyStep;
-		gSettingMaxValues = 14;
+		gSettingMaxValues = 15;
 		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawFrequencyStep(gSettingCurrentValue);
 		break;
@@ -797,6 +802,12 @@ void MENU_DrawSetting(void)
 	case MENU_TX_POWER:
 		gSettingIndex = gVfoState[gSettings.CurrentVfo].bIsLowPower;
 		UI_DrawSettingTxPower();
+		break;
+
+	case MENU_MODULATION:
+		gSettingIndex = gVfoState[gSettings.CurrentVfo].gModulationType;
+		gSettingMaxValues = 4;
+		UI_DrawSettingModulation(gSettingIndex);
 		break;
 
 	case MENU_BAND_WIDTH:
@@ -1125,6 +1136,10 @@ void MENU_ScrollSetting(uint8_t Key)
 
 	case MENU_TX_POWER:
 		UI_DrawSettingTxPower();
+		break;
+
+	case MENU_MODULATION:
+		UI_DrawSettingModulation(gSettingCurrentValue);
 		break;
 
 	case MENU_BAND_WIDTH:

@@ -270,58 +270,62 @@ void UI_DrawFrequencyStep(uint8_t Index)
 
 	switch (Index) {
 	case 0:
+		UI_DrawSettingOptionEx("0.01K", 5, 0);
+		UI_DrawSettingOptionEx("0.25K", 5, 1);
+		break;
+	case 1:
 		UI_DrawSettingOptionEx("0.25K", 5, 0);
 		UI_DrawSettingOptionEx("1.25K", 5, 1);
 		break;
-	case 1:
+	case 2:
 		UI_DrawSettingOptionEx("1.25K", 5, 0);
 		UI_DrawSettingOptionEx("2.5K ", 5, 1);
 		break;
-	case 2:
+	case 3:
 		UI_DrawSettingOptionEx("2.5K ", 5, 0);
 		UI_DrawSettingOptionEx("5K   ", 5, 1);
 		break;
-	case 3:
+	case 4:
 		UI_DrawSettingOptionEx("5K   ", 5, 0);
 		UI_DrawSettingOptionEx("6.25K", 5, 1);
 		break;
-	case 4:
+	case 5:
 		UI_DrawSettingOptionEx("6.25K", 5, 0);
 		UI_DrawSettingOptionEx("10K  ", 5, 1);
 		break;
-	case 5:
+	case 6:
 		UI_DrawSettingOptionEx("10K  ", 5, 0);
 		UI_DrawSettingOptionEx("12.5K", 5, 1);
 		break;
-	case 6:
+	case 7:
 		UI_DrawSettingOptionEx("12.5K", 5, 0);
 		UI_DrawSettingOptionEx("20K  ", 5, 1);
 		break;
-	case 7:
+	case 8:
 		UI_DrawSettingOptionEx("20K  ", 5, 0);
 		UI_DrawSettingOptionEx("25K  ", 5, 1);
 		break;
-	case 8:
+	case 9:
 		UI_DrawSettingOptionEx("25K  ", 5, 0);
 		UI_DrawSettingOptionEx("50K  ", 5, 1);
 		break;
-	case 9:
+	case 10:
 		UI_DrawSettingOptionEx("50K  ", 5, 0);
 		UI_DrawSettingOptionEx("100K ", 5, 1);
 		break;
-	case 10:
+	case 11:
 		UI_DrawSettingOptionEx("100K ", 5, 0);
 		UI_DrawSettingOptionEx("500K ", 5, 1);
 		break;
-	case 11:
+	case 12:
 		UI_DrawSettingOptionEx("500K ", 5, 0);
 		UI_DrawSettingOptionEx("1M   ", 5, 1);
 		break;
-	case 12:
+	case 13:
 		UI_DrawSettingOptionEx("1M   ", 5, 0);
 		UI_DrawSettingOptionEx("5M   ", 5, 1);
 		break;
-	case 13:
+	case 14:
 		UI_DrawSettingOptionEx("5M   ", 5, 0);
 		UI_DrawSettingOptionEx("0.25K", 5, 1);
 		break;
@@ -428,6 +432,19 @@ void UI_DrawSettingTxPower(void)
 {
 	UI_DrawSettingOption("High            ", 0);
 	UI_DrawSettingOption("Low             ", 1);
+}
+
+void UI_DrawSettingModulation(uint8_t Index)
+{
+	static const char Mode[4][16] = {
+		"FM              ",
+		"AM              ",
+		"LSB             ",
+		"USB             ",
+	};
+
+	UI_DrawSettingOption(Mode[Index], 0);
+	UI_DrawSettingOption(Mode[(Index + 1) % 4], 1);
 }
 
 void UI_DrawSettingBandwidth(void)

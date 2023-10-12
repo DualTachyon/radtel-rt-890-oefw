@@ -152,12 +152,21 @@ static void DisableAGC(uint32_t Unknown)
 	BK4819_WriteRegister(0x7B, 0x8420);
 }
 
-static void OpenAudio(bool bIsNarrow, bool bIsAM)
+static void OpenAudio(bool bIsNarrow, uint8_t gModulationType)
 {
-	if (bIsAM) {
-		BK4819_SetAF(BK4819_AF_AM);
-	} else {
-		BK4819_SetAF(BK4819_AF_OPEN);
+	switch(gModulationType) {
+		case 0:
+			BK4819_SetAF(BK4819_AF_OPEN);
+			break;
+		case 1:
+			BK4819_SetAF(BK4819_AF_AM);
+			break;
+		case 2:
+			BK4819_SetAF(BK4819_AF_LSB);
+			break;
+		case 3:
+			BK4819_SetAF(BK4819_AF_USB);
+			break;
 	}
 	if (bIsNarrow) {
 		BK4819_SetAfGain(gFrequencyBandInfo.RX_DAC_GainNarrow);
@@ -446,16 +455,18 @@ void BK4819_StartAudio(void)
 {
 	gpio_bits_set(GPIOA, BOARD_GPIOA_LED_GREEN);
 	gRadioMode = RADIO_MODE_RX;
-	OpenAudio(gMainVfo->bIsNarrow, gMainVfo->bIsAM);
-	if (!gMainVfo->bIsAM) {
+	OpenAudio(gMainVfo->bIsNarrow, gMainVfo->gModulationType);
+	if (gMainVfo->gModulationType == 0) {
 		BK4819_WriteRegister(0x4D, 0xA080);
 		BK4819_WriteRegister(0x4E, 0x6F7C);
 	}
-
-	if (gMainVfo->bIsAM) {
+	
+	if (gMainVfo->gModulationType > 0) {
+		// AM, SSB
 		BK4819_EnableScramble(false);
 		BK4819_EnableCompander(false);
 	} else {
+		// FM
 		BK4819_EnableScramble(gMainVfo->Scramble);
 		BK4819_EnableCompander(true);
 		if (gMainVfo->Scramble == 0) {
@@ -472,12 +483,12 @@ void BK4819_StartAudio(void)
 
 void BK4819_SetAfGain(uint16_t Gain)
 {
-	if (gMainVfo->bIsAM) {
+	if (gMainVfo->gModulationType) { // AM, SSB
 		if ((Gain & 15) > 4) {
 			Gain -= 4;
 		}
 		BK4819_WriteRegister(0x48, Gain);
-	} else {
+	} else { // FM
 		switch (BK4819_ReadRegister(0x01)) {
 		case 0: case 4:
 			BK4819_WriteRegister(0x48, Gain);
@@ -529,11 +540,11 @@ void BK4819_EnableTone1(bool bEnable)
 		if (gRadioMode != RADIO_MODE_RX) {
 			BK4819_SetAF(BK4819_AF_MUTE);
 		} else {
-			OpenAudio(gMainVfo->bIsNarrow, gMainVfo->bIsAM);
-			if (gMainVfo->bIsAM) {
-				BK4819_EnableScramble(false);
+			OpenAudio(gMainVfo->bIsNarrow, gMainVfo->gModulationType);
+			if (gMainVfo->gModulationType > 0) {
+				BK4819_EnableScramble(false); // AM, SSB
 			} else {
-				BK4819_EnableScramble(gMainVfo->Scramble);
+				BK4819_EnableScramble(gMainVfo->Scramble); // FM
 			}
 		}
 	}

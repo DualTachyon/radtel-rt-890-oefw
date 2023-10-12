@@ -32,20 +32,21 @@ uint8_t gSquelchRSSINarrow = 85;
 uint32_t FREQUENCY_GetStep(uint8_t StepSetting)
 {
 	switch(StepSetting) {
-	case  0: return 25;
-	case  1: return 125;
-	case  2: return 250;
-	case  3: return 500;
-	case  4: return 625;
-	case  5: return 1000;
-	case  6: return 1250;
-	case  7: return 2000;
-	case  8: return 2500;
-	case  9: return 5000;
-	case 10: return 10000;
-	case 11: return 50000;
-	case 12: return 100000;
-	case 13: return 500000;
+	case  0: return 1;
+	case  1: return 25;
+	case  2: return 125;
+	case  3: return 250;
+	case  4: return 500;
+	case  5: return 625;
+	case  6: return 1000;
+	case  7: return 1250;
+	case  8: return 2000;
+	case  9: return 2500;
+	case 10: return 5000;
+	case 11: return 10000;
+	case 12: return 50000;
+	case 13: return 100000;
+	case 14: return 500000;
 	default: return 25;
 	}
 }

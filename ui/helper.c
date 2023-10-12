@@ -360,14 +360,17 @@ void UI_DrawName(uint8_t Vfo, const char *pName)
 	UI_DrawString(34, 81 - (Vfo * 41), pName, 10);
 }
 
-void UI_DrawExtra(uint8_t Mode, bool bIsAM, uint8_t Vfo)
+void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo)
 {
 	const uint8_t Y = 43 - (Vfo * 41);
 
 	switch (Mode) {
 	case 0:
 		gColorForeground = COLOR_BLUE;
-		UI_DrawSmallString(4, Y, bIsAM ? "AM" : "FM", 2);
+		if(gModulationType < 2)
+			UI_DrawSmallString(4, Y, gModulationType ? "AM" : "FM", 2);
+		else
+			UI_DrawSmallString(4, Y-2, "SSB", 3);
 		break;
 
 	case 1: // TX mode
