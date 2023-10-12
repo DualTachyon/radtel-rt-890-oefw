@@ -41,8 +41,7 @@ static const ChannelInfo_t VfoTemplate[2] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -67,8 +66,7 @@ static const ChannelInfo_t VfoTemplate[2] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -95,8 +93,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -120,8 +117,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -145,8 +141,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -170,8 +165,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -195,8 +189,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -220,8 +213,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -245,8 +237,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -270,8 +261,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -295,8 +285,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -320,8 +309,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -345,8 +333,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Encrypt = 0,
 
 		.Available = 0,
-		.Unknown3 = 0,
-		.bIsAM = 0,
+		.gModulationType = 0,
 		.BCL = BUSY_LOCK_OFF,
 		.ScanAdd = 1,
 		.bIsLowPower = 0,
@@ -391,8 +378,8 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->RX.Frequency > 44000000) {
 					pInfo->RX.Frequency = 10800000;
 				}
-			} else if (pInfo->RX.Frequency > 52000000) {
-				pInfo->RX.Frequency = 52000000;
+			} else if (pInfo->RX.Frequency > 130000000) {
+				pInfo->RX.Frequency = 130000000;
 			}
 		} else {
 			pInfo->RX.Frequency -= gFrequencyStep;
@@ -406,17 +393,17 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->RX.Frequency > 14600000 && pInfo->RX.Frequency < 43000000) {
 					pInfo->RX.Frequency = 14600000;
 				}
-			} else if (pInfo->RX.Frequency < 10000000) {
-				pInfo->RX.Frequency = 10000000;
+			} else if (pInfo->RX.Frequency < 1800000) {
+				pInfo->RX.Frequency = 1800000;
 			}
 		}
 		pInfo->TX.Frequency = pInfo->RX.Frequency;
 		gVfoInfo[gSettings.CurrentVfo].Frequency = pInfo->RX.Frequency;
-		if (pInfo->RX.Frequency < 13600000) {
-			pInfo->bIsAM = 1;
-		} else {
-			pInfo->bIsAM = 0;
-		}
+		// if (pInfo->RX.Frequency < 13600000) {
+		// 	pInfo->gModulationType = 1;
+		// } else {
+		// 	pInfo->gModulationType = 0;
+		// }
 	} else {
 		if (Key == KEY_UP) {
 			pInfo->TX.Frequency += gFrequencyStep;
@@ -430,8 +417,8 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->TX.Frequency > 44000000) {
 					pInfo->TX.Frequency = 10800000;
 				}
-			} else if (pInfo->TX.Frequency > 52000000) {
-				pInfo->TX.Frequency = 52000000;
+			} else if (pInfo->TX.Frequency > 130000000) {
+				pInfo->TX.Frequency = 130000000;
 			}
 		} else {
 			pInfo->TX.Frequency -= gFrequencyStep;
@@ -445,8 +432,8 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->TX.Frequency > 14600000 && pInfo->TX.Frequency < 43000000) {
 					pInfo->TX.Frequency = 14600000;
 				}
-			} else if (pInfo->TX.Frequency < 10000000) {
-				pInfo->TX.Frequency = 10000000;
+			} else if (pInfo->TX.Frequency < 1800000) {
+				pInfo->TX.Frequency = 1800000;
 			}
 		}
 		gVfoInfo[gSettings.CurrentVfo].Frequency = pInfo->TX.Frequency;
@@ -529,7 +516,7 @@ void CHANNELS_UpdateVFO(void)
 	gInputBoxWriteIndex = 0;
 	INPUTBOX_Pad(0, 10);
 	if (
-		(!gSettings.bFLock && (Frequency >= 10000000  && Frequency <= 52000000)) ||
+		(!gSettings.bFLock && (Frequency >= 1800000  && Frequency <= 130000000)) ||
 		(gSettings.bFLock && (
 			(Frequency >= 14400000 && Frequency <= 14600000) ||
 			(Frequency >= 43000000 && Frequency <= 44000000) ||
@@ -537,11 +524,11 @@ void CHANNELS_UpdateVFO(void)
 	   ) {
 		if (!gFrequencyReverse) {
 			gVfoState[gSettings.CurrentVfo].RX.Frequency = Frequency;
-			if (Frequency < 13600000) {
-				gVfoState[gSettings.CurrentVfo].bIsAM = 1;
-			} else {
-				gVfoState[gSettings.CurrentVfo].bIsAM = 0;
-			}
+			// if (Frequency < 13600000) {
+			// 	gVfoState[gSettings.CurrentVfo].gModulationType = 1;
+			// } else {
+			// 	gVfoState[gSettings.CurrentVfo].gModulationType = 0;
+			// }
 		}
 		gVfoState[gSettings.CurrentVfo].TX.Frequency = Frequency;
 		CHANNELS_SaveChannel(gSettings.CurrentVfo ? 1000 : 999, &gVfoState[gSettings.CurrentVfo]);

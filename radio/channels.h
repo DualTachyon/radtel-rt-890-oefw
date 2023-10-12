@@ -37,8 +37,7 @@ typedef struct __attribute__((packed)) {
 	uint32_t Encrypt:2;
 	// 0x10
 	uint8_t Available:1;
-	uint8_t Unknown3:1;
-	uint8_t bIsAM:1;
+	uint8_t gModulationType:2;
 	uint8_t BCL:2;
 	uint8_t ScanAdd:1;
 	uint8_t bIsLowPower:1;
