@@ -465,10 +465,16 @@ void BK4819_StartAudio(void)
 		// AM, SSB
 		BK4819_EnableScramble(false);
 		BK4819_EnableCompander(false);
+		// Set bit 4 of register 73 (Auto Frequency Control Disable)
+		uint16_t reg_73 = BK4819_ReadRegister(0x73);
+		BK4819_WriteRegister(0x73, reg_73 | 0x10U);
 	} else {
 		// FM
 		BK4819_EnableScramble(gMainVfo->Scramble);
 		BK4819_EnableCompander(true);
+		// Unset bit 4 of register 73 (Auto Frequency Control Disable)
+		uint16_t reg_73 = BK4819_ReadRegister(0x73);
+		BK4819_WriteRegister(0x73, reg_73 & ~0x10U);
 		if (gMainVfo->Scramble == 0) {
 			BK4819_SetAFResponseCoefficients(false, true, gCalibration.RX_3000Hz_Coefficient);
 		} else {
