@@ -393,8 +393,8 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->RX.Frequency > 14600000 && pInfo->RX.Frequency < 43000000) {
 					pInfo->RX.Frequency = 14600000;
 				}
-			} else if (pInfo->RX.Frequency < 1800000) {
-				pInfo->RX.Frequency = 1800000;
+			} else if (pInfo->RX.Frequency < 1000000) {
+				pInfo->RX.Frequency = 1000000;
 			}
 		}
 		pInfo->TX.Frequency = pInfo->RX.Frequency;
@@ -432,8 +432,8 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 				if (pInfo->TX.Frequency > 14600000 && pInfo->TX.Frequency < 43000000) {
 					pInfo->TX.Frequency = 14600000;
 				}
-			} else if (pInfo->TX.Frequency < 1800000) {
-				pInfo->TX.Frequency = 1800000;
+			} else if (pInfo->TX.Frequency < 1000000) {
+				pInfo->TX.Frequency = 1000000;
 			}
 		}
 		gVfoInfo[gSettings.CurrentVfo].Frequency = pInfo->TX.Frequency;
@@ -516,7 +516,7 @@ void CHANNELS_UpdateVFO(void)
 	gInputBoxWriteIndex = 0;
 	INPUTBOX_Pad(0, 10);
 	if (
-		(!gSettings.bFLock && (Frequency >= 1800000  && Frequency <= 130000000)) ||
+		(!gSettings.bFLock && (Frequency >= 1000000  && Frequency <= 130000000)) ||
 		(gSettings.bFLock && (
 			(Frequency >= 14400000 && Frequency <= 14600000) ||
 			(Frequency >= 43000000 && Frequency <= 44000000) ||
