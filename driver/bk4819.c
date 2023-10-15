@@ -468,6 +468,14 @@ void BK4819_StartAudio(void)
 		// Set bit 4 of register 73 (Auto Frequency Control Disable)
 		uint16_t reg_73 = BK4819_ReadRegister(0x73);
 		BK4819_WriteRegister(0x73, reg_73 | 0x10U);
+		if (gMainVfo->gModulationType > 1) { // if SSB
+			BK4819_WriteRegister(0x37, 0b0001011000001111);
+    		BK4819_WriteRegister(0x3D, 0b0010101101000101);
+    		BK4819_WriteRegister(0x48, 0b0000001110101000);
+		}
+		else {
+
+		}
 	} else {
 		// FM
 		BK4819_EnableScramble(gMainVfo->Scramble);
