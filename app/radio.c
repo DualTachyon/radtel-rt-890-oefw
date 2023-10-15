@@ -476,6 +476,12 @@ void RADIO_StartTX(bool bUseMic)
 		Task_UpdateScreen();
 		UI_DrawMainBitmap(false, gSettings.CurrentVfo);
 		UI_DrawVfo(gSettings.CurrentVfo);
+		if (gSettings.RogerBeep == 3) {
+			BK4819_EnableFFSK1200(true);
+			DATA_SendDeviceName();
+			BK4819_EnableFFSK1200(false);
+			BK4819_ResetFSK();
+		}
 		if (gDTMF_Settings.Mode == DTMF_MODE_TX_START || gDTMF_Settings.Mode == DTMF_MODE_TX_START_END || gDTMF_InputMode) {
 			DELAY_WaitMS(gDTMF_Settings.Delay * 100);
 			if (!gDTMF_InputMode) {
@@ -494,12 +500,13 @@ void RADIO_EndTX(void)
 	if (gDTMF_Settings.Mode == DTMF_MODE_TX_END || gDTMF_Settings.Mode == DTMF_MODE_TX_START_END) {
 		DTMF_PlayContact(&gDTMF_Contacts[gDTMF_Settings.Select]);
 	}
-	if (gSettings.RogerBeep == 3) {
-		BK4819_EnableFFSK1200(true);
-		DATA_SendDeviceName();
-		BK4819_EnableFFSK1200(false);
-		BK4819_ResetFSK();
-	} else if (gSettings.RogerBeep) {
+	// if (gSettings.RogerBeep == 3) {
+	// 	BK4819_SetupFSK(true);
+	// 	DATA_SendDeviceName();
+	// 	BK4819_SetupFSK(false);
+	// 	BK4819_ResetFSK();
+	// } else
+	if (gSettings.RogerBeep && gSettings.RogerBeep != 3) {
 		PlayRogerBeep(gSettings.RogerBeep);
 	}
 	BK4819_GenTail(gMainVfo->bIsNarrow);

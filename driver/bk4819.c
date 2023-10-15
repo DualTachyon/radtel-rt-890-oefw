@@ -448,7 +448,7 @@ void BK4819_ResetFSK(void)
 {
 	BK4819_WriteRegister(0x3F, 0x0000);
 	BK4819_WriteRegister(0x59, 0x0028);
-	BK4819_WriteRegister(0x30, 0x0000);
+	//BK4819_WriteRegister(0x30, 0x0000);
 }
 
 void BK4819_StartAudio(void)
