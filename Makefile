@@ -1,6 +1,7 @@
 TARGET = firmware
 
 MOTO_STARTUP_TONE 		:= 1
+LIGHT_THEME			:= 1
 
 OBJS =
 # Startup files
@@ -142,6 +143,9 @@ DEPS = $(OBJS:.o=.d)
 
 ifeq ($(MOTO_STARTUP_TONE),1)
 	CFLAGS += -DMOTO_STARTUP_TONE
+endif
+ifeq ($(LIGHT_THEME),1)
+	CFLAGS += -DLIGHT_THEME
 endif
 
 all: $(TARGET)

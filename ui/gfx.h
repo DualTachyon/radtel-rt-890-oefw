@@ -23,12 +23,20 @@
 #define COLOR_RGB(r, g, b) ((r & 0x1F) | (((g) & 0x3F) << 5) | (((b) & 0x1F) << 11))
 
 enum {
+	#ifndef LIGHT_THEME
 	COLOR_BLACK = COLOR_RGB( 0,  0,  0),
+	#else
+	COLOR_BLACK = COLOR_RGB(31, 63, 31),
+	#endif
 	COLOR_RED   = COLOR_RGB(31,  0,  0),
 	COLOR_GREEN = COLOR_RGB( 0, 63,  0),
 	COLOR_BLUE  = COLOR_RGB( 0,  0, 31),
 	COLOR_GREY  = COLOR_RGB(16, 32, 16),
+	#ifndef LIGHT_THEME
 	COLOR_WHITE = COLOR_RGB(31, 63, 31),
+	#else
+	COLOR_WHITE = COLOR_RGB( 0,  0,  0),
+	#endif
 };
 
 extern uint16_t gColorForeground;
