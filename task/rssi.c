@@ -91,7 +91,7 @@ static void CheckRSSI(void)
 	if (gVoxRssiUpdateTimer == 0 && !gDataDisplay && !gDTMF_InputMode && !gFrequencyDetectMode && !gReceptionMode && !gFskDataReceived && gScreenMode == SCREEN_MAIN) {
 		uint16_t RSSI;
 
-		gVoxRssiUpdateTimer = 500;
+		gVoxRssiUpdateTimer = 100;
 		RSSI = BK4819_ReadRegister(0x67) & 0x1FF;
 		if (RSSI < 98U) {
 			RSSI = 0U;

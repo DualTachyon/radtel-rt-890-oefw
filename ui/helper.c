@@ -602,6 +602,20 @@ void UI_DrawDialog(void)
 	UI_DrawFrame(4, 156, 19, 61, 2, gSettings.BorderColor);
 }
 
+void UI_DrawVox(void)
+{
+	if (gVoxRssiUpdateTimer == 0) {
+		uint16_t Vox;
+
+		gVoxRssiUpdateTimer = 100;
+		Vox = BK4819_ReadRegister(0x64);
+		if (Vox > 5000) {
+			Vox = 5000;
+		}
+		UI_DrawBar(Vox / 50, gSettings.CurrentVfo);
+	}
+}
+
 void UI_DrawBar(uint8_t Level, uint8_t Vfo)
 {
 	uint8_t Y = 44 - (Vfo * 41);
