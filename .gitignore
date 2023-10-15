@@ -5,3 +5,4 @@ firmware.bin
 .tags
 
 external/SDK
+.vscode/settings.json
