@@ -477,6 +477,12 @@ void RADIO_StartTX(bool bUseMic)
 		UI_DrawMainBitmap(false, gSettings.CurrentVfo);
 		UI_DrawVfo(gSettings.CurrentVfo);
 		if (gSettings.RogerBeep == 3) {
+			// Play a tone for 300ms to make sure squelch opens on remote end before FSK ID
+			BEEP_Enable();
+			BK4819_SetToneFrequency(610);
+			SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM); // The local user should also hear it, we want to make sure we don't cut their voice
+			DELAY_WaitMS(150);
+			BEEP_Disable();
 			BK4819_EnableFFSK1200(true);
 			DATA_SendDeviceName();
 			BK4819_EnableFFSK1200(false);
