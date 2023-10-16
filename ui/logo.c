@@ -48,6 +48,6 @@ static void DrawImage(uint32_t Address)
 void UI_DrawLogo(void)
 {
 	DrawImage(0x3B5000);
-	DELAY_WaitMS(1000);
+	DELAY_WaitMS(750);
 }
 
