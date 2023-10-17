@@ -187,7 +187,7 @@ static void TuneNOAA(void)
 	if (!gNoaaMode) {
 		BK4819_WriteRegister(0x51, 0x0000);
 	} else {
-		BK4819_WriteRegister(0x51, 0x9400 | gFrequencyBandInfo.TxGain1Tuning0Wide);
+		BK4819_WriteRegister(0x51, 0x9400 | gFrequencyBandInfo.CtcssTxGainWide);
 		BK4819_WriteRegister(0x07, 0x152C);
 	}
 	BK4819_SetSquelchGlitchThreshold(false);

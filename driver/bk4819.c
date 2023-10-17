@@ -563,9 +563,9 @@ void BK4819_GenTail(bool bIsNarrow)
 {
 	if (gSettings.TailTone) {
 		if (bIsNarrow) {
-			BK4819_WriteRegister(0x51, gFrequencyBandInfo.TxGain1Tuning1Narrow | 0x9000);
+			BK4819_WriteRegister(0x51, gFrequencyBandInfo.CtcssTxGainNarrow | 0x9000);
 		} else {
-			BK4819_WriteRegister(0x51, gFrequencyBandInfo.TxGain1Tuning0Wide | 0x9000);
+			BK4819_WriteRegister(0x51, gFrequencyBandInfo.CtcssTxGainWide | 0x9000);
 		}
 		if (gTxCodeType == CODE_TYPE_OFF || gTxCodeType == CODE_TYPE_CTCSS) {
 			BK4819_WriteRegister(0x07, 1135);

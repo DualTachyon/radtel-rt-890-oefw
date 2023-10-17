@@ -116,9 +116,9 @@ void CSS_SetCustomCode(bool bIs24Bit, uint16_t Code, bool bIsNarrow)
 	uint16_t Gain = 0x8000;
 
 	if (bIsNarrow) {
-		Gain |= gFrequencyBandInfo.TxGain1Tuning1_L;
+		Gain |= gFrequencyBandInfo.DcsTxGainNarrow;
 	} else {
-		Gain |= gFrequencyBandInfo.TxGain1Tuning0_L;
+		Gain |= gFrequencyBandInfo.DcsTxGainWide;
 	}
 	if (bIs24Bit) {
 		Gain |= 0x0800;
@@ -137,9 +137,9 @@ void CSS_SetStandardCode(uint8_t CodeType, uint16_t Code, uint8_t Encrypt, bool 
 	switch (CodeType) {
 	case CODE_TYPE_CTCSS:
 		if (bNarrow) {
-			BK4819_WriteRegister(0x51, gFrequencyBandInfo.TxGain1Tuning1Narrow | 0x9000);
+			BK4819_WriteRegister(0x51, gFrequencyBandInfo.CtcssTxGainNarrow | 0x9000);
 		} else {
-			BK4819_WriteRegister(0x51, gFrequencyBandInfo.TxGain1Tuning0Wide | 0x9000);
+			BK4819_WriteRegister(0x51, gFrequencyBandInfo.CtcssTxGainWide | 0x9000);
 		}
 		BK4819_WriteRegister(0x07, ((Code * 413) / 200) & 0x1FFF);
 		break;
@@ -161,9 +161,9 @@ void CSS_SetStandardCode(uint8_t CodeType, uint16_t Code, uint8_t Encrypt, bool 
 			Enable = 0x8000;
 		}
 		if (bNarrow) {
-			BK4819_WriteRegister(0x51, Enable | gFrequencyBandInfo.TxGain1Tuning1_L);
+			BK4819_WriteRegister(0x51, Enable | gFrequencyBandInfo.DcsTxGainNarrow);
 		} else {
-			BK4819_WriteRegister(0x51, Enable | gFrequencyBandInfo.TxGain1Tuning0_L);
+			BK4819_WriteRegister(0x51, Enable | gFrequencyBandInfo.DcsTxGainWide);
 		}
 		BK4819_WriteRegister(0x07, 2775);
 		BK4819_WriteRegister(0x08, 0x0000 | ((Golay >>  0) & 0xFFFU));

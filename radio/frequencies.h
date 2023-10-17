@@ -24,13 +24,13 @@ typedef struct __attribute__((packed)) {
 	uint16_t FrequencyOffset;
 	uint8_t MicSensitivityTuningWide;
 	uint16_t TxDeviationWide;
-	uint8_t TxGain1Tuning0Wide;
-	uint8_t TxGain1Tuning0_L;
+	uint8_t CtcssTxGainWide;
+	uint8_t DcsTxGainWide;
 	uint16_t RX_DAC_GainWide;
 	uint8_t MicSensitivityTuningNarrow;
 	uint16_t TxDeviationNarrow;
-	uint8_t TxGain1Tuning1Narrow;
-	uint8_t TxGain1Tuning1_L;
+	uint8_t CtcssTxGainNarrow;
+	uint8_t DcsTxGainNarrow;
 	uint16_t RX_DAC_GainNarrow;
 	uint8_t TxPowerLevelHigh[16];
 	uint8_t TxPowerLevelLow[16];
