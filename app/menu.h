@@ -68,7 +68,6 @@ enum {
 	MENU_DTMF_DISPLAY,
 	MENU_INITIALIZE,
 	MENU_VERSION,
-	MENU_INSTRUCTION,
 };
 
 extern uint16_t gSettingGolay;
