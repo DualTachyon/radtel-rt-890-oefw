@@ -21,6 +21,7 @@
 #include "driver/key.h"
 #include "misc.h"
 #include "radio/scheduler.h"
+#include "task/am-fix.h"
 #include "task/alarm.h"
 #include "task/cursor.h"
 #include "task/lock.h"
@@ -102,6 +103,9 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 	if (gCursorCountdown) {
 		gCursorCountdown--;
 	}
+	if (gAmFixCountdown) {
+		gAmFixCountdown--;
+	}
 	if (gIncomingTimer) {
 		gIncomingTimer--;
 	}
@@ -151,11 +155,11 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 	if ((SCHEDULER_Counter & 15) == 0) {
 		SetTask(TASK_VOX);
 	}
-	if ((SCHEDULER_Counter & 255) == 0) {
+	if ((SCHEDULER_Counter & 127) == 0) {
 		SetTask(TASK_FM_SCANNER | TASK_SCANNER);
 	}
 	if ((SCHEDULER_Counter & 0x3FF) == 0) {
-		SetTask(TASK_1024_c | TASK_1024_b | TASK_CHECK_BATTERY);
+		SetTask(TASK_1024_c | TASK_AM_FIX | TASK_CHECK_BATTERY);
 		SCHEDULER_Counter = 0;
 	}
 }

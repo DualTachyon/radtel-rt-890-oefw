@@ -24,6 +24,7 @@ extern uint8_t gCurrentVfo;
 extern ChannelInfo_t *gMainVfo;
 extern ChannelInfo_t gVfoState[3];
 extern FrequencyInfo_t gVfoInfo[2];
+extern uint16_t gCurrentRssi[2];
 
 extern bool gNoaaMode;
 extern uint16_t gCode;

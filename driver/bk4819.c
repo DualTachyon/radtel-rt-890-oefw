@@ -219,6 +219,11 @@ void BK4819_WriteRegister(uint8_t Reg, uint16_t Data)
 	TMR1->ctrl1_bit.tmren = TRUE;
 }
 
+uint16_t BK4819_GetRSSI(void)
+{
+	return BK4819_ReadRegister(0x67) & 0x01FF;
+}
+
 void BK4819_Init(void)
 {
 	BK4819_WriteRegister(0x00, 0x8000);

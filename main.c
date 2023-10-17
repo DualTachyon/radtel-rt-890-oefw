@@ -27,6 +27,7 @@
 #include "radio/data.h"
 #include "radio/hardware.h"
 #include "radio/settings.h"
+#include "task/am-fix.h"
 #include "task/alarm.h"
 #include "task/battery.h"
 #include "task/cursor.h"
@@ -76,6 +77,9 @@ void Main(void)
 				Task_CheckSideKeys();
 				Task_UpdateScreen();
 				Task_BlinkCursor();
+				#ifdef ENABLE_AM_FIX
+				Task_AM_fix();
+				#endif
 				Task_Scanner();
 				Task_CheckPTT();
 				Task_CheckIncoming();

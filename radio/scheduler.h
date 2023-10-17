@@ -23,7 +23,7 @@
 enum {
 	TASK_CHECK_PTT        = 0x0001U,
 	TASK_CHECK_BATTERY    = 0x0002U,
-	TASK_1024_b           = 0x0004U,
+	TASK_AM_FIX           = 0x0004U,
 	TASK_SCANNER          = 0x0008U,
 	TASK_1024_c           = 0x0010U,
 	TASK_FM_SCANNER       = 0x0020U,

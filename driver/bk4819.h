@@ -35,6 +35,7 @@ enum BK4819_AF_Type_t {
 typedef enum BK4819_AF_Type_t BK4819_AF_Type_t;
 
 uint16_t BK4819_ReadRegister(uint8_t Reg);
+uint16_t BK4819_GetRSSI();
 void BK4819_WriteRegister(uint8_t Reg, uint16_t Data);
 
 void BK4819_Init(void);

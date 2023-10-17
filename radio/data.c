@@ -108,7 +108,7 @@ bool DATA_ReceiverCheck(void)
 			FSK[(i * 2) + 0] = (Data >> 8) & 0xFFU;
 			FSK[(i * 2) + 1] = (Data >> 0) & 0xFFU;
 		}
-		BK4819_SetAF(BK4819_AF_MUTE);
+		// BK4819_SetAF(BK4819_AF_MUTE);
 		if (FSK[0] == 0xEE) {
 			DrawFSK();
 		} else {

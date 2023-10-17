@@ -34,6 +34,7 @@
 #include "task/alarm.h"
 #include "task/noaa.h"
 #include "task/ptt.h"
+#include "task/am-fix.h"
 #include "task/scanner.h"
 #include "task/screen.h"
 #include "ui/boot.h"
@@ -47,6 +48,7 @@ uint8_t gCurrentVfo;
 ChannelInfo_t *gMainVfo;
 ChannelInfo_t gVfoState[3];
 FrequencyInfo_t gVfoInfo[2];
+uint16_t gCurrentRssi[2];
 
 bool gNoaaMode;
 uint16_t gCode;
@@ -218,6 +220,9 @@ void RADIO_Init(void)
 	SETTINGS_LoadSettings();
 
 	BK4819_Init();
+	#ifdef ENABLE_AM_FIX
+	AM_fix_init();
+	#endif
 
 	if (gSettings.DtmfState != DTMF_STATE_KILLED) {
 		UI_DrawBoot();
