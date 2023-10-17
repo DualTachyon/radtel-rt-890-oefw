@@ -356,7 +356,7 @@ static void HandlerLong(KEY_t Key)
 				RADIO_CancelMode();
 				gScannerMode = !gScannerMode;
 				bBeep740 = gScannerMode;
-				SCANNER_Countdown = 250;
+				SCANNER_Countdown = 25;
 				break;
 
 			case KEY_2:

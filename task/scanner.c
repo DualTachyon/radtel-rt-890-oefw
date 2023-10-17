@@ -36,7 +36,7 @@ void Task_Scanner(void)
 			CHANNELS_NextChannelVfo(gSettings.ScanDirection ? KEY_DOWN : KEY_UP);
 			RADIO_Tune(gSettings.CurrentVfo);
 		}
-		SCANNER_Countdown = 250;
+		SCANNER_Countdown = 25;
 		gpio_bits_flip(GPIOA, BOARD_GPIOA_LED_GREEN);
 	}
 }
