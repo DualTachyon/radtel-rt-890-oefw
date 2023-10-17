@@ -83,7 +83,7 @@ void UART_Init(uint32_t BaudRate)
 	init.parity = USART_PARITY_NONE;
 	init.data_bit = USART_DATA_8BITS;
 	init.stop_bit = USART_STOP_1_BIT;
-	init.hw_flow_control = USART_HARDWARE_FLOW_RTS_CTS;
+	init.hw_flow_control = USART_HARDWARE_FLOW_NONE;
 	init.baudrate = BaudRate;
 	init.enable_rx = true;
 	init.enable_tx = true;
