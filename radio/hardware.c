@@ -127,7 +127,7 @@ static void InitGPIO(void)
 	gpio_init(GPIOF, &init);
 
 	// GPIO B
-	init.gpio_pins = GPIO_PINS_6;
+	init.gpio_pins = BOARD_GPIOB_USART1_TX;
 	init.gpio_mode = GPIO_MODE_MUX;
 	init.gpio_out_type = GPIO_OUTPUT_PUSH_PULL;
 	init.gpio_pull = GPIO_PULL_NONE;
@@ -140,10 +140,12 @@ static void InitGPIO(void)
 
 	gpio_init(GPIOB, &init);
 
+	// PB6 -> USART1_TX
 	gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE6, GPIO_MUX_0);
+	// PB7 -> USART1_RX
 	gpio_pin_mux_config(GPIOB, GPIO_PINS_SOURCE7, GPIO_MUX_0);
 
-	init.gpio_pins = GPIO_PINS_12;
+	init.gpio_pins = BOARD_GPIOB_BATTERY;
 	init.gpio_mode = GPIO_MODE_ANALOG;
 
 	gpio_init(GPIOB, &init);
@@ -154,11 +156,12 @@ static void InitGPIO(void)
 
 	gpio_init(GPIOA, &init);
 
-	init.gpio_pins = GPIO_PINS_6;
+	init.gpio_pins = BOARD_GPIOA_AF_OUT;
 	init.gpio_mode = GPIO_MODE_MUX;
 
 	gpio_init(GPIOA, &init);
 
+	// PA6 -> TMR3_CH1
 	gpio_pin_mux_config(GPIOA, GPIO_PINS_SOURCE6, GPIO_MUX_1);
 
 	gpio_bits_set(GPIOA, BOARD_GPIOA_KEY_COL3);
