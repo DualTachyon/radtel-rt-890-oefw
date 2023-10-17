@@ -60,16 +60,16 @@ void Task_Idle(void)
 		case IDLE_MODE_SAVE:
 			gNoaaMode = false;
 			gIdleMode = IDLE_MODE_OFF;
-			if (TMR1_Countdown_9 == 0) {
-				if (TMR1_Counter_6 < 600000) {
+			if (gIdleTimer == 0) {
+				if (gTimeSinceBoot < 600000) {
 					gSaveModeTimer = 160;
-				} else if (TMR1_Counter_6 >= 600000 && TMR1_Counter_6 < 1200000) {
+				} else if (gTimeSinceBoot >= 600000 && gTimeSinceBoot < 1200000) {
 					gSaveModeTimer = 320;
-				} else if (TMR1_Counter_6 >= 1200000 && TMR1_Counter_6 < 1800000) {
+				} else if (gTimeSinceBoot >= 1200000 && gTimeSinceBoot < 1800000) {
 					gSaveModeTimer = 480;
-				} else if (TMR1_Counter_6 >= 1800000 && TMR1_Counter_6 < 2400000) {
+				} else if (gTimeSinceBoot >= 1800000 && gTimeSinceBoot < 2400000) {
 					gSaveModeTimer = 640;
-				} else if (TMR1_Counter_6 >= 2400000) {
+				} else if (gTimeSinceBoot >= 2400000) {
 					gSaveModeTimer = 750;
 				}
 				RADIO_Sleep();

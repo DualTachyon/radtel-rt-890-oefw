@@ -34,7 +34,7 @@ static uint16_t SCHEDULER_Counter;
 uint32_t gPttTimeout;
 uint16_t ENCRYPT_Timer;
 uint32_t STANDBY_Counter;
-uint32_t TMR1_Counter_6;
+uint32_t gTimeSinceBoot;
 uint16_t gGreenLedTimer;
 
 volatile uint16_t gSpecialTimer;
@@ -43,7 +43,7 @@ uint16_t gIncomingTimer;
 uint16_t gVoxRssiUpdateTimer;
 uint16_t gBatteryTimer;
 uint16_t gSaveModeTimer;
-uint32_t TMR1_Countdown_9;
+uint32_t gIdleTimer;
 uint16_t gDetectorTimer;
 
 static void SetTask(uint16_t Task)
@@ -118,8 +118,8 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 	if (gSaveModeTimer) {
 		gSaveModeTimer--;
 	}
-	if (TMR1_Countdown_9) {
-		TMR1_Countdown_9--;
+	if (gIdleTimer) {
+		gIdleTimer--;
 	}
 	if (SCANNER_Countdown) {
 		SCANNER_Countdown--;
@@ -141,7 +141,7 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 	SCHEDULER_Counter++;
 	ENCRYPT_Timer++;
 	STANDBY_Counter++;
-	TMR1_Counter_6++;
+	gTimeSinceBoot++;
 	if (gBlinkGreen) {
 		gGreenLedTimer++;
 	}

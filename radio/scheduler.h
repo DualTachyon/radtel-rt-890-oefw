@@ -37,7 +37,7 @@ enum {
 extern uint32_t gPttTimeout;
 extern uint16_t ENCRYPT_Timer;
 extern uint32_t STANDBY_Counter;
-extern uint32_t TMR1_Counter_6;
+extern uint32_t gTimeSinceBoot;
 extern uint16_t gGreenLedTimer;
 
 extern volatile uint16_t gSpecialTimer;
@@ -46,7 +46,7 @@ extern uint16_t gIncomingTimer;
 extern uint16_t gVoxRssiUpdateTimer;
 extern uint16_t gBatteryTimer;
 extern uint16_t gSaveModeTimer;
-extern uint32_t TMR1_Countdown_9;
+extern uint32_t gIdleTimer;
 extern uint16_t gDetectorTimer;
 
 void SCHEDULER_Init(void);

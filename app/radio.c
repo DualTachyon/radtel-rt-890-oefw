@@ -295,7 +295,7 @@ void RADIO_StartRX(void)
 		gRxLinkCounter = 0;
 		g_20000656 = 0;
 		SCANNER_Countdown = 5000;
-		TMR1_Countdown_9 = 10000;
+		gIdleTimer = 10000;
 		PTT_ClearLock(PTT_LOCK_INCOMING);
 		PTT_ClearLock(PTT_LOCK_BUSY);
 		if (!gRedrawScreen) {
@@ -527,7 +527,7 @@ void RADIO_EndTX(void)
 	TuneCurrentVfo();
 	UI_DrawSomething();
 	gBatteryTimer = 3000;
-	TMR1_Countdown_9 = 10000;
+	gIdleTimer = 10000;
 }
 
 void RADIO_CancelMode(void)
