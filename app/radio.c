@@ -102,9 +102,9 @@ static void TuneCurrentVfo(void)
 	} else {
 		CSS_SetStandardCode(gVfoInfo[gCurrentVfo].CodeType, gCode, gMainVfo->Encrypt, gMainVfo->bIsNarrow);
 	}
-	BK4819_SetSquelchGlitchThreshold(gMainVfo->bIsNarrow);
-	BK4819_SetSquelchNoiseThreshold(gMainVfo->bIsNarrow);
-	BK4819_SetSquelchRSSIThreshold(gMainVfo->bIsNarrow);
+	BK4819_SetSquelchGlitch(gMainVfo->bIsNarrow);
+	BK4819_SetSquelchNoise(gMainVfo->bIsNarrow);
+	BK4819_SetSquelchRSSI(gMainVfo->bIsNarrow);
 	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(gMainVfo->bIsNarrow);
 	BK4819_UpdateGpioOut(true);
@@ -190,11 +190,11 @@ static void TuneNOAA(void)
 		BK4819_WriteRegister(0x51, 0x9400 | gFrequencyBandInfo.CtcssTxGainWide);
 		BK4819_WriteRegister(0x07, 0x152C);
 	}
-	BK4819_SetSquelchGlitchThreshold(false);
-	BK4819_SetSquelchNoiseThreshold(false);
-	BK4819_SetSquelchRSSIThreshold(false);
+	BK4819_SetSquelchGlitch(false);
+	BK4819_SetSquelchNoise(false);
+	BK4819_SetSquelchRSSI(false);
 	BK4819_EnableScramble(false);
-	BK4819_EnableAF_ExpanderCompress(false);
+	BK4819_EnableCompander(false);
 	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(false);
 	BK4819_UpdateGpioOut(true);
@@ -267,7 +267,7 @@ void RADIO_StartRX(void)
 	g_2000064F = 0;
 	BK4819_SetAF(BK4819_AF_MUTE);
 	SPEAKER_TurnOff(SPEAKER_OWNER_RX);
-	BK4819_SetupFSK(false);
+	BK4819_EnableFFSK1200(false);
 	BK4819_ResetFSK();
 	DTMF_Disable();
 	if (gScannerMode) {
@@ -514,9 +514,9 @@ void RADIO_EndTX(void)
 		DTMF_PlayContact(&gDTMF_Contacts[gDTMF_Settings.Select]);
 	}
 	if (gSettings.RogerBeep == 3) {
-		BK4819_SetupFSK(true);
+		BK4819_EnableFFSK1200(true);
 		DATA_SendDeviceName();
-		BK4819_SetupFSK(false);
+		BK4819_EnableFFSK1200(false);
 		BK4819_ResetFSK();
 	} else if (gSettings.RogerBeep) {
 		PlayRogerBeep(gSettings.RogerBeep);

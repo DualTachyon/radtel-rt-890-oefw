@@ -58,7 +58,7 @@ void BEEP_Interrupt(void)
 
 void BEEP_Enable(void)
 {
-	BK4819_SetAF_RX_and_DAC_Gain(0xB32A);
+	BK4819_SetAfGain(0xB32A);
 	BK4819_EnableTone1(true);
 }
 
@@ -66,7 +66,7 @@ void BEEP_Disable(void)
 {
 	SPEAKER_TurnOff(SPEAKER_OWNER_SYSTEM);
 	BK4819_SetToneFrequency(0);
-	BK4819_EnableTone1(0);
+	BK4819_EnableTone1(false);
 }
 
 void BEEP_Play(uint16_t Frequency, uint8_t Type, uint16_t Duration)
@@ -89,7 +89,7 @@ void BEEP_Play(uint16_t Frequency, uint8_t Type, uint16_t Duration)
 void BEEP_SetFrequency(uint16_t Frequency)
 {
 	if (gSaveMode) {
-		BK4819_RX_TurnOn();
+		BK4819_EnableRX();
 	}
 	BK4819_SetToneFrequency(Frequency);
 }

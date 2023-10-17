@@ -51,7 +51,7 @@ void ALARM_Start(void)
 	gAlarmSiren = false;
 	gAlarmFrequency = 800;
 	gAlarmCounter = 0;
-	BK4819_SetAF_RX_and_DAC_Gain(0xB325);
+	BK4819_SetAfGain(0xB325);
 	BK4819_EnableTone1(true);
 	BK4819_SetToneFrequency(gAlarmFrequency);
 	SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
@@ -62,7 +62,7 @@ void ALARM_Stop(void)
 	gEnableLocalAlarm = false;
 	gSendTone = false;
 	BK4819_SetToneFrequency(0);
-	BK4819_EnableTone1(0);
+	BK4819_EnableTone1(false);
 	SPEAKER_TurnOff(SPEAKER_OWNER_SYSTEM);
 	if (gRadioMode == RADIO_MODE_TX) {
 		RADIO_EndTX();

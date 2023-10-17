@@ -285,7 +285,7 @@ static void DETECTOR_Loop(void)
 			BEEP_Play(440, 4, 80);
 			return;
 		}
-		BK4819_EnableAutoCssBW();
+		BK4819_DisableAutoCssBW();
 		MuteCtcssScan();
 		KEY_CurrentKey = KEY_NONE;
 		RADIO_Tune(gSettings.CurrentVfo);

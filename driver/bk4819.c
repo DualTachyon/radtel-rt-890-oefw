@@ -154,9 +154,9 @@ static void OpenAudio(bool bIsNarrow, bool bIsAM)
 		BK4819_SetAF(BK4819_AF_OPEN);
 	}
 	if (bIsNarrow) {
-		BK4819_SetAF_RX_and_DAC_Gain(gFrequencyBandInfo.RX_DAC_GainNarrow);
+		BK4819_SetAfGain(gFrequencyBandInfo.RX_DAC_GainNarrow);
 	} else {
-		BK4819_SetAF_RX_and_DAC_Gain(gFrequencyBandInfo.RX_DAC_GainWide);
+		BK4819_SetAfGain(gFrequencyBandInfo.RX_DAC_GainWide);
 	}
 }
 
@@ -323,7 +323,7 @@ void BK4819_SetFrequency(uint32_t Frequency)
 	BK4819_WriteRegister(0x39, (Frequency >> 16) & 0xFFFFU);
 }
 
-void BK4819_SetSquelchGlitchThreshold(bool bIsNarrow)
+void BK4819_SetSquelchGlitch(bool bIsNarrow)
 {
 	if (bIsNarrow) {
 		BK4819_WriteRegister(0x4D, gSquelchGlitchLevel[gSettings.Squelch] + 0x9FFF);
@@ -334,31 +334,31 @@ void BK4819_SetSquelchGlitchThreshold(bool bIsNarrow)
 	}
 }
 
-void BK4819_SetSquelchNoiseThreshold(bool bIsNarrow)
+void BK4819_SetSquelchNoise(bool bIsNarrow)
 {
 	uint8_t Level;
 	uint16_t Value;
 
 	Level = gSquelchNoiseLevel[gSettings.Squelch];
 	if (bIsNarrow) {
-		Value = ((gSquelchNoiseThresholdNarrow + 2 + Level) << 8) | (gSquelchNoiseThresholdNarrow - 4 + Level);
+		Value = ((gSquelchNoiseNarrow + 2 + Level) << 8) | (gSquelchNoiseNarrow - 4 + Level);
 	} else {
-		Value = ((gSquelchNoiseThresholdWide   + 2 + Level) << 8) | (gSquelchNoiseThresholdWide   - 4 + Level);
+		Value = ((gSquelchNoiseWide   + 2 + Level) << 8) | (gSquelchNoiseWide   - 4 + Level);
 	}
 
 	BK4819_WriteRegister(0x4F, Value);
 }
 
-void BK4819_SetSquelchRSSIThreshold(bool bIsNarrow)
+void BK4819_SetSquelchRSSI(bool bIsNarrow)
 {
 	uint8_t Level;
 	uint16_t Value;
 
 	Level = gSquelchRssiLevel[gSettings.Squelch];
 	if (bIsNarrow) {
-		Value = ((gSquelchRSSIThresholdNarrow + 2 + Level) << 8) | (gSquelchRSSIThresholdNarrow - 4 + Level);
+		Value = ((gSquelchRSSINarrow + 2 + Level) << 8) | (gSquelchRSSINarrow - 4 + Level);
 	} else {
-		Value = ((gSquelchRSSIThresholdWide   + 2 + Level) << 8) | (gSquelchRSSIThresholdWide   - 4 + Level);
+		Value = ((gSquelchRSSIWide   + 2 + Level) << 8) | (gSquelchRSSIWide   - 4 + Level);
 	}
 
 	BK4819_WriteRegister(0x78, Value);
@@ -411,7 +411,7 @@ void BK4819_EnableScramble(bool bIsNarrow)
 	BK4819_WriteRegister(0x31, Value);
 }
 
-void BK4819_EnableAF_ExpanderCompress(bool bEnable)
+void BK4819_EnableCompander(bool bEnable)
 {
 	BK4819_WriteRegister(0x31, BK4819_ReadRegister(0x31) & ~8U);
 	if (bEnable) {
@@ -441,7 +441,7 @@ void BK4819_SetToneFrequency(uint16_t Tone)
 	BK4819_WriteRegister(0x71, (Tone * 103U) / 10U);
 }
 
-void BK4819_SetupFSK(bool bEnable)
+void BK4819_EnableFFSK1200(bool bEnable)
 {
 	if (bEnable) {
 		BK4819_WriteRegister(0x70, 0x00E0);
@@ -474,10 +474,10 @@ void BK4819_StartAudio(void)
 
 	if (gMainVfo->bIsAM) {
 		BK4819_EnableScramble(false);
-		BK4819_EnableAF_ExpanderCompress(false);
+		BK4819_EnableCompander(false);
 	} else {
 		BK4819_EnableScramble(gMainVfo->Scramble);
-		BK4819_EnableAF_ExpanderCompress(true);
+		BK4819_EnableCompander(true);
 		if (gMainVfo->Scramble == 0) {
 			BK4819_SetAFResponseCoefficients(false, true, gCalibration.RX_3000Hz_Coefficient);
 		} else {
@@ -485,12 +485,12 @@ void BK4819_StartAudio(void)
 		}
 	}
 	if (!gReceptionMode) {
-		BK4819_SetupFSK(true);
+		BK4819_EnableFFSK1200(true);
 	}
 	SPEAKER_TurnOn(SPEAKER_OWNER_RX);
 }
 
-void BK4819_SetAF_RX_and_DAC_Gain(uint16_t Gain)
+void BK4819_SetAfGain(uint16_t Gain)
 {
 	if (gMainVfo->bIsAM) {
 		if ((Gain & 15) > 4) {

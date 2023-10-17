@@ -161,10 +161,10 @@ char DTMF_GetCharacterFromKey(uint8_t Code)
 
 void DTMF_PlayTone(uint8_t Code)
 {
-	BK4819_SetAF_RX_and_DAC_Gain(0xB32A);
+	BK4819_SetAfGain(0xB32A);
 	Init();
 	BK4819_EnableTone1(true);
-	SPEAKER_TurnOn(2);
+	SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
 	PlayDTMF(Code);
 	if (!gDTMF_Playing) {
 		DTMF_Disable();

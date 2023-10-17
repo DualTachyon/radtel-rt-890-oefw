@@ -34,10 +34,10 @@ typedef struct __attribute__((packed)) {
 	uint16_t RX_DAC_GainNarrow;
 	uint8_t TxPowerLevelHigh[16];
 	uint8_t TxPowerLevelLow[16];
-	uint8_t SquelchNoiseThresholdWide[16];
-	uint8_t SquelchRSSIThresholdWide[16];
-	uint8_t SquelchNoiseThresholdNarrow[16];
-	uint8_t SquelchRSSIThresholdNarrow[16];
+	uint8_t SquelchNoiseWide[16];
+	uint8_t SquelchRSSIWide[16];
+	uint8_t SquelchNoiseNarrow[16];
+	uint8_t SquelchRSSINarrow[16];
 } FrequencyBandInfo_t;
 
 extern FrequencyBandInfo_t gFrequencyBandInfo;
@@ -46,10 +46,10 @@ extern uint8_t gCurrentFrequencyBand;
 
 extern uint8_t gTxPowerLevelLow;
 extern uint8_t gTxPowerLevelHigh;
-extern uint8_t gSquelchNoiseThresholdWide;
-extern uint8_t gSquelchRSSIThresholdWide;
-extern uint8_t gSquelchNoiseThresholdNarrow;
-extern uint8_t gSquelchRSSIThresholdNarrow;
+extern uint8_t gSquelchNoiseWide;
+extern uint8_t gSquelchRSSIWide;
+extern uint8_t gSquelchNoiseNarrow;
+extern uint8_t gSquelchRSSINarrow;
 
 uint32_t FREQUENCY_GetStep(uint8_t StepSetting);
 void FREQUENCY_SelectBand(uint32_t Frequency);

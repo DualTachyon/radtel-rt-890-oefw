@@ -85,7 +85,7 @@ static void DrawArea(void)
 
 void DATA_ReceiverInit(void)
 {
-	BK4819_SetupFSK(true);
+	BK4819_EnableFFSK1200(true);
 	DTMF_ClearString();
 	DTMF_FSK_InitReceive(0);
 }

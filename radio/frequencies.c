@@ -22,12 +22,12 @@ bool gUseUhfFilter;
 
 uint8_t gCurrentFrequencyBand = 0xFF;
 
-uint8_t gTxPowerLevelLow = 0x28;
-uint8_t gTxPowerLevelHigh = 0x14;
-uint8_t gSquelchNoiseThresholdWide = 0x28;
-uint8_t gSquelchNoiseThresholdNarrow = 0x28;
-uint8_t gSquelchRSSIThresholdWide = 0x50;
-uint8_t gSquelchRSSIThresholdNarrow = 0x55;
+uint8_t gTxPowerLevelLow = 40;
+uint8_t gTxPowerLevelHigh = 20;
+uint8_t gSquelchNoiseWide = 40;
+uint8_t gSquelchNoiseNarrow = 40;
+uint8_t gSquelchRSSIWide = 80;
+uint8_t gSquelchRSSINarrow = 85;
 
 uint32_t FREQUENCY_GetStep(uint8_t StepSetting)
 {
@@ -95,15 +95,15 @@ void FREQUENCY_SelectBand(uint32_t Frequency)
 		Level = 15;
 	}
 
-	gSquelchNoiseThresholdWide = gFrequencyBandInfo.SquelchNoiseThresholdWide[Level];
-	gSquelchRSSIThresholdWide = gFrequencyBandInfo.SquelchRSSIThresholdWide[Level];
+	gSquelchNoiseWide = gFrequencyBandInfo.SquelchNoiseWide[Level];
+	gSquelchRSSIWide = gFrequencyBandInfo.SquelchRSSIWide[Level];
 	if (Band == 3) {
-		gSquelchNoiseThresholdWide += 10;
-		gSquelchRSSIThresholdWide -= 10;
+		gSquelchNoiseWide += 10;
+		gSquelchRSSIWide -= 10;
 	}
 	gTxPowerLevelLow = gFrequencyBandInfo.TxPowerLevelLow[Level];
 	gTxPowerLevelHigh = gFrequencyBandInfo.TxPowerLevelHigh[Level];
-	gSquelchNoiseThresholdNarrow = gFrequencyBandInfo.SquelchNoiseThresholdNarrow[Level];
-	gSquelchRSSIThresholdNarrow = gFrequencyBandInfo.SquelchRSSIThresholdNarrow[Level];
+	gSquelchNoiseNarrow = gFrequencyBandInfo.SquelchNoiseNarrow[Level];
+	gSquelchRSSINarrow = gFrequencyBandInfo.SquelchRSSINarrow[Level];
 }
 
