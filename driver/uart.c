@@ -57,9 +57,19 @@ static void usart_reset_ex(usart_type *uart, uint32_t baudrate)
 
 void UART_Init(uint32_t BaudRate)
 {
-	usart_reset_ex(USART1, BaudRate);
-	PERIPH_REG((uint32_t)USART1, USART_RDBF_INT) |= PERIPH_REG_BIT(USART_RDBF_INT);
-	USART1->ctrl1_bit.uen = TRUE;
+	usart_init_type init;
+
+	usart_para_init(&init);
+	init.parity = USART_PARITY_NONE;
+	init.data_bit = USART_DATA_8BITS;
+	init.stop_bit = USART_STOP_1_BIT;
+	init.hw_flow_control = USART_HARDWARE_FLOW_NONE;
+	init.baudrate = BaudRate;
+	init.enable_rx = true;
+	init.enable_tx = true;
+	usart_reset_ex(USART1, &init);
+	usart_interrupt_enable(USART1, USART_RDBF_INT, true);
+	usart_enable(USART1, TRUE);
 }
 
 void UART_SendByte(uint8_t Data)
