@@ -107,7 +107,7 @@ static void TuneCurrentVfo(void)
 	BK4819_SetSquelchRSSIThreshold(gMainVfo->bIsNarrow);
 	BK4819_RX_TurnOn();
 	BK4819_SetFilterBandwidth(gMainVfo->bIsNarrow);
-	BK4819_UpdateGpioOut(1);
+	BK4819_UpdateGpioOut(true);
 }
 
 static bool TuneTX(bool bFlag)
@@ -197,7 +197,7 @@ static void TuneNOAA(void)
 	BK4819_EnableAF_ExpanderCompress(false);
 	BK4819_RX_TurnOn();
 	BK4819_SetFilterBandwidth(false);
-	BK4819_UpdateGpioOut(1);
+	BK4819_UpdateGpioOut(true);
 }
 
 //
