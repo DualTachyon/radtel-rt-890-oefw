@@ -123,7 +123,7 @@ void HandlerUSART1(void)
 	if (USART1->ctrl1_bit.rdbfien && USART1->sts & USART_RDBF_FLAG) {
 		uint8_t Cmd;
 
-		Buffer[BufferLength++] = USART1->dt;
+		Buffer[WriteIndex++] = USART1->dt;
 
 		BufferLength %= 256;
 		Cmd = Buffer[0];
