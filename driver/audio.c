@@ -51,8 +51,8 @@ static void TimerStart(uint16_t SampleRate)
 	init.count_mode = TMR_COUNT_UP;
 	tmr_reset_ex0(TMR6, &init);
 	tmr_output_channel_switch_set_ex(TMR6, true);
-	tmr_interrupt_enable(TMR6, TMR_OVF_INT, true);
-	tmr_counter_enable(TMR6, true);
+	TMR6->iden |= TMR_OVF_INT;
+	TMR6->ctrl1_bit.tmren = TRUE;
 }
 
 static uint32_t GetDigitAddress(uint8_t Digit)
@@ -108,7 +108,7 @@ static void PlaySample(void)
 
 	if (AudioEndPosition <= SampleReadPosition || gAudioTimer == 0) {
 		gAudioPlaying = false;
-		tmr_counter_enable(TMR6, false);
+		TMR6->ctrl1_bit.tmren = FALSE;
 		return;
 	}
 
@@ -142,7 +142,7 @@ static void PlaySample(void)
 
 void HandlerTMR6_GLOBAL(void)
 {
-	tmr_flag_clear(TMR6, TMR_OVF_FLAG);
+	TMR6->ists = ~TMR_OVF_FLAG;
 	if (gAudioPlaying) {
 		PlaySample();
 	}
@@ -153,7 +153,7 @@ void HandlerTMR6_GLOBAL(void)
 void AUDIO_PlaySample(uint16_t SampleRate, uint32_t Offset)
 {
 	if (bPauseTimer) {
-		tmr_counter_enable(TMR6, false);
+		TMR6->ctrl1_bit.tmren = FALSE;
 	}
 	gAudioPlaying = true;
 	bAudioSpeakerEnable = true;

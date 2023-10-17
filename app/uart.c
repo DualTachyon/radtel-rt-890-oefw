@@ -61,8 +61,9 @@ static void FlashCmd(uint8_t Command, uint8_t Hi, uint8_t Lo)
 		return;
 	}
 
-	tmr_counter_enable(TMR1, false);
-	usart_enable(USART2, false);
+	TMR1->ctrl1_bit.tmren = FALSE;
+	// Why? Is this some left over from another radio?
+	USART2->ctrl1_bit.uen = FALSE;
 
 	switch (Command) {
 	case 0x40:
@@ -119,10 +120,10 @@ static void FlashCmd(uint8_t Command, uint8_t Hi, uint8_t Lo)
 
 void HandlerUSART1(void)
 {
-	if (USART1->ctrl1_bit.rdbfien && usart_flag_get(USART1, USART_RDBF_FLAG)) {
+	if (USART1->ctrl1_bit.rdbfien && USART1->sts & USART_RDBF_FLAG) {
 		uint8_t Cmd;
 
-		Buffer[WriteIndex++] = usart_data_receive(USART1);
+		Buffer[WriteIndex++] = USART1->dt;
 
 		WriteIndex %= 256;
 		Cmd = Buffer[0];

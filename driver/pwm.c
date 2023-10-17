@@ -27,15 +27,15 @@ void PWM_Init(void)
 	init.clock_division = TMR_CLOCK_DIV1;
 	init.count_mode = TMR_COUNT_UP;
 	tmr_reset_ex0(TMR3, &init);
-	tmr_output_channel_switch_set(TMR3, TMR_SELECT_CHANNEL_1, TRUE);
-	tmr_counter_enable(TMR3, TRUE);
+	TMR3->cm1_output_bit.c1osen = TRUE;
+	TMR3->ctrl1_bit.tmren = TRUE;
 	PWM_Reset();
 }
 
 void PWM_Reset(void)
 {
 	PWM_Pulse(0);
-	tmr_counter_enable(TMR3, FALSE);
+	TMR3->ctrl1_bit.tmren = FALSE;
 }
 
 void PWM_Pulse(uint16_t Data)
@@ -45,11 +45,11 @@ void PWM_Pulse(uint16_t Data)
 	tmr_para_init_ex1(&init);
 	init.ch1_output_control_mode = TMR_OUTPUT_CONTROL_PWM_MODE_A;
 	init.ch1_polarity = TMR_POLARITY_ACTIVE_HIGH;
-	init.ch1_enable = true;
+	init.ch1_enable = TRUE;
 	init.ch1_digital_filter = Data;
 	tmr_reset_ex1(TMR3, &init);
-	tmr_output_channel_buffer_enable(TMR3, TMR_SELECT_CHANNEL_1, true);
-	tmr_counter_enable(TMR3, true);
-	tmr_output_enable(TMR3, true);
+	TMR3->cm1_output_bit.c1oben = TRUE;
+	TMR3->ctrl1_bit.tmren = TRUE;
+	TMR3->brk_bit.oen = TRUE;
 }
 

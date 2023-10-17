@@ -7,7 +7,9 @@ OBJS += startup/init.o
 #OBJS += external/printf/printf.o
 
 # Drivers
+OBJS += bsp/crm.o
 OBJS += bsp/gpio.o
+OBJS += bsp/misc.o
 OBJS += bsp/tmr.o
 OBJS += driver/audio.o
 OBJS += driver/battery.o
@@ -23,13 +25,6 @@ OBJS += driver/serial-flash.o
 OBJS += driver/speaker.o
 OBJS += driver/st7735s.o
 OBJS += driver/uart.o
-OBJS += external/SDK/libraries/drivers/src/at32f421_adc.o
-OBJS += external/SDK/libraries/drivers/src/at32f421_crm.o
-OBJS += external/SDK/libraries/drivers/src/at32f421_dma.o
-OBJS += external/SDK/libraries/drivers/src/at32f421_gpio.o
-OBJS += external/SDK/libraries/drivers/src/at32f421_misc.o
-OBJS += external/SDK/libraries/drivers/src/at32f421_tmr.o
-OBJS += external/SDK/libraries/drivers/src/at32f421_usart.o
 
 OBJS += app/css.o
 OBJS += app/fm.o

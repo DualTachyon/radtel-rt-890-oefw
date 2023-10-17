@@ -75,14 +75,15 @@ void SCHEDULER_Init(void)
 	init.clock_division = TMR_CLOCK_DIV1;
 	init.count_mode = TMR_COUNT_UP;
 	tmr_reset_ex0(TMR1, &init);
-	tmr_period_buffer_enable(TMR1, TRUE);
-	tmr_interrupt_enable(TMR1, TMR_OVF_INT, TRUE);
-	tmr_counter_enable(TMR1, TRUE);
+	TMR1->ctrl1_bit.prben = TRUE;
+	TMR1->iden |= TMR_OVF_INT;
+	TMR1->ctrl1_bit.tmren = TRUE;
 }
 
 void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 {
-	tmr_flag_clear(TMR1, TMR_OVF_FLAG);
+	TMR1->ists = ~TMR_OVF_FLAG;
+
 	KEY_ReadButtons();
 	KEY_ReadSideKeys();
 	BEEP_Interrupt();

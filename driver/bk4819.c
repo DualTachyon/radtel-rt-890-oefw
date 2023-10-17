@@ -166,7 +166,7 @@ uint16_t BK4819_ReadRegister(uint8_t Reg)
 {
 	uint16_t Data;
 
-	tmr_counter_enable(TMR1, FALSE);
+	TMR1->ctrl1_bit.tmren = FALSE;
 
 	SDA_SetOutput();
 
@@ -179,14 +179,14 @@ uint16_t BK4819_ReadRegister(uint8_t Reg)
 
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK4819_CS);
 
-	tmr_counter_enable(TMR1, TRUE);
+	TMR1->ctrl1_bit.tmren = TRUE;
 
 	return Data;
 }
 
 void BK4819_WriteRegister(uint8_t Reg, uint16_t Data)
 {
-	tmr_counter_enable(TMR1, FALSE);
+	TMR1->ctrl1_bit.tmren = FALSE;
 
 	SDA_SetOutput();
 
@@ -199,7 +199,7 @@ void BK4819_WriteRegister(uint8_t Reg, uint16_t Data)
 
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK4819_CS);
 
-	tmr_counter_enable(TMR1, TRUE);
+	TMR1->ctrl1_bit.tmren = TRUE;
 }
 
 void BK4819_Init(void)
