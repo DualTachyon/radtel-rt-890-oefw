@@ -31,9 +31,9 @@ static void PlayStartupTone(void)
 	#ifdef MOTO_STARTUP_TONE
 		BEEP_SetFrequency(784);
 		SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
-		DELAY_WaitMS(250);
+		DELAY_WaitMS(200);
 		BEEP_SetFrequency(660);
-		DELAY_WaitMS(250);
+		DELAY_WaitMS(200);
 		BEEP_SetFrequency(1046);
 		DELAY_WaitMS(250);
 		BEEP_Disable();
@@ -57,10 +57,10 @@ void UI_DrawBoot(void)
 	if (gSettings.DisplayLogo) {
 		UI_DrawLogo();
 	}
+	PlayStartupTone();
 	if (gSettings.DisplayLabel || gSettings.DisplayVoltage) {
 		DISPLAY_Fill(0, 159, 0, 96, COLOR_BLACK);
 	}
-	PlayStartupTone();
 	if (gSettings.DisplayLabel) {
 		UI_DrawWelcome();
 	}

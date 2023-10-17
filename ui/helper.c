@@ -334,12 +334,58 @@ void UI_DrawVoltage(uint8_t Vfo)
 	if (gSettings.DualDisplay == 0) {
 		const uint8_t Y = 72 - (Vfo * 41);
 		gColorForeground = COLOR_BLUE;
+		/* Replacing voltage display with register display */
+		uint16_t regValue = BK4819_ReadRegister(0x7E);
+		// Extract bits 15, 14, 13 and 12
+		regValue = (regValue & 0xF000) >> 12;
+		// If bit 15 is set, display AUTO, otherwise display FIX
+		if ((regValue & 0x8) == 0x8) {
+			UI_DrawSmallString(16, Y, "FIX ", 4);
+		} else {
+			UI_DrawSmallString(16, Y, "AUTO", 4);
+		}
+		// Display bits 14:12 as an integer
+		unsigned char curRegValue = (regValue & 0x7);
+		Int2Ascii(regValue & 0x7, 1);
+		UI_DrawSmallString(40, Y, gShortString, 1);
+		// Now, read register (0x10 + curRegValue) and output the following as separate values:
+		// 2:0 - PGA Gain
+		// 4:3 - Mixer Gain
+		// 7:5 - LNA Gain
+		// 9:8 - LNA Gain Short
+		regValue = BK4819_ReadRegister(0x10 + curRegValue);
+		// Extract bits 2:0
+		Int2Ascii(regValue & 0x7, 1);
+		UI_DrawSmallString(16, Y-8, "PGA ", 4);
+		UI_DrawSmallString(40, Y-8, gShortString, 1);
+		// Extract bits 4:3
+		Int2Ascii((regValue & 0x18) >> 3, 1);
+		UI_DrawSmallString(64, Y-8, "MIX ", 4);
+		UI_DrawSmallString(88, Y-8, gShortString, 1);
+		// Extract bits 7:5
+		Int2Ascii((regValue & 0xE0) >> 5, 1);
+		UI_DrawSmallString(112, Y-8, "LNA ", 4);
+		UI_DrawSmallString(136, Y-8, gShortString, 1);
+		// Extract bits 9:8
+		Int2Ascii((regValue & 0x300) >> 8, 1);
+		UI_DrawSmallString(16, Y-16, "LNAS", 4);
+		UI_DrawSmallString(48, Y-16, gShortString, 1);
+		// Next, logic to handle REG_43<14:12> (RF filter bandwidth)
+		regValue = BK4819_ReadRegister(0x43);
+		// Extract bits 14:12
+		Int2Ascii(regValue & 0x7000 >> 12, 1);
+		UI_DrawSmallString(64, Y, "BW", 2);
+		UI_DrawSmallString(88, Y, gShortString, 1);
+		// Extract bits 11:9
+		Int2Ascii(regValue & 0xE00 >> 9, 1);
+		UI_DrawSmallString(112, Y, "Weak", 4);
+		UI_DrawSmallString(136, Y, gShortString, 1);
 		Int2Ascii(gBatteryVoltage, 2);
 		gShortString[2] = gShortString[1];
 		gShortString[1] = '.';
 		gShortString[3] = 'V';
-		UI_DrawString(16, Y, "Voltage :", 9);
-		UI_DrawString(96, Y, gShortString, 4);
+		UI_DrawSmallString(64, Y-24, gShortString, 4);
+
 	}
 }
 

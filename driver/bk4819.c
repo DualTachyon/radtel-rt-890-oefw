@@ -141,6 +141,7 @@ static uint16_t I2C_RecvU16(void)
 	return Data;
 }
 
+#if 0
 static void DisableAGC(uint32_t Unknown)
 {
 	BK4819_WriteRegister(0x13, 0x03BE);
@@ -151,6 +152,7 @@ static void DisableAGC(uint32_t Unknown)
 	BK4819_WriteRegister(0x49, 0x2A38);
 	BK4819_WriteRegister(0x7B, 0x8420);
 }
+#endif
 
 static void OpenAudio(bool bIsNarrow, uint8_t gModulationType)
 {
@@ -222,7 +224,7 @@ void BK4819_Init(void)
 	BK4819_WriteRegister(0x00, 0x8000);
 	BK4819_WriteRegister(0x00, 0x0000);
 	BK4819_WriteRegister(0x37, 0x1D0F);
-	DisableAGC(0);
+	// DisableAGC(0);
 	BK4819_WriteRegister(0x33, 0x1F00);
 	BK4819_WriteRegister(0x35, 0x0000);
 	BK4819_WriteRegister(0x1E, 0x4C58);
@@ -351,10 +353,13 @@ void BK4819_SetSquelchRSSI(bool bIsNarrow)
 
 void BK4819_SetFilterBandwidth(bool bIsNarrow)
 {
-	if (bIsNarrow) {
-		BK4819_WriteRegister(0x43, 0x4048);
-	} else {
-		BK4819_WriteRegister(0x43, 0x3028);
+	// Check if modulation is FM
+	if (gMainVfo->gModulationType == 0) { // if FM
+		if (bIsNarrow) {
+			BK4819_WriteRegister(0x43, 0x4048);
+		} else {
+			BK4819_WriteRegister(0x43, 0x3028);
+		}
 	}
 }
 
@@ -468,8 +473,9 @@ void BK4819_StartAudio(void)
 		// Set bit 4 of register 73 (Auto Frequency Control Disable)
 		uint16_t reg_73 = BK4819_ReadRegister(0x73);
 		BK4819_WriteRegister(0x73, reg_73 | 0x10U);
-		BK4819_WriteRegister(0x43, 0b0100000001011000); // Filter 6.25KHz
+		// BK4819_WriteRegister(0x43, 0b0100000001011000); // Filter 6.25KHz
 		if (gMainVfo->gModulationType > 1) { // if SSB
+			BK4819_WriteRegister(0x43, 0b0010000001011000); // Filter 6.25KHz
 			BK4819_WriteRegister(0x37, 0b0001011000001111);
     		BK4819_WriteRegister(0x3D, 0b0010101101000101);
     		BK4819_WriteRegister(0x48, 0b0000001110101000);
@@ -478,7 +484,7 @@ void BK4819_StartAudio(void)
 		// FM
 		BK4819_EnableScramble(gMainVfo->Scramble);
 		BK4819_EnableCompander(true);
-		BK4819_WriteRegister(0x43, 0x3028); // restore filter just in case -
+		// BK4819_WriteRegister(0x43, 0x3028); // restore filter just in case -
 											// this gets overwritten by sane defaults anyway.
 		// Unset bit 4 of register 73 (Auto Frequency Control Disable)
 		uint16_t reg_73 = BK4819_ReadRegister(0x73);
