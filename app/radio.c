@@ -105,12 +105,12 @@ static void TuneCurrentVfo(void)
 	BK4819_SetSquelchGlitchThreshold(gMainVfo->bIsNarrow);
 	BK4819_SetSquelchNoiseThreshold(gMainVfo->bIsNarrow);
 	BK4819_SetSquelchRSSIThreshold(gMainVfo->bIsNarrow);
-	BK4819_RX_TurnOn();
+	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(gMainVfo->bIsNarrow);
 	BK4819_UpdateGpioOut(true);
 }
 
-static bool TuneTX(bool bFlag)
+static bool TuneTX(bool bUseMic)
 {
 	if (gSettings.RepeaterMode == 2) {
 		gVfoInfo[gCurrentVfo] = gMainVfo->RX;
@@ -136,7 +136,7 @@ static bool TuneTX(bool bFlag)
 		gRadioMode = RADIO_MODE_TX;
 		BK4819_EnableRfTxDeviation();
 		BK4819_SetMicSensitivityTuning();
-		BK4819_TxOn_BeepWithATwist(bFlag);
+		BK4819_EnableTX(bUseMic);
 		BK4819_EnableScramble(gMainVfo->Scramble);
 		if (gMainVfo->Scramble == 0) {
 			BK4819_SetAFResponseCoefficients(true, true, gCalibration.TX_3000Hz_Coefficient);
@@ -195,7 +195,7 @@ static void TuneNOAA(void)
 	BK4819_SetSquelchRSSIThreshold(false);
 	BK4819_EnableScramble(false);
 	BK4819_EnableAF_ExpanderCompress(false);
-	BK4819_RX_TurnOn();
+	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(false);
 	BK4819_UpdateGpioOut(true);
 }
@@ -474,14 +474,14 @@ void RADIO_SaveCurrentVfo(void)
 	RADIO_Tune(gSettings.CurrentVfo);
 }
 
-void RADIO_StartTX(bool bFlag)
+void RADIO_StartTX(bool bUseMic)
 {
 	if (gRadioMode == RADIO_MODE_RX) {
 		RADIO_StartRX();
 	}
 	RADIO_Tune(gSettings.CurrentVfo);
 	RADIO_DisableSaveMode();
-	if (!TuneTX(bFlag)) {
+	if (!TuneTX(bUseMic)) {
 		if (gEnableLocalAlarm) {
 			ALARM_Stop();
 			return;
@@ -552,7 +552,7 @@ void RADIO_CancelMode(void)
 void RADIO_DisableSaveMode(void)
 {
 	if (gSaveMode) {
-		BK4819_RX_TurnOn();
+		BK4819_EnableRX();
 		BK4819_UpdateGpioOut(true);
 		gSaveMode = false;
 		DELAY_WaitMS(10);

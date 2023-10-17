@@ -224,7 +224,7 @@ void BK4819_Init(void)
 	BK4819_SetAFResponseCoefficients(false, false, gCalibration.RX_300Hz_Coefficient);
 	BK4819_SetAFResponseCoefficients(true,  true,  gCalibration.TX_3000Hz_Coefficient);
 	BK4819_SetAFResponseCoefficients(true,  false, gCalibration.TX_300Hz_Coefficient);
-	BK4819_RX_TurnOn();
+	BK4819_EnableRX();
 	BK4819_SetAF(BK4819_AF_MUTE);
 }
 
@@ -302,7 +302,7 @@ void BK4819_SetAFResponseCoefficients(bool bTx, bool bLowPass, uint8_t Index)
 	}
 }
 
-void BK4819_RX_TurnOn(void)
+void BK4819_EnableRX(void)
 {
 	BK4819_WriteRegister(0x37, 0x1F0F);
 	DELAY_WaitMS(10);
@@ -607,13 +607,13 @@ void BK4819_SetMicSensitivityTuning(void)
 	BK4819_WriteRegister(0x7D, 0xE940 | Tuning);
 }
 
-void BK4819_TxOn_BeepWithATwist(bool bFlag)
+void BK4819_EnableTX(bool bUseMic)
 {
 	BK4819_WriteRegister(0x37, 0x1D0F);
 	DELAY_WaitMS(10);
 	BK4819_WriteRegister(0x52, 0x028F);
 	BK4819_WriteRegister(0x30, 0x0200);
-	if (bFlag) {
+	if (bUseMic) {
 		BK4819_WriteRegister(0x30, 0xC1FE);
 	} else {
 		BK4819_WriteRegister(0x30, 0xC3FA);
@@ -631,10 +631,10 @@ void BK4819_StopFrequencyScan(void)
 	BK4819_WriteRegister(0x32, 0x0000);
 }
 
-void BK4819_EnableAutoCssBW(void)
+void BK4819_DisableAutoCssBW(void)
 {
 	BK4819_WriteRegister(0x51, 0x0300);
 	DELAY_WaitMS(200);
-	BK4819_RX_TurnOn();
+	BK4819_EnableRX();
 }
 

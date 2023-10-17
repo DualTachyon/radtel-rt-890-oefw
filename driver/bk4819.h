@@ -37,7 +37,7 @@ void BK4819_WriteRegister(uint8_t Reg, uint16_t Data);
 
 void BK4819_Init(void);
 void BK4819_SetAFResponseCoefficients(bool bTx, bool bLowPass, uint8_t Index);
-void BK4819_RX_TurnOn(void);
+void BK4819_EnableRX(void);
 void BK4819_SetAF(BK4819_AF_Type_t Type);
 void BK4819_SetFrequency(uint32_t Frequency);
 void BK4819_SetSquelchGlitchThreshold(bool bIsNarrow);
@@ -60,10 +60,10 @@ void BK4819_GenTail(bool bIsNarrow);
 void BK4819_SetupPowerAmplifier(uint8_t Bias);
 void BK4819_EnableRfTxDeviation(void);
 void BK4819_SetMicSensitivityTuning(void);
-void BK4819_TxOn_BeepWithATwist(bool bFlag);
+void BK4819_EnableTX(bool bUseMic);
 void BK4819_StartFrequencyScan(void);
 void BK4819_StopFrequencyScan(void);
-void BK4819_EnableAutoCssBW(void);
+void BK4819_DisableAutoCssBW(void);
 
 #endif
 
