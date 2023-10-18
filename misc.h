@@ -89,7 +89,7 @@ extern bool gEnableLocalAlarm;
 extern bool gSendTone;
 extern bool KEY_SideKeyLongPressed;
 extern PTT_Lock_t gPttLock;
-extern uint8_t g_2000063D;
+extern bool gSignalFound;
 extern bool gBlinkGreen;
 extern uint8_t gRadioMode;
 extern IDLE_Mode_t gIdleMode;

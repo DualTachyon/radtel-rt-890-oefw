@@ -289,7 +289,7 @@ static void DETECTOR_Loop(void)
 		MuteCtcssScan();
 		KEY_CurrentKey = KEY_NONE;
 		RADIO_Tune(gSettings.CurrentVfo);
-		g_2000063D = false;
+		gSignalFound = false;
 		Key = KEY_CurrentKey;
 		while (1) {
 			KEY_CurrentKey = Key;
@@ -304,7 +304,7 @@ static void DETECTOR_Loop(void)
 			Key = KEY_GetButton();
 			Task_CheckIncoming();
 			Task_CheckRSSI();
-			if (bCtdcScan && g_2000063D && gRadioMode != RADIO_MODE_QUIET && gDetectorTimer == 0) {
+			if (bCtdcScan && gSignalFound && gRadioMode != RADIO_MODE_QUIET && gDetectorTimer == 0) {
 				break;
 			}
 			if (Key == KEY_NONE) {

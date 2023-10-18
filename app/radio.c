@@ -303,7 +303,7 @@ void RADIO_StartRX(void)
 		}
 		gIncomingTimer = 100;
 	} else {
-		g_2000063D = true;
+		gSignalFound = true;
 		gDetectorTimer = 500;
 	}
 }

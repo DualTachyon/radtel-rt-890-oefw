@@ -35,7 +35,7 @@ bool gEnableLocalAlarm;
 bool gSendTone;
 bool KEY_SideKeyLongPressed;
 PTT_Lock_t gPttLock;
-uint8_t g_2000063D;
+bool gSignalFound;
 bool gBlinkGreen;
 uint8_t gRadioMode;
 IDLE_Mode_t gIdleMode;

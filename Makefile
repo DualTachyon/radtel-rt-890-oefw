@@ -130,6 +130,9 @@ all: $(TARGET)
 	$(OBJCOPY) -O binary $< $<.bin
 	$(SIZE) $<
 
+ctags:
+	ctags -R -f .tags .
+
 ui/version.o: .FORCE
 
 $(TARGET): $(OBJS)
