@@ -97,9 +97,9 @@ static void UpDownEx(char c)
 		String[i] = c + (i / 2) + ' ';
 	}
 	DISPLAY_Fill(1, 158, 1, 19, gColorBackground);
-	gColorForeground = 0x001F;
+	gColorForeground = COLOR_RED;
 	UI_DrawString(4, 18, String, 15);
-	gColorForeground = 0xFFFF;
+	gColorForeground = COLOR_WHITE;
 }
 
 static void InsertChar(uint8_t Limit, char c)
@@ -138,9 +138,9 @@ static void DrawT9Sequence(char c)
 		String[14] = c + 3 + ' ';
 	}
 	DISPLAY_Fill(1, 158, 1, 19, gColorBackground);
-	gColorForeground = 0x001F;
+	gColorForeground = COLOR_RED;
 	UI_DrawString(4, 18, String, 15);
-	gColorForeground = 0xFFFF;
+	gColorForeground = COLOR_WHITE;
 }
 
 void T9_Editor(uint8_t Key, uint8_t Limit)
