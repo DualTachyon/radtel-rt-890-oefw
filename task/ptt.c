@@ -60,7 +60,7 @@ void Task_CheckPTT(void)
 									if (gRadioMode != RADIO_MODE_RX) {
 										RADIO_Tune(gSettings.CurrentVfo);
 									}
-									UI_DrawMain(1);
+									UI_DrawMain(true);
 									gPttPressed = true;
 								}
 							} else {
@@ -92,7 +92,7 @@ void Task_CheckPTT(void)
 				return;
 			} else if (gRadioMode == RADIO_MODE_TX) {
 				UI_DrawVox();
-				if (Timer && Timer <= (gPttTimeout / 1000)) {
+				if (Timer && (gPttTimeout / 1000) >= Timer) {
 					PTT_SetLock(PTT_LOCK_VOX);
 					RADIO_EndTX();
 				}

@@ -968,7 +968,7 @@ void MENU_KeyHandler(uint8_t Key)
 		if (gRadioMode != RADIO_MODE_RX) {
 			RADIO_Tune(gSettings.CurrentVfo);
 		}
-		UI_DrawMain(1);
+		UI_DrawMain(true);
 		BEEP_Play(440, 4, 80);
 		break;
 

@@ -436,7 +436,7 @@ static void HandlerLong(KEY_t Key)
 				} else {
 					DTMF_ResetString();
 					gDTMF_InputMode = false;
-					UI_DrawMain(1);
+					UI_DrawMain(true);
 					bBeep740 = false;
 				}
 				break;
@@ -489,7 +489,7 @@ static void HandlerLong(KEY_t Key)
 				gSettings.DualDisplay ^= 1;
 				SETTINGS_SaveGlobals();
 				VOX_Timer = 0;
-				UI_DrawMain(1);
+				UI_DrawMain(true);
 				break;
 
 			case KEY_STAR:

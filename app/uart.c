@@ -23,7 +23,7 @@
 #include "radio/settings.h"
 
 static uint8_t Buffer[256];
-static uint8_t WriteIndex;
+static uint8_t BufferLength;
 static uint8_t Region;
 static bool bFlashing;
 static uint8_t g_Unused;
@@ -123,18 +123,18 @@ void HandlerUSART1(void)
 	if (USART1->ctrl1_bit.rdbfien && USART1->sts & USART_RDBF_FLAG) {
 		uint8_t Cmd;
 
-		Buffer[WriteIndex++] = USART1->dt;
+		Buffer[BufferLength++] = USART1->dt;
 
-		WriteIndex %= 256;
+		BufferLength %= 256;
 		Cmd = Buffer[0];
-		if (WriteIndex == 1 && Cmd != 0x35 && !(Cmd >= 0x40 && Cmd <= 0x4C) && Cmd != 0x52) {
+		if (BufferLength == 1 && Cmd != 0x35 && !(Cmd >= 0x40 && Cmd <= 0x4C) && Cmd != 0x52) {
 			UART_IsRunning = false;
 			UART_Timer = 0;
 			UART_SendByte(0xFF);
-			WriteIndex = 0;
+			BufferLength = 0;
 		} else {
-			if ((Cmd == 0x35 && WriteIndex == 5) || (Cmd == 0x52 && WriteIndex == 4) || (Cmd >= 0x40 && Cmd <= 0x4C && WriteIndex == 132)) {
-				if (CalcSum(Buffer, WriteIndex - 1) == Buffer[WriteIndex - 1]) {
+			if ((Cmd == 0x35 && BufferLength == 5) || (Cmd == 0x52 && BufferLength == 4) || (Cmd >= 0x40 && Cmd <= 0x4C && BufferLength == 132)) {
+				if (CalcSum(Buffer, BufferLength - 1) == Buffer[BufferLength - 1]) {
 					gpio_bits_flip(GPIOA, BOARD_GPIOA_LED_RED);
 					UART_IsRunning = true;
 					UART_Timer = 1000;
@@ -164,8 +164,8 @@ void HandlerUSART1(void)
 					gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_RED);
 					UART_SendByte(0xFF);
 				}
-				WriteIndex = 0;
-			} else if (Cmd == 0x32 && WriteIndex == 5) {
+				BufferLength = 0;
+			} else if (Cmd == 0x32 && BufferLength == 5) {
 				if (CalcSum(Buffer, 4) + 1 == Buffer[4]) {
 					UART_IsRunning = true;
 					UART_Timer = 1000;
@@ -178,7 +178,7 @@ void HandlerUSART1(void)
 					UART_IsRunning = false;
 					UART_Timer = 0;
 				}
-				WriteIndex = 0;
+				BufferLength = 0;
 			}
 		}
 	}

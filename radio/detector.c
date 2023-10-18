@@ -129,7 +129,7 @@ static void StopDetect(void)
 	}
 
 	RADIO_Tune(gSettings.CurrentVfo);
-	UI_DrawMain(1);
+	UI_DrawMain(true);
 }
 
 static bool GetDcsCode(uint32_t Golay)

@@ -25,7 +25,7 @@
 #include "ui/main.h"
 #include "ui/vfo.h"
 
-static void DrawMode0(void)
+static void DrawStatusBar(void)
 {
 	DISPLAY_Fill(0, 159, 0, 96, COLOR_BLACK);
 	DISPLAY_DrawRectangle0(0, 41, 160, 1, gSettings.BorderColor);
@@ -44,16 +44,13 @@ static void DrawMode0(void)
 	UI_DrawBattery();
 }
 
-void UI_DrawMain(uint8_t Mode)
+void UI_DrawMain(bool bSkipStatus)
 {
-	switch (Mode) {
-	case 0:
-		DrawMode0();
-		break;
-	case 1:
+	if (bSkipStatus) {
 		DISPLAY_Fill(0, 159, 0, 81, COLOR_BLACK);
 		DISPLAY_DrawRectangle0(0, 41, 160, 1, gSettings.BorderColor);
-		break;
+	} else {
+		DrawStatusBar();
 	}
 
 	if (gSettings.DualDisplay == 0 && (gRadioMode != RADIO_MODE_RX || gSettings.CurrentVfo == gCurrentVfo)) {

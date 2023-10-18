@@ -44,7 +44,7 @@ static bool CheckStatus(void)
 	uint16_t Value;
 
 	Value = BK4819_ReadRegister(0x64);
-	if (gVoxTable[gSettings.VoxLevel] + 150 <= Value) {
+	if (Value >= gVoxTable[gSettings.VoxLevel] + 150) {
 		return true;
 	}
 	if (Value <= gVoxTable[gSettings.VoxLevel] + 145) {
@@ -68,7 +68,7 @@ void Task_VoxUpdate(void)
 					uint16_t Delay;
 
 					Delay = VOX_Counter++ / 64;
-					if (gSettings.VoxDelay <= Delay) {
+					if (Delay >= gSettings.VoxDelay) {
 						VOX_IsTransmitting = false;
 						VOX_Counter = 0;
 						RADIO_EndTX();

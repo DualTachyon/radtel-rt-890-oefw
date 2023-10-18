@@ -238,7 +238,7 @@ void RADIO_Init(void)
 	RADIO_Tune(gCurrentVfo);
 
 	if (gSettings.DtmfState != DTMF_STATE_KILLED) {
-		UI_DrawMain(0);
+		UI_DrawMain(false);
 		BK4819_EnableVox(gSettings.Vox);
 		if (!gpio_input_data_bit_read(GPIOB, BOARD_GPIOB_KEY_PTT)) {
 			if (!gpio_input_data_bit_read(GPIOF, BOARD_GPIOF_KEY_SIDE1)) {
@@ -373,7 +373,7 @@ void VFO_SetMode(uint8_t Mode)
 		if (gRadioMode != RADIO_MODE_RX && gRadioMode != RADIO_MODE_TX) {
 			RADIO_Tune(gSettings.CurrentVfo);
 		}
-		UI_DrawMain(1);
+		UI_DrawMain(true);
 	}
 }
 
@@ -434,7 +434,7 @@ void RADIO_NoaaRetune(void)
 	}
 	RADIO_Retune();
 	RADIO_Tune(gSettings.CurrentVfo);
-	UI_DrawMain(1);
+	UI_DrawMain(true);
 }
 
 void RADIO_NoaaTune(void)
@@ -490,7 +490,7 @@ void RADIO_StartTX(bool bUseMic)
 		gpio_bits_set(GPIOA, BOARD_GPIOA_LED_RED);
 		VOX_Timer = 0;
 		if (gDTMF_InputMode) {
-			UI_DrawMain(1);
+			UI_DrawMain(true);
 		}
 		Task_UpdateScreen();
 		UI_DrawMainBitmap(false, gSettings.CurrentVfo);

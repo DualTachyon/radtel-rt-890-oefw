@@ -27,11 +27,11 @@ void Task_UpdateScreen(void)
 		gRedrawScreen = false;
 		if (!FUN_08006d64()) {
 			if (gScreenMode == SCREEN_MAIN && !gReceptionMode) {
-				UI_DrawMain(1);
+				UI_DrawMain(true);
 			}
 		} else if (gScreenMode == SCREEN_MAIN && !gReceptionMode) {
 			if (gVfoMode == VFO_MODE_MAIN) {
-				UI_DrawMain(1);
+				UI_DrawMain(true);
 			} else if (gRadioMode != RADIO_MODE_RX) {
 				FM_Resume();
 			}

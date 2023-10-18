@@ -30,10 +30,12 @@ void Task_CheckScannerFM(void)
 	}
 
 	SCHEDULER_ClearTask(TASK_FM_SCANNER);
+
 	if (BK1080_CheckSignal()) {
 		FM_Play();
 		return;
 	}
+
 	if (gVfoMode == VFO_MODE_FM_SCROLL_UP) {
 		gSettings.FmFrequency++;
 		if (gSettings.FmFrequency > 1080) {
@@ -45,6 +47,7 @@ void Task_CheckScannerFM(void)
 			gSettings.FmFrequency = 1080;
 		}
 	}
+
 	BK1080_Tune(gSettings.FmFrequency);
 	BK1080_SetVolume(0);
 	SPEAKER_TurnOff(SPEAKER_OWNER_FM);

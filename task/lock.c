@@ -29,7 +29,7 @@ void Task_CheckLockScreen(void)
 	Timer = TIMER_Calculate(gSettings.LockTimer);
 	if (gSettings.LockTimer == 0 || gSettings.Lock || gScreenMode != SCREEN_MAIN || gEnableLocalAlarm || gScannerMode || gDTMF_InputMode || gSettings.DtmfState != DTMF_STATE_NORMAL || gReceptionMode) {
 		gLockTimer = 0;
-	} else if (Timer <= (gLockTimer / 1000)) {
+	} else if ((gLockTimer / 1000) >= Timer) {
 		LOCK_Toggle();
 	}
 }
