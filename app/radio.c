@@ -512,9 +512,9 @@ void RADIO_EndTX(void)
 		DTMF_PlayContact(&gDTMF_Contacts[gDTMF_Settings.Select]);
 	}
 	// if (gSettings.RogerBeep == 3) {
-	// 	BK4819_SetupFSK(true);
+	// 	BK4819_EnableFFSK1200(true);
 	// 	DATA_SendDeviceName();
-	// 	BK4819_SetupFSK(false);
+	// 	BK4819_EnableFFSK1200(false);
 	// 	BK4819_ResetFSK();
 	// } else
 	if (gSettings.RogerBeep && gSettings.RogerBeep != 3) {
