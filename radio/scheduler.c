@@ -103,9 +103,11 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 	if (gCursorCountdown) {
 		gCursorCountdown--;
 	}
+	#ifdef ENABLE_AM_FIX
 	if (gAmFixCountdown) {
 		gAmFixCountdown--;
 	}
+	#endif
 	if (gIncomingTimer) {
 		gIncomingTimer--;
 	}
