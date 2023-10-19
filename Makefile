@@ -2,7 +2,7 @@ TARGET = firmware
 
 MOTO_STARTUP_TONE 		:= 1
 LIGHT_THEME			:= 1
-ENABLE_AM_FIX			:= 1
+ENABLE_AM_FIX			:= 0
 
 OBJS =
 # Startup files
