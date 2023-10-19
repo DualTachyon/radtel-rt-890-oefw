@@ -69,7 +69,7 @@ static void DrawFSK(void)
 	UI_DrawString(10, 38, gShortString, 9);
 }
 
-static void DrawArea(void)
+static void DrawReceivedFSKID(void)
 {
 	if (gScreenMode == SCREEN_MAIN && !gReceptionMode) {
 		UI_DrawDialog();
@@ -112,7 +112,7 @@ bool DATA_ReceiverCheck(void)
 		if (FSK[0] == 0xEE) {
 			DrawFSK();
 		} else {
-			DrawArea();
+			DrawReceivedFSKID();
 		}
 		gFskDataReceived = true;
 		BK4819_WriteRegister(0x3F, 0x0000);
