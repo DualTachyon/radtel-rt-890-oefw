@@ -375,7 +375,7 @@ static void HandlerLong(KEY_t Key)
 					RADIO_EndTX();
 					VOX_IsTransmitting = false;
 				}
-				UI_DrawStatusIcon(80, ICON_VOX, gSettings.Vox, COLOR_BLACK);
+				UI_DrawStatusIcon(80, ICON_VOX, gSettings.Vox, COLOR_WHITE);
 				UI_DrawDialogText(DIALOG_VOX, gSettings.Vox);
 				break;
 
@@ -400,7 +400,7 @@ static void HandlerLong(KEY_t Key)
 				RADIO_Tune(gSettings.CurrentVfo);
 				SETTINGS_SaveGlobals();
 				gIdleMode = IDLE_MODE_OFF;
-				UI_DrawStatusIcon(56, ICON_DUAL_WATCH, gSettings.DualStandby, COLOR_BLACK);
+				UI_DrawStatusIcon(56, ICON_DUAL_WATCH, gSettings.DualStandby, COLOR_WHITE);
 				UI_DrawDialogText(DIALOG_DUAL_STANDBY, gSettings.DualStandby);
 				break;
 
