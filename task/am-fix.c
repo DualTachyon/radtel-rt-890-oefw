@@ -21,10 +21,8 @@
 
 #include <string.h>
 #include "bsp/gpio.h"
-#include "am-fix.h"
+#include "task/am-fix.h"
 #include "app/radio.h"
-//#include "app/main.h"
-//#include "board.h"
 #include "driver/bk4819.h"
 #include "driver/pins.h"
 #include "external/printf/printf.h"
@@ -103,21 +101,6 @@
 	static const t_gain_table gain_table[] =
 	{
 		{0x035E, -17},         //   0 .. 3 2 3 6 ..   0dB -14dB  0dB  -3dB .. -17dB original
-
-#ifdef ENABLE_AM_FIX_TEST1
-
-		// test table that lets me manually set the lna-short register
-		// to measure it's actual dB change using an RF signal generator
-
-		{0x005E, -50},         //   1 .. 0 2 3 6 .. -33dB -14dB  0dB  -3dB .. -50dB
-		{0x015E, -47},         //   2 .. 1 2 3 6 .. -30dB -14dB  0dB  -3dB .. -47dB
-		{0x025E, -41},         //   3 .. 2 2 3 6 .. -24dB -14dB  0dB  -3dB .. -41dB
-		{0x035E, -17}          //   4 .. 3 2 3 6 ..   0dB -14dB  0dB  -3dB .. -17dB original
-	};
-
-	static const unsigned int original_index = 1;
-
-#else
 
 		{0x0000, -98},         //   1 .. 0 0 0 0 .. -33dB -24dB -8dB -33dB .. -98dB
 		{0x0008, -96},         //   2 .. 0 0 1 0 .. -33dB -24dB -6dB -33dB .. -96dB
@@ -220,7 +203,6 @@
 	static const unsigned int original_index = 80;
     uint16_t gAmFixCountdown;
 
-#endif
 
 	#ifdef ENABLE_AM_FIX_SHOW_DATA
 		// display update rate
@@ -482,13 +464,15 @@
             gAmFixCountdown = 10;
         } else
         {
-            // original radtel front end register settings
+			gAmFixCountdown = 1000;
+			// original radtel front end register settings
             const uint8_t orig_lna_short = 3;
             const uint8_t orig_lna = 6; 
             const uint8_t orig_mixer = 3;
             const uint8_t orig_pga = 6;     
-
-            BK4819_WriteRegister(0x13, (orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0));
+			if(BK4819_ReadRegister(0x13) != ((orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0))) {
+            	BK4819_WriteRegister(0x13, (orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0));
+			}
         }
 	}
 
