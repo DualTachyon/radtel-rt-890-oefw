@@ -16,6 +16,7 @@
 
 #include "app/fm.h"
 #include "app/radio.h"
+#include "app/fm.h"
 #include "driver/beep.h"
 #include "driver/bk4819.h"
 #include "driver/key.h"
@@ -44,6 +45,7 @@ enum {
 	ACTION_NOAA_CHANNEL,
 	ACTION_SEND_TONE,
 	ACTION_ROGER_BEEP,
+	ACTION_FM_RADIO,
 };
 
 //
@@ -210,6 +212,16 @@ void Task_CheckSideKeys(void)
 			SETTINGS_SaveGlobals();
 			BEEP_Play(740, 2, 100);
 			UI_DrawRoger();
+			break;
+
+		case ACTION_FM_RADIO:
+			// TODO FM radio
+			RADIO_DisableSaveMode();
+			if (gSettings.DualStandby) {
+				RADIO_Tune(gSettings.CurrentVfo);
+				gIdleMode = IDLE_MODE_DUAL_STANDBY;
+			}
+			FM_Play();
 			break;
 		}
 	}
