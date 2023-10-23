@@ -22,6 +22,7 @@
 #include "radio/scheduler.h"
 #include "task/rssi.h"
 #include "task/scanner.h"
+#include "task/vox.h"
 #include "ui/helper.h"
 #include "ui/noaa.h"
 #include "unknown.h"
@@ -99,13 +100,6 @@ static void CheckRSSI(void)
 	}
 }
 
-static void StartRX(void)
-{
-	gReceivingAudio = true;
-	SCREEN_TurnOn();
-	BK4819_StartAudio();
-}
-
 void Task_CheckRSSI(void)
 {
 	if (gRadioMode != RADIO_MODE_TX && gRadioMode != RADIO_MODE_QUIET && !gSaveMode && SCHEDULER_CheckTask(TASK_CHECK_RSSI)) {
@@ -127,15 +121,15 @@ void Task_CheckRSSI(void)
 				g_20000656 = 0;
 				CheckRSSI();
 			} else if (!gReceptionMode) {
-				RADIO_StartRX();
+				RADIO_EndRX();
 			} else {
-				RADIO_StopRX();
+				RADIO_EndAudio();
 			}
 		} else if (!gNoaaMode) {
 			if (gReceptionMode) {
-				StartRX();
+				RADIO_StartAudio();
 			} else if ((gVfoInfo[gCurrentVfo].CodeType == CODE_TYPE_OFF && !gMainVfo->bMuteEnabled) || gMainVfo->bIsAM || Result == 1) {
-				FUN_08006b38();
+				RADIO_StartRX();
 			}
 		} else if (Result == 1) {
 			gReceptionMode = true;

@@ -114,7 +114,7 @@ void Task_CheckSideKeys(void)
 
 	if (gMonitorMode) {
 		gMonitorMode = false;
-		RADIO_StartRX();
+		RADIO_EndRX();
 		return;
 	}
 
@@ -188,7 +188,7 @@ void Task_CheckSideKeys(void)
 					BEEP_Play(440, 4, 80);
 				} else {
 					if (gRadioMode == RADIO_MODE_RX) {
-						RADIO_StartRX();
+						RADIO_EndRX();
 					}
 					RADIO_NoaaTune();
 					BEEP_Play(740, 2, 100);

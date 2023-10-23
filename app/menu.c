@@ -22,7 +22,7 @@
 #include "driver/beep.h"
 #include "driver/key.h"
 #include "driver/speaker.h"
-#include "dtmf.h"
+#include "helper/dtmf.h"
 #include "helper/helper.h"
 #include "helper/inputbox.h"
 #include "misc.h"

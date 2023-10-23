@@ -54,7 +54,6 @@ void UI_DrawFM(void);
 void UI_DrawBitmap(uint8_t X,uint8_t Y, uint8_t H, uint8_t W, const uint8_t *pBitmap);
 void UI_DrawFrame(uint8_t X0, uint8_t X1, uint8_t Y0, uint8_t Y1, uint8_t Thickness, uint16_t Color);
 void UI_DrawDialog(void);
-void UI_DrawVox(void);
 void UI_DrawBar(uint8_t Level, uint8_t Vfo);
 void UI_DrawSomething(void);
 void UI_DrawMainBitmap(bool bOverride, uint8_t Vfo);

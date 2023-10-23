@@ -15,10 +15,10 @@
  */
 
 #include <at32f421.h>
-#include "driver/pins.h"
 #include "bsp/gpio.h"
 #include "driver/bk1080.h"
 #include "driver/delay.h"
+#include "driver/pins.h"
 #include "driver/speaker.h"
 #include "misc.h"
 

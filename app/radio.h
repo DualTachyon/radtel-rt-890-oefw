@@ -30,9 +30,13 @@ extern uint16_t gCode;
 
 void RADIO_Init(void);
 void RADIO_Tune(uint8_t Vfo);
+
 void RADIO_StartRX(void);
-void RADIO_StopRX(void);
-void FUN_08006b38(void);
+void RADIO_EndRX(void);
+
+void RADIO_StartAudio(void);
+void RADIO_EndAudio(void);
+
 void VFO_SetMode(uint8_t Value);
 void RADIO_Sleep(void);
 void RADIO_Retune(void);

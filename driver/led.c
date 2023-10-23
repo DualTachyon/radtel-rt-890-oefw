@@ -15,8 +15,8 @@
  */
 
 #include "bsp/gpio.h"
-#include "driver/pins.h"
 #include "driver/led.h"
+#include "driver/pins.h"
 
 void LED_Init(void)
 {

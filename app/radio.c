@@ -18,15 +18,15 @@
 #include "app/css.h"
 #include "app/fm.h"
 #include "app/radio.h"
-#include "driver/key.h"
-#include "driver/pins.h"
-#include "dtmf.h"
 #include "driver/beep.h"
 #include "driver/bk1080.h"
 #include "driver/bk4819.h"
 #include "driver/delay.h"
+#include "driver/key.h"
+#include "driver/pins.h"
 #include "driver/speaker.h"
 #include "driver/uart.h"
+#include "helper/dtmf.h"
 #include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/data.h"
@@ -124,7 +124,7 @@ static bool TuneTX(bool bUseMic)
 
 	gCode = gVfoInfo[gCurrentVfo].Code;
 	BK4819_SetFrequency(gVfoInfo[gCurrentVfo].Frequency);
-	if (gSettings.BandInfo[gCurrentFrequencyBand] == 0 && gVfoInfo[gCurrentVfo].Frequency >= 13600000) {
+	if (gSettings.BandInfo[gCurrentFrequencyBand] == BAND_136MHz && gVfoInfo[gCurrentVfo].Frequency >= 13600000) {
 		BK4819_UpdateGpioOut(false);
 		if (gMainVfo->bMuteEnabled) {
 			CSS_SetCustomCode(gMainVfo->bIs24Bit, gMainVfo->Golay, gMainVfo->bIsNarrow);
@@ -168,10 +168,10 @@ static void SpecialRxTxLoop(void)
 			}
 			bFlag = false;
 			RADIO_EndTX();
-			FUN_08006b38();
+			RADIO_StartRX();
 		}
 		bFlag = true;
-		RADIO_StartRX();
+		RADIO_EndRX();
 		RADIO_StartTX(true);
 	}
 }
@@ -200,7 +200,16 @@ static void TuneNOAA(void)
 	BK4819_UpdateGpioOut(true);
 }
 
-//
+static void DisableFM(void)
+{
+	BK1080_SetVolume(0);
+	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
+	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
+	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SEN);
+	SPEAKER_TurnOff(SPEAKER_OWNER_FM);
+}
+
+// Public
 
 void RADIO_Init(void)
 {
@@ -264,6 +273,39 @@ void RADIO_Tune(uint8_t Vfo)
 
 void RADIO_StartRX(void)
 {
+	VFO_SetMode(1);
+	BK4819_StartAudio();
+	if (!gFrequencyDetectMode) {
+		DTMF_ClearString();
+		DTMF_FSK_InitReceive(0);
+		VOX_Timer = 0;
+		Task_UpdateScreen();
+		SCREEN_TurnOn();
+		if (gScreenMode == SCREEN_MAIN && !gDTMF_InputMode) {
+			if (gSettings.DualDisplay == 0 && gSettings.CurrentVfo != gCurrentVfo) {
+				const uint8_t Y = gCurrentVfo * 41;
+
+				DISPLAY_Fill(1, 158, 1 + Y, 40 + Y, COLOR_BLACK);
+				DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BLACK);
+
+				UI_DrawVoltage(!gCurrentVfo);
+			}
+			UI_DrawVfo(gCurrentVfo);
+			UI_DrawMainBitmap(false, gSettings.CurrentVfo);
+			UI_DrawRX(gCurrentVfo);
+		}
+		if (gMainVfo->BCL == BUSY_LOCK_CSS) {
+			PTT_SetLock(PTT_LOCK_BUSY);
+		}
+		if (gSettings.TxPriority && gSettings.CurrentVfo != gCurrentVfo) {
+			gSettings.CurrentVfo ^= 1;
+			SETTINGS_SaveGlobals();
+		}
+	}
+}
+
+void RADIO_EndRX(void)
+{
 	g_2000064F = 0;
 	BK4819_SetAF(BK4819_AF_MUTE);
 	SPEAKER_TurnOff(SPEAKER_OWNER_RX);
@@ -308,7 +350,14 @@ void RADIO_StartRX(void)
 	}
 }
 
-void RADIO_StopRX(void)
+void RADIO_StartAudio(void)
+{
+	gReceivingAudio = true;
+	SCREEN_TurnOn();
+	BK4819_StartAudio();
+}
+
+void RADIO_EndAudio(void)
 {
 	gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_GREEN);
 	gReceivingAudio = false;
@@ -318,48 +367,6 @@ void RADIO_StopRX(void)
 	g_20000656 = 0;
 	gIncomingTimer = 250;
 	NOAA_NextChannelCountdown = 3000;
-}
-
-void FUN_08006b38(void)
-{
-	VFO_SetMode(1);
-	BK4819_StartAudio();
-	if (!gFrequencyDetectMode) {
-		DTMF_ClearString();
-		DTMF_FSK_InitReceive(0);
-		VOX_Timer = 0;
-		Task_UpdateScreen();
-		SCREEN_TurnOn();
-		if (gScreenMode == SCREEN_MAIN && !gDTMF_InputMode) {
-			if (gSettings.DualDisplay == 0 && gSettings.CurrentVfo != gCurrentVfo) {
-				const uint8_t Y = gCurrentVfo * 41;
-
-				DISPLAY_Fill(1, 158, 1 + Y, 40 + Y, COLOR_BLACK);
-				DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BLACK);
-
-				UI_DrawVoltage(!gCurrentVfo);
-			}
-			UI_DrawVfo(gCurrentVfo);
-			UI_DrawMainBitmap(false, gSettings.CurrentVfo);
-			UI_DrawRX(gCurrentVfo);
-		}
-		if (gMainVfo->BCL == BUSY_LOCK_CSS) {
-			PTT_SetLock(PTT_LOCK_BUSY);
-		}
-		if (gSettings.TxPriority && gSettings.CurrentVfo != gCurrentVfo) {
-			gSettings.CurrentVfo ^= 1;
-			SETTINGS_SaveGlobals();
-		}
-	}
-}
-
-static void DisableFM(void)
-{
-	BK1080_SetVolume(0);
-	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SEN);
-	SPEAKER_TurnOff(SPEAKER_OWNER_FM);
 }
 
 void VFO_SetMode(uint8_t Mode)
@@ -430,7 +437,7 @@ void RADIO_NoaaRetune(void)
 	gReceptionMode = false;
 	gReceivingAudio = false;
 	if (gRadioMode == RADIO_MODE_RX) {
-		RADIO_StopRX();
+		RADIO_EndAudio();
 	}
 	RADIO_Retune();
 	RADIO_Tune(gSettings.CurrentVfo);
@@ -477,7 +484,7 @@ void RADIO_SaveCurrentVfo(void)
 void RADIO_StartTX(bool bUseMic)
 {
 	if (gRadioMode == RADIO_MODE_RX) {
-		RADIO_StartRX();
+		RADIO_EndRX();
 	}
 	RADIO_Tune(gSettings.CurrentVfo);
 	RADIO_DisableSaveMode();
@@ -543,7 +550,7 @@ void RADIO_CancelMode(void)
 		RADIO_EndTX();
 	} else if (gRadioMode == RADIO_MODE_RX) {
 		gMonitorMode = false;
-		RADIO_StartRX();
+		RADIO_EndRX();
 	}
 	VOX_Timer = 0;
 	Task_UpdateScreen();

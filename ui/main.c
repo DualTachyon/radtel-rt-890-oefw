@@ -16,12 +16,12 @@
 
 #include "app/radio.h"
 #include "driver/battery.h"
-#include "dtmf.h"
+#include "helper/dtmf.h"
 #include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/settings.h"
-#include "ui/helper.h"
 #include "ui/gfx.h"
+#include "ui/helper.h"
 #include "ui/main.h"
 #include "ui/vfo.h"
 

@@ -17,18 +17,16 @@
 #include "app/css.h"
 #include "app/menu.h"
 #include "app/radio.h"
-#include "ui/gfx.h"
 #include "driver/battery.h"
-#include "driver/bk4819.h"
-#include "driver/serial-flash.h"
 #include "driver/st7735s.h"
-#include "dtmf.h"
+#include "helper/dtmf.h"
 #include "helper/helper.h"
 #include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "ui/font.h"
+#include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/vfo.h"
 
@@ -601,20 +599,6 @@ void UI_DrawDialog(void)
 	UI_DrawFrame(4, 156, 19, 61, 2, gSettings.BorderColor);
 }
 
-void UI_DrawVox(void)
-{
-	if (gVoxRssiUpdateTimer == 0) {
-		uint16_t Vox;
-
-		gVoxRssiUpdateTimer = 200;
-		Vox = BK4819_ReadRegister(0x64);
-		if (Vox > 5000) {
-			Vox = 5000;
-		}
-		UI_DrawBar(Vox / 50, gSettings.CurrentVfo);
-	}
-}
-
 void UI_DrawBar(uint8_t Level, uint8_t Vfo)
 {
 	uint8_t Y = 44 - (Vfo * 41);
@@ -662,7 +646,7 @@ void UI_DrawSomething(void)
 		UI_DrawRX(gCurrentVfo);
 		UI_DrawBar(0, gCurrentVfo);
 	}
-	UI_DrawMainBitmap(1, gSettings.CurrentVfo);
+	UI_DrawMainBitmap(true, gSettings.CurrentVfo);
 }
 
 void UI_DrawMainBitmap(bool bOverride, uint8_t Vfo)

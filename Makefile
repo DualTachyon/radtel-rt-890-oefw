@@ -6,11 +6,13 @@ OBJS += startup/start.o
 OBJS += startup/init.o
 #OBJS += external/printf/printf.o
 
-# Drivers
+# BSP
 OBJS += bsp/crm.o
 OBJS += bsp/gpio.o
 OBJS += bsp/misc.o
 OBJS += bsp/tmr.o
+
+# Drivers
 OBJS += driver/audio.o
 OBJS += driver/battery.o
 OBJS += driver/beep.o
@@ -26,6 +28,7 @@ OBJS += driver/speaker.o
 OBJS += driver/st7735s.o
 OBJS += driver/uart.o
 
+# "App" logic
 OBJS += app/css.o
 OBJS += app/fm.o
 OBJS += app/lock.o
@@ -33,10 +36,16 @@ OBJS += app/menu.o
 OBJS += app/radio.o
 OBJS += app/t9.o
 OBJS += app/uart.o
-OBJS += dtmf.o
+
+# Helper code
+OBJS += helper/dtmf.o
 OBJS += helper/helper.o
 OBJS += helper/inputbox.o
+
+# Misc data
 OBJS += misc.o
+
+# Radio management
 OBJS += radio/channels.o
 OBJS += radio/data.o
 OBJS += radio/detector.o
@@ -44,6 +53,8 @@ OBJS += radio/frequencies.o
 OBJS += radio/hardware.o
 OBJS += radio/scheduler.o
 OBJS += radio/settings.o
+
+# Tasks
 OBJS += task/alarm.o
 OBJS += task/battery.o
 OBJS += task/cursor.o
@@ -62,6 +73,8 @@ OBJS += task/sidekeys.o
 OBJS += task/timeout.o
 OBJS += task/voice.o
 OBJS += task/vox.o
+
+# User Interface
 OBJS += ui/boot.o
 OBJS += ui/dialog.o
 OBJS += ui/font.o

@@ -16,8 +16,8 @@
 
 #include "app/radio.h"
 #include "bsp/gpio.h"
-#include "driver/pins.h"
 #include "driver/key.h"
+#include "driver/pins.h"
 #include "misc.h"
 #include "radio/channels.h"
 #include "radio/scheduler.h"

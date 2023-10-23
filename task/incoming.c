@@ -15,8 +15,8 @@
  */
 
 #include "app/radio.h"
-#include "driver/pins.h"
 #include "driver/bk4819.h"
+#include "driver/pins.h"
 #include "misc.h"
 #include "radio/scheduler.h"
 #include "radio/settings.h"
@@ -40,9 +40,9 @@ void Task_CheckIncoming(void)
 				gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_RED);
 				if (gRadioMode == RADIO_MODE_RX || gFrequencyDetectMode) {
 					if (!gReceptionMode) {
-						RADIO_StartRX();
+						RADIO_EndRX();
 					} else {
-						RADIO_StopRX();
+						RADIO_EndAudio();
 					}
 				}
 				gRadioMode = RADIO_MODE_QUIET;

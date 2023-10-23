@@ -312,7 +312,7 @@ static void DETECTOR_Loop(void)
 					KEY_KeyCounter = 0;
 					if (KEY_CurrentKey == KEY_MENU) {
 						KEY_CurrentKey = KEY_NONE;
-						RADIO_StartRX();
+						RADIO_EndRX();
 						gSettings.WorkMode = 0;
 						SETTINGS_SaveGlobals();
 						RADIO_SaveCurrentVfo();
@@ -324,19 +324,19 @@ static void DETECTOR_Loop(void)
 					}
 					if (KEY_CurrentKey == KEY_EXIT) {
 						KEY_CurrentKey = KEY_NONE;
-						RADIO_StartRX();
+						RADIO_EndRX();
 						BEEP_Play(740, 2, 100);
 						continue;
 					}
 					if (KEY_CurrentKey == KEY_HASH && !bCtdcScan) {
 						KEY_CurrentKey = KEY_NONE;
-						RADIO_StartRX();
+						RADIO_EndRX();
 						UpdateBand(true);
 						continue;
 					}
 					if (KEY_CurrentKey == KEY_STAR) {
 						KEY_CurrentKey = KEY_NONE;
-						RADIO_StartRX();
+						RADIO_EndRX();
 						if (!bCtdcScan) {
 							CtdcScan();
 							bCtdcScan = true;

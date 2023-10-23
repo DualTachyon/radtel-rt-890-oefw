@@ -15,9 +15,9 @@
  */
 
 #include "app/radio.h"
-#include "ui/gfx.h"
 #include "misc.h"
 #include "radio/settings.h"
+#include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/vfo.h"
 

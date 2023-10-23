@@ -56,31 +56,31 @@ void FREQUENCY_SelectBand(uint32_t Frequency)
 	uint8_t Level;
 
 	if (Frequency >= 13600000  && Frequency <= 17400000) {
-		Band = 0;
+		Band = BAND_136MHz;
 		Level = (Frequency - 13500000) / 500000;
 		gUseUhfFilter = false;
 	} else if (Frequency >= 40000000 && Frequency <= 48000000) {
-		Band = 1;
+		Band = BAND_400MHz;
 		Level = (Frequency - 40000000) / 500000;
 		gUseUhfFilter = true;
 	} else if (Frequency >= 6400000 && Frequency <= 13600000) {
-		Band = 3;
+		Band = BAND_64MHz;
 		Level = (Frequency - 6000000) / 500000;
 		gUseUhfFilter = false;
 	} else if (Frequency >= 17400000 && Frequency <= 24000000) {
-		Band = 4;
+		Band = BAND_174MHz;
 		Level = (Frequency - 17000000) / 500000;
 		gUseUhfFilter = false;
 	} else if (Frequency >= 24000000 && Frequency <= 32000000) {
-		Band = 5;
+		Band = BAND_240MHz;
 		Level = (Frequency - 24000000) / 500000;
 		gUseUhfFilter = true;
 	} else if (Frequency >= 32000000 && Frequency <= 40000000) {
-		Band = 6;
+		Band = BAND_320MHz;
 		Level = (Frequency - 32000000) / 500000;
 		gUseUhfFilter = true;
 	} else if (Frequency >= 48000000 && Frequency <= 56000000) {
-		Band = 7;
+		Band = BAND_480MHz;
 		Level = (Frequency - 48000000) / 500000;
 		gUseUhfFilter = true;
 	} else {
@@ -97,7 +97,7 @@ void FREQUENCY_SelectBand(uint32_t Frequency)
 
 	gSquelchNoiseWide = gFrequencyBandInfo.SquelchNoiseWide[Level];
 	gSquelchRSSIWide = gFrequencyBandInfo.SquelchRSSIWide[Level];
-	if (Band == 3) {
+	if (Band == BAND_64MHz) {
 		gSquelchNoiseWide += 10;
 		gSquelchRSSIWide -= 10;
 	}

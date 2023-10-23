@@ -15,11 +15,11 @@
  */
 
 #include "app/radio.h"
-#include "driver/pins.h"
 #include "driver/delay.h"
 #include "driver/key.h"
+#include "driver/pins.h"
 #include "driver/serial-flash.h"
-#include "dtmf.h"
+#include "helper/dtmf.h"
 #include "misc.h"
 #include "radio/hardware.h"
 #include "radio/settings.h"

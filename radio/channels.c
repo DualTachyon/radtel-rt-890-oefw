@@ -458,7 +458,7 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 void CHANNELS_NextNOAA(uint8_t Key)
 {
 	if (gRadioMode == RADIO_MODE_RX) {
-		RADIO_StopRX();
+		RADIO_EndAudio();
 	}
 	if (Key == KEY_UP) {
 		gNOAA_ChannelNow = (gNOAA_ChannelNow + 1) % 11;

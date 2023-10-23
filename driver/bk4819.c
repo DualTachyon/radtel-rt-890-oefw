@@ -17,9 +17,9 @@
 #include "app/css.h"
 #include "app/radio.h"
 #include "bsp/gpio.h"
-#include "driver/pins.h"
 #include "driver/bk4819.h"
 #include "driver/delay.h"
+#include "driver/pins.h"
 #include "driver/speaker.h"
 #include "misc.h"
 #include "radio/settings.h"
@@ -233,56 +233,26 @@ void BK4819_SetAFResponseCoefficients(bool bTx, bool bLowPass, uint8_t Index)
 	uint16_t HighPass;
 	uint16_t LowPass;
 
-	LowPass = 0;
 	if (bLowPass) {
-		HighPass = 62731;
+		LowPass = 0;
 		switch (Index) {
-		case 0:
-			HighPass = 58908;
-			break;
-		case 1:
-			HighPass = 57122;
-			break;
-		case 2:
-			HighPass = 54317;
-			break;
-		case 3:
-			HighPass = 52277;
-			break;
-		case 4:
-			HighPass = 64002;
+		case 0: HighPass = 58908; break;
+		case 1: HighPass = 57122; break;
+		case 2: HighPass = 54317; break;
+		case 3: HighPass = 52277; break;
+		case 4: HighPass = 64002; break;
+		default: HighPass = 62731; break;
 		}
 	} else {
-		HighPass = 35811;
-		LowPass = 13613;
 		switch (Index) {
-		case 0:
-			HighPass = 35799;
-			LowPass = 13575;
-			break;
-		case 1:
-			HighPass = 35565;
-			LowPass = 13793;
-			break;
-		case 2:
-			HighPass = 35478;
-			LowPass = 13830;
-			break;
-		case 3:
-			HighPass = 35080;
-			LowPass = 14201;
-			break;
-		case 4:
-			HighPass = 36318;
-			LowPass = 13146;
-			break;
-		case 5:
-			HighPass = 36531;
-			LowPass = 12986;
-			break;
-		case 6:
-			HighPass = 36744;
-			LowPass = 12801;
+		case 0: HighPass = 35799; LowPass = 13575; break;
+		case 1: HighPass = 35565; LowPass = 13793; break;
+		case 2: HighPass = 35478; LowPass = 13830; break;
+		case 3: HighPass = 35080; LowPass = 14201; break;
+		case 4: HighPass = 36318; LowPass = 13146; break;
+		case 5: HighPass = 36531; LowPass = 12986; break;
+		case 6: HighPass = 36744; LowPass = 12801; break;
+		default: HighPass = 35811; LowPass = 13613; break;
 		}
 	}
 	if (bTx) {

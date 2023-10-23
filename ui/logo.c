@@ -14,11 +14,11 @@
  *     limitations under the License.
  */
 
-#include "ui/gfx.h"
 #include "driver/delay.h"
 #include "driver/serial-flash.h"
 #include "driver/st7735s.h"
 #include "misc.h"
+#include "ui/gfx.h"
 #include "ui/logo.h"
 
 static void DrawImage(uint32_t Address)
@@ -34,7 +34,7 @@ static void DrawImage(uint32_t Address)
 			SFLASH_Read(gFlashBuffer, Address + i, sizeof(gFlashBuffer));
 		}
 		Color = (gFlashBuffer[i & 0x1FFF] << 8) | gFlashBuffer[(i + 1) & 0x1FFF];
-		if (Color != 0) {
+		if (Color != COLOR_BLACK) {
 			ST7735S_SetPixel(X, Y, Color);
 		}
 		X++;

@@ -36,6 +36,7 @@ static const uint16_t gVoxTable[10] = {
 	0x0104,
 };
 
+uint16_t gVoxRssiUpdateTimer;
 uint16_t VOX_Counter;
 bool VOX_IsTransmitting;
 
@@ -52,6 +53,22 @@ static bool CheckStatus(void)
 	}
 
 	return VOX_IsTransmitting;
+}
+
+// Public
+
+void VOX_Update(void)
+{
+	if (gVoxRssiUpdateTimer == 0) {
+		uint16_t Vox;
+
+		gVoxRssiUpdateTimer = 200;
+		Vox = BK4819_ReadRegister(0x64);
+		if (Vox > 5000) {
+			Vox = 5000;
+		}
+		UI_DrawBar(Vox / 50, gSettings.CurrentVfo);
+	}
 }
 
 void Task_VoxUpdate(void)
@@ -73,10 +90,10 @@ void Task_VoxUpdate(void)
 						VOX_Counter = 0;
 						RADIO_EndTX();
 					}
-					UI_DrawVox();
+					VOX_Update();
 				} else {
 					if (VOX_IsTransmitting) {
-						UI_DrawVox();
+						VOX_Update();
 					}
 					VOX_Counter = 0;
 				}

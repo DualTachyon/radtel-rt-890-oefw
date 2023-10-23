@@ -91,7 +91,7 @@ void Task_CheckPTT(void)
 				BEEP_Play(440, 4, 80);
 				return;
 			} else if (gRadioMode == RADIO_MODE_TX) {
-				UI_DrawVox();
+				VOX_Update();
 				if (Timer && (gPttTimeout / 1000) >= Timer) {
 					PTT_SetLock(PTT_LOCK_VOX);
 					RADIO_EndTX();

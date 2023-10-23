@@ -24,7 +24,7 @@
 #include "driver/bk4819.h"
 #include "driver/key.h"
 #include "driver/pins.h"
-#include "dtmf.h"
+#include "helper/dtmf.h"
 #include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/channels.h"

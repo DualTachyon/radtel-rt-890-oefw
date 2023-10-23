@@ -20,9 +20,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+extern uint16_t gVoxRssiUpdateTimer;
 extern uint16_t VOX_Counter;
 extern bool VOX_IsTransmitting;
 
+void VOX_Update(void);
 void Task_VoxUpdate(void);
 
 #endif

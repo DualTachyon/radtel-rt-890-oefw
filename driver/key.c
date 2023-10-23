@@ -14,8 +14,8 @@
  *     limitations under the License.
  */
 
-#include "driver/pins.h"
 #include "driver/key.h"
+#include "driver/pins.h"
 #include "misc.h"
 
 static uint16_t KeyPressed;

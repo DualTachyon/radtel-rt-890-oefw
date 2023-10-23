@@ -43,7 +43,6 @@ extern uint16_t gGreenLedTimer;
 extern volatile uint16_t gSpecialTimer;
 extern uint16_t VOX_Timer;
 extern uint16_t gIncomingTimer;
-extern uint16_t gVoxRssiUpdateTimer;
 extern uint16_t gBatteryTimer;
 extern uint16_t gSaveModeTimer;
 extern uint32_t gIdleTimer;

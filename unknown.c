@@ -14,24 +14,10 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
-#include "app/fm.h"
-#include "app/radio.h"
-#include "ui/gfx.h"
-#include "driver/audio.h"
-#include "driver/bk4819.h"
-#include "driver/delay.h"
 #include "driver/pins.h"
-#include "driver/speaker.h"
-#include "driver/st7735s.h"
-#include "dtmf.h"
-#include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/scheduler.h"
 #include "radio/settings.h"
-#include "task/screen.h"
-#include "ui/helper.h"
-#include "ui/vfo.h"
 #include "unknown.h"
 
 void SCREEN_TurnOn(void)

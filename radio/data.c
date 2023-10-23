@@ -17,7 +17,7 @@
 #include "app/radio.h"
 #include "driver/bk4819.h"
 #include "driver/delay.h"
-#include "dtmf.h"
+#include "helper/dtmf.h"
 #include "helper/helper.h"
 #include "misc.h"
 #include "radio/data.h"

@@ -14,10 +14,10 @@
  *     limitations under the License.
  */
 
-#include "ui/gfx.h"
 #include "misc.h"
 #include "radio/scheduler.h"
 #include "ui/dialog.h"
+#include "ui/gfx.h"
 #include "ui/helper.h"
 
 void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
@@ -27,7 +27,7 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 	gColorForeground = COLOR_RED;
 
 	switch (Text) {
-	case 1:
+	case DIALOG_TX_PRIORITY:
 		if (bSet) {
 			UI_DrawString(10, 48, "TX PRI: Busy", 12);
 		} else {
@@ -35,7 +35,7 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 		}
 		break;
 
-	case 2:
+	case DIALOG_VOX:
 		if (bSet) {
 			UI_DrawString(10, 48, "VOX: On ", 8);
 		} else {
@@ -43,7 +43,7 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 		}
 		break;
 
-	case 4:
+	case DIALOG_TX_POWER:
 		if (bSet) {
 			UI_DrawString(10, 48, "Power: Low ", 11);
 		} else {
@@ -51,7 +51,7 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 		}
 		break;
 
-	case 7:
+	case DIALOG_DUAL_STANDBY:
 		if (bSet) {
 			UI_DrawString(10, 48, "Dual Standby: On ", 17);
 		} else {
@@ -59,7 +59,7 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 		}
 		break;
 
-	case 8:
+	case DIALOG_KEY_BEEP:
 		if (bSet) {
 			UI_DrawString(10, 48, "Key Beep: On ", 13);
 		} else {
@@ -67,11 +67,11 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 		}
 		break;
 
-	case 10:
+	case DIALOG_PLEASE_CHARGE:
 		UI_DrawString(10, 48, "Please Charge!", 14);
 		break;
 
-	case 14:
+	case DIALOG_NO_CH_AVAILABLE:
 		UI_DrawString(10, 48, "No CH Available", 15);
 		break;
 	}

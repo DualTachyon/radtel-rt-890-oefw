@@ -35,7 +35,7 @@ static void EnablePLL(void)
 
 	for (i = 0; i != 0xFFFF; i++) {
 		if (CRM->ctrl_bit.hickstbl) {
-			// HICK not stable
+			// HICK stable
 			break;
 		}
 	}
@@ -45,7 +45,6 @@ static void EnablePLL(void)
 		CRM->cfg = CRM->cfg;
 		// Clear apb2div
 		CRM->cfg_bit.apb2div = 0;
-		//CRM->cfg &= 0xFFFFC7FF;
 		CRM->cfg = CRM->cfg;
 		// Clear ahbdiv
 		CRM->cfg_bit.ahbdiv = 0;
@@ -104,27 +103,13 @@ void CRM_GetCoreClock(void)
 			uint32_t Multiplier;
 
 			switch (CRM->pll_bit.pllfr) {
-			case 0:
-				Multiplier = 1;
-				break;
-			case 1:
-				Multiplier = 2;
-				break;
-			case 2:
-				Multiplier = 4;
-				break;
-			case 3:
-				Multiplier = 8;
-				break;
-			case 4:
-				Multiplier = 16;
-				break;
-			case 5:
-				Multiplier = 32;
-				break;
-			default:
-				Multiplier = 1;
-				break;
+			case 0: Multiplier = 1; break;
+			case 1: Multiplier = 2; break;
+			case 2: Multiplier = 4; break;
+			case 3: Multiplier = 8; break;
+			case 4: Multiplier = 16; break;
+			case 5: Multiplier = 32; break;
+			default: Multiplier = 1; break;
 			}
 			Base = 4000000;
 			if (CRM->cfg_bit.pllrcs) {

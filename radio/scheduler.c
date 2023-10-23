@@ -40,7 +40,6 @@ uint16_t gGreenLedTimer;
 volatile uint16_t gSpecialTimer;
 uint16_t VOX_Timer;
 uint16_t gIncomingTimer;
-uint16_t gVoxRssiUpdateTimer;
 uint16_t gBatteryTimer;
 uint16_t gSaveModeTimer;
 uint32_t gIdleTimer;

@@ -14,11 +14,11 @@
  *     limitations under the License.
  */
 
-#include "ui/gfx.h"
 #include "driver/beep.h"
 #include "driver/delay.h"
 #include "driver/speaker.h"
 #include "radio/settings.h"
+#include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/logo.h"
 #include "ui/welcome.h"
