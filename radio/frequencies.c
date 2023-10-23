@@ -22,8 +22,8 @@ bool gUseUhfFilter;
 
 uint8_t gCurrentFrequencyBand = 0xFF;
 
-uint8_t gTxPowerLevelLow = 40;
-uint8_t gTxPowerLevelHigh = 20;
+uint8_t gTxPowerLevelHigh = 40;
+uint8_t gTxPowerLevelLow = 20;
 uint8_t gSquelchNoiseWide = 40;
 uint8_t gSquelchNoiseNarrow = 40;
 uint8_t gSquelchRSSIWide = 80;
