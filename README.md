@@ -2,9 +2,9 @@
 
 * If you like my work, you can support me through https://ko-fi.com/DualTachyon
 
-# Open reimplementation of the Radtel RT-890 v1.33 firmware
+# Open reimplementation of the Radtel RT-890 v1.34 firmware
 
-This repository is a preservation project of the Radtel RT-890 v1.33 firmware.
+This repository is a preservation project of the Radtel RT-890 v1.34 firmware.
 It is dedicated to understanding how the radio works and help developers making their own customisations/fixes/etc.
 It is by no means fully understood or has all variables/functions properly named, as this is best effort only.
 As a result, this repository will not include any customisations or improvements over the original firmware.

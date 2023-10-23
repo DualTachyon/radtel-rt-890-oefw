@@ -25,17 +25,17 @@
 #include "radio/settings.h"
 
 static const uint8_t gSquelchGlitchLevel[11] = {
-	0x16,
+	0x20,
+	0x20,
+	0x1E,
+	0x1C,
+	0x1A,
+	0x18,
 	0x16,
 	0x14,
 	0x12,
 	0x10,
 	0x0E,
-	0x0C,
-	0x0A,
-	0x08,
-	0x06,
-	0x04,
 };
 
 static const uint8_t gSquelchNoiseLevel[11] = {
@@ -341,9 +341,9 @@ void BK4819_SetSquelchNoise(bool bIsNarrow)
 
 	Level = gSquelchNoiseLevel[gSettings.Squelch];
 	if (bIsNarrow) {
-		Value = ((gSquelchNoiseNarrow + 2 + Level) << 8) | (gSquelchNoiseNarrow - 4 + Level);
+		Value = ((gSquelchNoiseNarrow + 12 + Level) << 8) | (gSquelchNoiseNarrow + 6 + Level);
 	} else {
-		Value = ((gSquelchNoiseWide   + 2 + Level) << 8) | (gSquelchNoiseWide   - 4 + Level);
+		Value = ((gSquelchNoiseWide   + 12 + Level) << 8) | (gSquelchNoiseWide   - 6 + Level);
 	}
 
 	BK4819_WriteRegister(0x4F, Value);
@@ -356,9 +356,9 @@ void BK4819_SetSquelchRSSI(bool bIsNarrow)
 
 	Level = gSquelchRssiLevel[gSettings.Squelch];
 	if (bIsNarrow) {
-		Value = ((gSquelchRSSINarrow + 2 + Level) << 8) | (gSquelchRSSINarrow - 4 + Level);
+		Value = ((gSquelchRSSINarrow - 8 + Level) << 8) | (gSquelchRSSINarrow - 14 + Level);
 	} else {
-		Value = ((gSquelchRSSIWide   + 2 + Level) << 8) | (gSquelchRSSIWide   - 4 + Level);
+		Value = ((gSquelchRSSIWide   - 8 + Level) << 8) | (gSquelchRSSIWide   - 14 + Level);
 	}
 
 	BK4819_WriteRegister(0x78, Value);
