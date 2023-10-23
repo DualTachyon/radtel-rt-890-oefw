@@ -53,7 +53,7 @@ typedef struct __attribute__((packed)) {
 
 extern uint16_t gFreeChannelsCount;
 
-void CHANNELS_NextChannelMr(uint8_t Key);
+void CHANNELS_NextChannelMr(uint8_t Key, bool OnlyScan);
 void CHANNELS_NextChannelVfo(uint8_t Key);
 void CHANNELS_NextNOAA(uint8_t Key);
 void CHANNELS_NextFM(uint8_t Key);

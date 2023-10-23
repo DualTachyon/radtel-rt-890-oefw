@@ -31,7 +31,7 @@ void Task_Scanner(void)
 	if (gRadioMode < RADIO_MODE_RX && gScannerMode && SCANNER_Countdown == 0 && SCHEDULER_CheckTask(TASK_SCANNER)) {
 		SCHEDULER_ClearTask(TASK_SCANNER);
 		if (gSettings.WorkMode) {
-			CHANNELS_NextChannelMr(gSettings.ScanDirection ? KEY_DOWN : KEY_UP);
+			CHANNELS_NextChannelMr(gSettings.ScanDirection ? KEY_DOWN : KEY_UP, true);
 		} else {
 			CHANNELS_NextChannelVfo(gSettings.ScanDirection ? KEY_DOWN : KEY_UP);
 			RADIO_Tune(gSettings.CurrentVfo);

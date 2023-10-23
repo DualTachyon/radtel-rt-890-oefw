@@ -350,13 +350,14 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 
 uint16_t gFreeChannelsCount;
 
-void CHANNELS_NextChannelMr(uint8_t Key)
-{
-	if (Key == KEY_UP) {
-		gSettings.VfoChNo[gSettings.CurrentVfo] = CHANNELS_GetChannelUp(gSettings.VfoChNo[gSettings.CurrentVfo], gSettings.CurrentVfo);
-	} else {
-		gSettings.VfoChNo[gSettings.CurrentVfo] = CHANNELS_GetChannelDown(gSettings.VfoChNo[gSettings.CurrentVfo], gSettings.CurrentVfo);
-	}
+void CHANNELS_NextChannelMr(uint8_t Key, bool OnlyScan) {
+	do {
+		if (Key == KEY_UP) {
+			gSettings.VfoChNo[gSettings.CurrentVfo] = CHANNELS_GetChannelUp(gSettings.VfoChNo[gSettings.CurrentVfo], gSettings.CurrentVfo);
+		} else {
+			gSettings.VfoChNo[gSettings.CurrentVfo] = CHANNELS_GetChannelDown(gSettings.VfoChNo[gSettings.CurrentVfo], gSettings.CurrentVfo);
+		}
+	} while (OnlyScan && !gVfoState[gSettings.CurrentVfo].ScanAdd);
 	RADIO_Tune(gSettings.CurrentVfo);
 	UI_DrawVfo(gSettings.CurrentVfo);
 }

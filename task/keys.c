@@ -143,7 +143,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 					if (!gScannerMode) {
 						RADIO_CancelMode();
 						if (gSettings.WorkMode) {
-							CHANNELS_NextChannelMr(Key);
+							CHANNELS_NextChannelMr(Key, false);
 							SETTINGS_SaveGlobals();
 							AUDIO_PlayChannelNumber();
 						} else {
@@ -446,7 +446,7 @@ static void HandlerLong(KEY_t Key)
 						RADIO_CancelMode();
 						if (gSettings.WorkMode) {
 							do {
-								CHANNELS_NextChannelMr(Key);
+								CHANNELS_NextChannelMr(Key, false);
 							} while (KEY_GetButton() != KEY_NONE);
 							SETTINGS_SaveGlobals();
 							AUDIO_PlayChannelNumber();
