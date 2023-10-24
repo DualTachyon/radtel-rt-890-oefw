@@ -65,32 +65,32 @@ static void PlayNumber(uint16_t Channel)
 	if (gSettings.VoicePrompt && gSettings.WorkMode) {
 		Channel++;
 		if (Channel <= 20) {
-			SF_OffsetTable[0] = GetDigitAddress(Channel);
+			SFLASH_Offsets[0] = GetDigitAddress(Channel);
 			gAudioOffsetLast = 1;
 		} else if (Channel <= 99) {
-			SF_OffsetTable[0] = GetDigitAddress((Channel / 10) + 18);
+			SFLASH_Offsets[0] = GetDigitAddress((Channel / 10) + 18);
 			Channel %= 10;
 			if (Channel == 0) {
 				gAudioOffsetLast = 1;
 			} else {
-				SF_OffsetTable[1] = GetDigitAddress(Channel);
+				SFLASH_Offsets[1] = GetDigitAddress(Channel);
 				gAudioOffsetLast = 2;
 			}
 		} else {
-			SF_OffsetTable[0] = GetDigitAddress((Channel / 100) + 27);
+			SFLASH_Offsets[0] = GetDigitAddress((Channel / 100) + 27);
 			Channel %= 100;
 			if (Channel == 0) {
 				gAudioOffsetLast = 1;
 			} else if (Channel <= 20) {
-				SF_OffsetTable[1] = GetDigitAddress(Channel);
+				SFLASH_Offsets[1] = GetDigitAddress(Channel);
 				gAudioOffsetLast = 2;
 			} else {
-				SF_OffsetTable[1] = GetDigitAddress((Channel / 10) + 18);
+				SFLASH_Offsets[1] = GetDigitAddress((Channel / 10) + 18);
 				Channel %= 10;
 				if (Channel == 0) {
 					gAudioOffsetLast = 2;
 				} else {
-					SF_OffsetTable[2] = GetDigitAddress(Channel);
+					SFLASH_Offsets[2] = GetDigitAddress(Channel);
 					gAudioOffsetLast = 3;
 				}
 			}
@@ -185,7 +185,7 @@ void AUDIO_PlayChannelNumber(void)
 
 void AUDIO_PlayDigit(uint8_t Digit)
 {
-	SF_OffsetTable[0] = GetDigitAddress(Digit);
+	SFLASH_Offsets[0] = GetDigitAddress(Digit);
 	gAudioOffsetLast = 1;
 	gAudioOffsetIndex = 0;
 	AudioEndPosition = 0x4000;

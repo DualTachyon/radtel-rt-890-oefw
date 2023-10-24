@@ -28,7 +28,6 @@
 #include "task/vox.h"
 #include "ui/helper.h"
 #include "ui/main.h"
-#include "unknown.h"
 
 static uint8_t gPttCounter;
 

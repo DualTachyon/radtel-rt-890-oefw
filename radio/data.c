@@ -192,3 +192,14 @@ void DATA_SendDeviceName(void)
 	BK4819_WriteRegister(0x02, 0x0000);
 }
 
+bool DATA_WasDataReceived(void)
+{
+	if (gFskDataReceived) {
+		gRedrawScreen = false;
+		gFskDataReceived = false;
+		return true;
+	}
+
+	return false;
+}
+

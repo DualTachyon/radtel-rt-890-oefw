@@ -87,7 +87,6 @@ OBJS += ui/noaa.o
 OBJS += ui/version.o
 OBJS += ui/vfo.o
 OBJS += ui/welcome.o
-OBJS += unknown.o
 
 # Main
 

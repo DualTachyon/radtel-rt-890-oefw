@@ -70,7 +70,7 @@ void FONT_Draw(uint8_t X, uint8_t Y, const uint32_t *pOffsets, uint32_t Count)
 
 	x = 0;
 	for (i = 0; i < Count; i++) {
-		x += LoadAndDraw(X + x, Y, SF_AnotherOffsetTable[i]);
+		x += LoadAndDraw(X + x, Y, SFLASH_FontOffsets[i]);
 		if (X + x >= 160) {
 			x = 0;
 			if (Y < 32) {
@@ -93,16 +93,16 @@ uint8_t FONT_GetOffsets(const char *String, uint8_t Size, bool bFlag)
 			i++;
 			c = ((c & 0xF) << 8) | String[i];
 			if (!bFlag) {
-				SF_OffsetTable[j] = 0x002F8000 + (c * 34);
+				SFLASH_Offsets[j] = 0x002F8000 + (c * 34);
 			} else {
-				SF_AnotherOffsetTable[j] = 0x002F8000 + (c * 34);
+				SFLASH_FontOffsets[j] = 0x002F8000 + (c * 34);
 			}
 		} else {
 			c -= ' ';
 			if (!bFlag) {
-				SF_OffsetTable[j] = 0x0031A000 + (c * 20);
+				SFLASH_Offsets[j] = 0x0031A000 + (c * 20);
 			} else {
-				SF_AnotherOffsetTable[j] = 0x31A000 + (c * 20);
+				SFLASH_FontOffsets[j] = 0x0031A000 + (c * 20);
 			}
 		}
 	}

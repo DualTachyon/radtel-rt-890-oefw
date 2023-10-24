@@ -23,6 +23,7 @@
 #include "driver/key.h"
 #include "driver/pins.h"
 #include "driver/speaker.h"
+#include "helper/helper.h"
 #include "misc.h"
 #include "radio/detector.h"
 #include "radio/scheduler.h"
@@ -33,7 +34,6 @@
 #include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/main.h"
-#include "unknown.h"
 
 //
 

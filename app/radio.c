@@ -27,6 +27,7 @@
 #include "driver/speaker.h"
 #include "driver/uart.h"
 #include "helper/dtmf.h"
+#include "helper/helper.h"
 #include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/data.h"
@@ -43,7 +44,6 @@
 #include "ui/main.h"
 #include "ui/noaa.h"
 #include "ui/vfo.h"
-#include "unknown.h"
 
 uint8_t gCurrentVfo;
 ChannelInfo_t *gMainVfo;
@@ -331,7 +331,7 @@ void RADIO_EndRX(void)
 				}
 				UI_DrawDTMF();
 			}
-			FUN_08006d64();
+			DATA_WasDataReceived();
 			gDataDisplay = false;
 		}
 		gRxLinkCounter = 0;

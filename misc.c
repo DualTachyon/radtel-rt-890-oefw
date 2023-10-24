@@ -49,7 +49,7 @@ bool gFrequencyReverse;
 char gString[32];
 char gBigString[40];
 
-uint32_t SF_OffsetTable[20];
-uint32_t SF_AnotherOffsetTable[32];
+uint32_t SFLASH_Offsets[20];
+uint32_t SFLASH_FontOffsets[32];
 uint8_t gFlashBuffer[8192];
 

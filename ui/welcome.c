@@ -17,7 +17,6 @@
 #include "radio/settings.h"
 #include "ui/gfx.h"
 #include "ui/helper.h"
-#include "unknown.h"
 
 void UI_DrawWelcome(void)
 {

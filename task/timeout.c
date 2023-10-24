@@ -20,7 +20,6 @@
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/timeout.h"
-#include "unknown.h"
 
 void Task_CheckDisplayTimeout(void)
 {

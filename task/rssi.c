@@ -17,6 +17,7 @@
 #include "app/css.h"
 #include "app/radio.h"
 #include "driver/bk4819.h"
+#include "helper/helper.h"
 #include "misc.h"
 #include "radio/data.h"
 #include "radio/scheduler.h"
@@ -25,7 +26,6 @@
 #include "task/vox.h"
 #include "ui/helper.h"
 #include "ui/noaa.h"
-#include "unknown.h"
 
 static uint8_t CheckTones(uint8_t CodeType, bool bMuteEnabled)
 {

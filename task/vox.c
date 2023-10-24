@@ -16,12 +16,12 @@
 
 #include "app/radio.h"
 #include "driver/bk4819.h"
+#include "helper/helper.h"
 #include "misc.h"
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/vox.h"
 #include "ui/helper.h"
-#include "unknown.h"
 
 static const uint16_t gVoxTable[10] = {
 	0x0000,

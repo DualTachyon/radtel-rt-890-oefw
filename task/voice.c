@@ -28,13 +28,13 @@ void Task_VoicePlayer(void)
 	if (gSettings.VoicePrompt && !gAudioPlaying && (SPEAKER_State & SPEAKER_OWNER_SYSTEM) == 0) {
 		Index = gAudioOffsetIndex;
 		if (Index < gAudioOffsetLast) {
-			if (SF_OffsetTable[Index] < 0x188000) {
+			if (SFLASH_Offsets[Index] < 0x188000) {
 				gAudioTimer = 700;
 			} else {
 				gAudioTimer = 900;
 			}
 			gAudioOffsetIndex++;
-			AUDIO_PlaySample(9375, SF_OffsetTable[Index]);
+			AUDIO_PlaySample(9375, SFLASH_Offsets[Index]);
 		} else if (SPEAKER_State & SPEAKER_OWNER_VOICE) {
 			SPEAKER_TurnOff(SPEAKER_OWNER_VOICE);
 			PWM_Reset();

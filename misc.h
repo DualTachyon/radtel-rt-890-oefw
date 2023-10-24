@@ -103,8 +103,8 @@ extern bool gFrequencyReverse;
 extern char gString[32];
 extern char gBigString[40];
 
-extern uint32_t SF_OffsetTable[20];
-extern uint32_t SF_AnotherOffsetTable[32];
+extern uint32_t SFLASH_Offsets[20];
+extern uint32_t SFLASH_FontOffsets[32];
 extern uint8_t gFlashBuffer[8192];
 
 #endif

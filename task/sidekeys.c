@@ -19,6 +19,7 @@
 #include "driver/bk4819.h"
 #include "driver/key.h"
 #include "driver/pins.h"
+#include "helper/helper.h"
 #include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/detector.h"
@@ -30,7 +31,6 @@
 #include "ui/helper.h"
 #include "ui/main.h"
 #include "ui/vfo.h"
-#include "unknown.h"
 
 enum {
 	ACTION_NONE = 0,

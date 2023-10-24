@@ -221,9 +221,9 @@ static const uint8_t BitmapRadar[] = {
 	0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-void UI_DrawString(uint8_t X, uint8_t Y, const char *String, uint8_t Size)
+void UI_DrawString(uint8_t X, uint8_t Y, const char *pString, uint8_t Size)
 {
-	FONT_Draw(X, Y, SF_AnotherOffsetTable, FONT_GetOffsets(String, Size, true));
+	FONT_Draw(X, Y, SFLASH_FontOffsets, FONT_GetOffsets(pString, Size, true));
 }
 
 void UI_DrawSmallCharacter(uint8_t X, uint8_t Y, char Digit)

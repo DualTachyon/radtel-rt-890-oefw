@@ -16,16 +16,16 @@
 
 #include "app/fm.h"
 #include "misc.h"
+#include "radio/data.h"
 #include "radio/scheduler.h"
 #include "task/screen.h"
 #include "ui/main.h"
-#include "unknown.h"
 
 void Task_UpdateScreen(void)
 {
 	if (VOX_Timer == 0 && gRedrawScreen) {
 		gRedrawScreen = false;
-		if (!FUN_08006d64()) {
+		if (!DATA_WasDataReceived()) {
 			if (gScreenMode == SCREEN_MAIN && !gReceptionMode) {
 				UI_DrawMain(true);
 			}

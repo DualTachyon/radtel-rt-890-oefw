@@ -25,6 +25,7 @@
 #include "driver/key.h"
 #include "driver/pins.h"
 #include "helper/dtmf.h"
+#include "helper/helper.h"
 #include "helper/inputbox.h"
 #include "misc.h"
 #include "radio/channels.h"
@@ -42,7 +43,6 @@
 #include "ui/helper.h"
 #include "ui/main.h"
 #include "ui/vfo.h"
-#include "unknown.h"
 
 static void FM_AppendDigit(char Digit)
 {

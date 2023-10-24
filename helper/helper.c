@@ -14,7 +14,11 @@
  *     limitations under the License.
  */
 
-#include "helper.h"
+#include "driver/pins.h"
+#include "helper/helper.h"
+#include "misc.h"
+#include "radio/scheduler.h"
+#include "radio/settings.h"
 
 char gShortString[10];
 
@@ -38,5 +42,31 @@ uint16_t TIMER_Calculate(uint16_t Setting)
 	}
 
 	return Setting * 5;
+}
+
+void SCREEN_TurnOn(void)
+{
+	if (gSettings.bEnableDisplay) {
+		gEnableBlink = false;
+		STANDBY_Counter = 0;
+		gpio_bits_set(GPIOA, BOARD_GPIOA_LCD_RESX);
+	}
+}
+
+void STANDBY_BlinkGreen(void)
+{
+	if (STANDBY_Counter > 5000) {
+		STANDBY_Counter = 0;
+		gpio_bits_set(GPIOA, BOARD_GPIOA_LED_GREEN);
+		gBlinkGreen = 1;
+		gGreenLedTimer = 0;
+	}
+	if (gBlinkGreen && gGreenLedTimer > 199) {
+		if (!gScannerMode && gRadioMode != RADIO_MODE_RX) {
+			gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_GREEN);
+		}
+		gBlinkGreen = false;
+		gGreenLedTimer = 0;
+	}
 }
 

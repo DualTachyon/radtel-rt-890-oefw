@@ -23,6 +23,8 @@ extern char gShortString[10];
 
 void Int2Ascii(uint32_t Number, uint8_t Size);
 uint16_t TIMER_Calculate(uint16_t Setting);
+void SCREEN_TurnOn(void);
+void STANDBY_BlinkGreen(void);
 
 #endif
 
