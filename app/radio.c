@@ -306,7 +306,7 @@ void RADIO_StartRX(void)
 
 void RADIO_EndRX(void)
 {
-	g_2000064F = 0;
+	gTailToneCounter = 0;
 	BK4819_SetAF(BK4819_AF_MUTE);
 	SPEAKER_TurnOff(SPEAKER_OWNER_RX);
 	BK4819_EnableFFSK1200(false);
@@ -335,7 +335,7 @@ void RADIO_EndRX(void)
 			gDataDisplay = false;
 		}
 		gRxLinkCounter = 0;
-		g_20000656 = 0;
+		gNoToneCounter = 0;
 		SCANNER_Countdown = 5000;
 		gIdleTimer = 10000;
 		PTT_ClearLock(PTT_LOCK_INCOMING);
@@ -364,7 +364,7 @@ void RADIO_EndAudio(void)
 	RADIO_Tune(2);
 	SPEAKER_TurnOff(SPEAKER_OWNER_RX);
 	gRxLinkCounter = 0;
-	g_20000656 = 0;
+	gNoToneCounter = 0;
 	gIncomingTimer = 250;
 	NOAA_NextChannelCountdown = 3000;
 }

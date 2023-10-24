@@ -94,7 +94,7 @@ void SETTINGS_LoadCalibration(void)
 void SETTINGS_LoadSettings(void)
 {
 	SFLASH_Read(WelcomeString, 0x3C1000, sizeof(WelcomeString));
-	SFLASH_Read(&gDeviceName, 0x3C1020, sizeof(gDeviceName));
+	SFLASH_Read(gDeviceName, 0x3C1020, sizeof(gDeviceName));
 	SFLASH_Read(&gSettings, 0x3C1030, sizeof(gSettings));
 	SFLASH_Read(&gDTMF_Settings, 0x3C9D20, sizeof(gDTMF_Settings));
 	SFLASH_Read(&gDTMF_Contacts, 0x3C9D30, sizeof(gDTMF_Contacts));
@@ -103,6 +103,7 @@ void SETTINGS_LoadSettings(void)
 	SFLASH_Read(&gDTMF_Wake, 0x3C9E50, sizeof(gDTMF_Wake));
 
 	gFrequencyStep = FREQUENCY_GetStep(gSettings.FrequencyStep);
+
 	gSettings.bEnableDisplay = 1;
 	if (!gpio_input_data_bit_read(GPIOA, BOARD_GPIOA_KEY_SIDE2)) {
 		if (KEY_GetButton() == KEY_HASH) {

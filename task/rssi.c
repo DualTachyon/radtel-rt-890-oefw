@@ -27,7 +27,13 @@
 #include "ui/helper.h"
 #include "ui/noaa.h"
 
-static uint8_t CheckTones(uint8_t CodeType, bool bMuteEnabled)
+enum {
+	STATUS_NO_TONE = 0,
+	STATUS_GOT_TONE,
+	STATUS_TAIL_TONE,
+};
+
+static uint8_t GetToneStatus(uint8_t CodeType, bool bMuteEnabled)
 {
 	uint16_t Value;
 	
@@ -35,7 +41,7 @@ static uint8_t CheckTones(uint8_t CodeType, bool bMuteEnabled)
 
 	if (gNoaaMode) {
 		// Checks CTC1
-		return !!(Value & 0x0400U);
+		return (Value & 0x0400U) ? STATUS_GOT_TONE : STATUS_NO_TONE;
 	}
 
 	// Check Interrupt Request
@@ -45,39 +51,39 @@ static uint8_t CheckTones(uint8_t CodeType, bool bMuteEnabled)
 	}
 
 	if (gMonitorMode) {
-		return 1;
+		return STATUS_GOT_TONE;
 	}
 
 	// Check CTC2(55hz)
 	if (Value & 0x0800U) {
-		return 2;
+		return STATUS_TAIL_TONE;
 	}
 
 	// Check CTC1
 	if (Value & 0x0400U) {
 		if (CodeType == CODE_TYPE_CTCSS) {
-			return 1;
+			return STATUS_GOT_TONE;
 		}
 		if (CodeType == CODE_TYPE_DCS_N || CodeType == CODE_TYPE_DCS_I || bMuteEnabled) {
-			return 2;
+			return STATUS_TAIL_TONE;
 		}
 	}
 
 	// Check DCS N
 	if (Value & 0x4000U && (CodeType == CODE_TYPE_DCS_N || bMuteEnabled)) {
-		return 1;
+		return STATUS_GOT_TONE;
 	}
 
 	// Check DCS I
 	if (Value & 0x8000U && CodeType == CODE_TYPE_DCS_I) {
-		return 1;
+		return STATUS_GOT_TONE;
 	}
 
 	if (CodeType == CODE_TYPE_OFF && !bMuteEnabled) {
-		return 1;
+		return STATUS_GOT_TONE;
 	}
 
-	return 0;
+	return STATUS_NO_TONE;
 }
 
 static void CheckRSSI(void)
@@ -103,22 +109,22 @@ static void CheckRSSI(void)
 void Task_CheckRSSI(void)
 {
 	if (gRadioMode != RADIO_MODE_TX && gRadioMode != RADIO_MODE_QUIET && !gSaveMode && SCHEDULER_CheckTask(TASK_CHECK_RSSI)) {
-		uint8_t Result;
+		uint8_t Status;
 
 		SCHEDULER_ClearTask(TASK_CHECK_RSSI);
-		Result = CheckTones(gVfoInfo[gCurrentVfo].CodeType, gMainVfo->bMuteEnabled);
+		Status = GetToneStatus(gVfoInfo[gCurrentVfo].CodeType, gMainVfo->bMuteEnabled);
 		if (gRadioMode != RADIO_MODE_INCOMING) {
-			if (Result == 2) {
-				g_2000064F++;
+			if (Status == STATUS_TAIL_TONE) {
+				gTailToneCounter++;
 			} else {
-				g_2000064F = 0;
+				gTailToneCounter = 0;
 			}
-			if (Result == 0) {
-				g_20000656++;
+			if (Status == STATUS_NO_TONE) {
+				gNoToneCounter++;
 			}
-			if (g_2000064F < 11 && g_20000656 <= 1000) {
+			if (gTailToneCounter <= 10 && gNoToneCounter <= 1000) {
 				SCANNER_Countdown = 0;
-				g_20000656 = 0;
+				gNoToneCounter = 0;
 				CheckRSSI();
 			} else if (!gReceptionMode) {
 				RADIO_EndRX();
@@ -128,10 +134,10 @@ void Task_CheckRSSI(void)
 		} else if (!gNoaaMode) {
 			if (gReceptionMode) {
 				RADIO_StartAudio();
-			} else if ((gVfoInfo[gCurrentVfo].CodeType == CODE_TYPE_OFF && !gMainVfo->bMuteEnabled) || gMainVfo->bIsAM || Result == 1) {
+			} else if ((gVfoInfo[gCurrentVfo].CodeType == CODE_TYPE_OFF && !gMainVfo->bMuteEnabled) || gMainVfo->bIsAM || Status == STATUS_GOT_TONE) {
 				RADIO_StartRX();
 			}
-		} else if (Result == 1) {
+		} else if (Status == STATUS_GOT_TONE) {
 			gReceptionMode = true;
 			gNoaaMode = false;
 			gNOAA_ChannelNow = gNOAA_ChannelNext;
