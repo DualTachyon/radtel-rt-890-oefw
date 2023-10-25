@@ -53,7 +53,7 @@ FrequencyInfo_t gVfoInfo[2];
 bool gNoaaMode;
 uint16_t gCode;
 
-static void SetFilterPath(bool bEnable)
+static void EnableTxAmp(bool bEnable)
 {
 	if (!bEnable) {
 		gpio_bits_reset(GPIOB, BOARD_GPIOB_TX_BIAS_LDO);
@@ -94,7 +94,7 @@ static void TuneCurrentVfo(void)
 	gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_RED);
 
 	gRadioMode = RADIO_MODE_QUIET;
-	SetFilterPath(false);
+	EnableTxAmp(false);
 	BK4819_SetFrequency(gVfoInfo[gCurrentVfo].Frequency);
 	gCode = gVfoInfo[gCurrentVfo].Code;
 	if (gMainVfo->bMuteEnabled) {
@@ -107,7 +107,7 @@ static void TuneCurrentVfo(void)
 	BK4819_SetSquelchRSSI(gMainVfo->bIsNarrow);
 	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(gMainVfo->bIsNarrow);
-	BK4819_UpdateGpioOut(true);
+	BK4819_EnableFilter(true);
 }
 
 static bool TuneTX(bool bUseMic)
@@ -125,7 +125,7 @@ static bool TuneTX(bool bUseMic)
 	gCode = gVfoInfo[gCurrentVfo].Code;
 	BK4819_SetFrequency(gVfoInfo[gCurrentVfo].Frequency);
 	if (gSettings.BandInfo[gCurrentFrequencyBand] == BAND_136MHz && gVfoInfo[gCurrentVfo].Frequency >= 13600000) {
-		BK4819_UpdateGpioOut(false);
+		BK4819_EnableFilter(false);
 		if (gMainVfo->bMuteEnabled) {
 			CSS_SetCustomCode(gMainVfo->bIs24Bit, gMainVfo->Golay, gMainVfo->bIsNarrow);
 			gTxCodeType = CODE_TYPE_DCS_N;
@@ -143,7 +143,7 @@ static bool TuneTX(bool bUseMic)
 		} else {
 			BK4819_SetAFResponseCoefficients(true, true, 5);
 		}
-		SetFilterPath(true);
+		EnableTxAmp(true);
 		BK4819_SetupPowerAmplifier(gMainVfo->bIsLowPower ? gTxPowerLevelLow : gTxPowerLevelHigh);
 
 		return true;
@@ -182,7 +182,7 @@ static void TuneNOAA(void)
 	gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_RED);
 
 	gRadioMode = RADIO_MODE_QUIET;
-	SetFilterPath(false);
+	EnableTxAmp(false);
 	BK4819_SetFrequency(gMainVfo->RX.Frequency);
 	if (!gNoaaMode) {
 		BK4819_WriteRegister(0x51, 0x0000);
@@ -197,7 +197,7 @@ static void TuneNOAA(void)
 	BK4819_EnableCompander(false);
 	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(false);
-	BK4819_UpdateGpioOut(true);
+	BK4819_EnableFilter(true);
 }
 
 static void DisableFM(void)
@@ -386,8 +386,8 @@ void VFO_SetMode(uint8_t Mode)
 
 void RADIO_Sleep(void)
 {
-	SetFilterPath(false);
-	BK4819_UpdateGpioOut(false);
+	EnableTxAmp(false);
+	BK4819_EnableFilter(false);
 	BK4819_WriteRegister(0x30, 0x0000);
 	BK4819_WriteRegister(0x37, 0x1D00);
 	gSaveMode = true;
@@ -560,7 +560,7 @@ void RADIO_DisableSaveMode(void)
 {
 	if (gSaveMode) {
 		BK4819_EnableRX();
-		BK4819_UpdateGpioOut(true);
+		BK4819_EnableFilter(true);
 		gSaveMode = false;
 		DELAY_WaitMS(10);
 	}

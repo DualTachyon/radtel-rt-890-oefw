@@ -24,6 +24,12 @@
 #include "misc.h"
 #include "radio/settings.h"
 
+enum {
+	GPIO_FILTER_UHF     = 1U << 5,
+	GPIO_FILTER_VHF     = 1U << 6,
+	GPIO_FILTER_UNKWOWN = 1U << 7,
+};
+
 static const uint8_t gSquelchGlitchLevel[11] = {
 	0x20,
 	0x20,
@@ -343,24 +349,28 @@ void BK4819_SetFilterBandwidth(bool bIsNarrow)
 	}
 }
 
-void BK4819_UpdateGpioOut(bool bEnable)
+void BK4819_EnableFilter(bool bEnable)
 {
 	uint16_t Value;
 
 	Value = BK4819_ReadRegister(0x33);
-	Value |= 0x00E0;
+	Value |= 0
+		| GPIO_FILTER_UHF
+		| GPIO_FILTER_VHF
+		| GPIO_FILTER_UNKWOWN;
+
 	if (bEnable) {
 		if (gCalibration.BandSelectionThreshold == 0xAAAA) {
 			if (!gUseUhfFilter) {
-				Value &= ~0x80U;
+				Value &= ~GPIO_FILTER_UNKWOWN;
 			} else {
-				Value &= ~0x40U;
+				Value &= ~GPIO_FILTER_VHF;
 			}
 		}
 		else if (!gUseUhfFilter) {
-			Value &= ~0x40U;
+			Value &= ~GPIO_FILTER_VHF;
 		} else {
-			Value &= ~0x20U;
+			Value &= ~GPIO_FILTER_UHF;
 		}
 	}
 	BK4819_WriteRegister(0x33, Value);
