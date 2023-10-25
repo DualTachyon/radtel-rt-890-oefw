@@ -34,7 +34,12 @@ static void DrawImage(uint32_t Address)
 			SFLASH_Read(gFlashBuffer, Address + i, sizeof(gFlashBuffer));
 		}
 		Color = (gFlashBuffer[i & 0x1FFF] << 8) | gFlashBuffer[(i + 1) & 0x1FFF];
-		if (Color != COLOR_BLACK) {
+		if (Color !=
+		#ifdef ENABLE_LIGHT_THEME
+		COLOR_BLACK) {
+		#else
+		COLOR_WHITE) {
+		#endif
 			ST7735S_SetPixel(X, Y, Color);
 		}
 		X++;
