@@ -134,9 +134,9 @@ void Task_CheckRSSI(void)
 			}
 		} else if (!gNoaaMode) {
 			if (gReceptionMode) {
-				StartRX();
+				RADIO_StartAudio();
 			} else if ((gVfoInfo[gCurrentVfo].CodeType == CODE_TYPE_OFF && !gMainVfo->bMuteEnabled) || gMainVfo->gModulationType > 0 || Status == STATUS_GOT_TONE) {
-				FUN_08006b38();
+				RADIO_StartRX();
 			}
 		} else if (Status == STATUS_GOT_TONE) {
 			gReceptionMode = true;

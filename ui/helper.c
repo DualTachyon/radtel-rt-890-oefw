@@ -19,6 +19,7 @@
 #include "app/radio.h"
 #include "driver/battery.h"
 #include "driver/st7735s.h"
+#include "driver/bk4819.h"
 #include "helper/dtmf.h"
 #include "helper/helper.h"
 #include "helper/inputbox.h"
@@ -646,20 +647,6 @@ void UI_DrawDialog(void)
 {
 	DISPLAY_Fill(4, 156, 19, 61, COLOR_BLACK);
 	UI_DrawFrame(4, 156, 19, 61, 2, gSettings.BorderColor);
-}
-
-void UI_DrawVox(void)
-{
-	if (gVoxRssiUpdateTimer == 0) {
-		uint16_t Vox;
-
-		gVoxRssiUpdateTimer = 100;
-		Vox = BK4819_ReadRegister(0x64);
-		if (Vox > 5000) {
-			Vox = 5000;
-		}
-		UI_DrawBar(Vox / 50, gSettings.CurrentVfo);
-	}
 }
 
 void UI_DrawBar(uint8_t Level, uint8_t Vfo)
