@@ -298,7 +298,7 @@ void RADIO_EndRX(void)
 	gTailToneCounter = 0;
 	BK4819_SetAF(BK4819_AF_MUTE);
 	SPEAKER_TurnOff(SPEAKER_OWNER_RX);
-	BK4819_EnableMDC1200(false);
+	BK4819_EnableFFSK1200(false);
 	BK4819_ResetFSK();
 	DTMF_Disable();
 	if (gScannerMode) {
@@ -495,9 +495,9 @@ void RADIO_EndTX(void)
 		DTMF_PlayContact(&gDTMF_Contacts[gDTMF_Settings.Select]);
 	}
 	if (gSettings.RogerBeep == 3) {
-		BK4819_EnableMDC1200(true);
+		BK4819_EnableFFSK1200(true);
 		DATA_SendDeviceName();
-		BK4819_EnableMDC1200(false);
+		BK4819_EnableFFSK1200(false);
 		BK4819_ResetFSK();
 	} else if (gSettings.RogerBeep) {
 		PlayRogerBeep(gSettings.RogerBeep);
