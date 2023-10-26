@@ -30,7 +30,7 @@ void Task_UpdateScreen(void)
 				UI_DrawMain(true);
 			}
 		} else if (gScreenMode == SCREEN_MAIN && !gReceptionMode) {
-			if (gVfoMode == VFO_MODE_MAIN) {
+			if (gFM_Mode == FM_MODE_OFF) {
 				UI_DrawMain(true);
 			} else if (gRadioMode != RADIO_MODE_RX) {
 				FM_Resume();

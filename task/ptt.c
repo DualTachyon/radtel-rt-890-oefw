@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "app/fm.h"
 #include "app/radio.h"
 #include "driver/beep.h"
 #include "driver/pins.h"
@@ -48,7 +49,7 @@ void Task_CheckPTT(void)
 				return;
 			}
 			SCREEN_TurnOn();
-			if (gVfoMode == VFO_MODE_MAIN) {
+			if (gFM_Mode == FM_MODE_OFF) {
 				if (!gScannerMode) {
 					if (!gReceptionMode) {
 						if (!gEnableLocalAlarm) {
@@ -83,7 +84,7 @@ void Task_CheckPTT(void)
 					gPttPressed = true;
 				}
 			} else {
-				VFO_SetMode(VFO_MODE_MAIN);
+				FM_Disable(FM_MODE_OFF);
 				gPttPressed = true;
 			}
 			if (gPttPressed) {

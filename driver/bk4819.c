@@ -421,7 +421,7 @@ void BK4819_SetToneFrequency(uint16_t Tone)
 	BK4819_WriteRegister(0x71, (Tone * 103U) / 10U);
 }
 
-void BK4819_EnableFFSK1200(bool bEnable)
+void BK4819_EnableMDC1200(bool bEnable)
 {
 	if (bEnable) {
 		BK4819_WriteRegister(0x70, 0x00E0);
@@ -465,7 +465,7 @@ void BK4819_StartAudio(void)
 		}
 	}
 	if (!gReceptionMode) {
-		BK4819_EnableFFSK1200(true);
+		BK4819_EnableMDC1200(true);
 	}
 	SPEAKER_TurnOn(SPEAKER_OWNER_RX);
 }

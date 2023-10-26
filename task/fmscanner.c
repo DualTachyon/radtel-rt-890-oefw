@@ -15,7 +15,6 @@
  */
 
 #include "app/fm.h"
-#include "driver/bk1080.h"
 #include "driver/speaker.h"
 #include "misc.h"
 #include "radio/scheduler.h"
@@ -25,18 +24,18 @@
 
 void Task_CheckScannerFM(void)
 {
-	if (gVfoMode < VFO_MODE_FM_SCROLL_UP || !SCHEDULER_CheckTask(TASK_FM_SCANNER)) {
+	if (gFM_Mode < FM_MODE_SCROLL_UP || !SCHEDULER_CheckTask(TASK_FM_SCANNER)) {
 		return;
 	}
 
 	SCHEDULER_ClearTask(TASK_FM_SCANNER);
 
-	if (BK1080_CheckSignal()) {
+	if (FM_CheckSignal()) {
 		FM_Play();
 		return;
 	}
 
-	if (gVfoMode == VFO_MODE_FM_SCROLL_UP) {
+	if (gFM_Mode == FM_MODE_SCROLL_UP) {
 		gSettings.FmFrequency++;
 		if (gSettings.FmFrequency > 1080) {
 			gSettings.FmFrequency = 640;
@@ -48,8 +47,8 @@ void Task_CheckScannerFM(void)
 		}
 	}
 
-	BK1080_Tune(gSettings.FmFrequency);
-	BK1080_SetVolume(0);
+	FM_Tune(gSettings.FmFrequency);
+	FM_SetVolume(0);
 	SPEAKER_TurnOff(SPEAKER_OWNER_FM);
 	UI_DrawFMFrequency(gSettings.FmFrequency);
 }

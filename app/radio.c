@@ -14,12 +14,10 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "app/css.h"
 #include "app/fm.h"
 #include "app/radio.h"
 #include "driver/beep.h"
-#include "driver/bk1080.h"
 #include "driver/bk4819.h"
 #include "driver/delay.h"
 #include "driver/key.h"
@@ -200,15 +198,6 @@ static void TuneNOAA(void)
 	BK4819_EnableFilter(true);
 }
 
-static void DisableFM(void)
-{
-	BK1080_SetVolume(0);
-	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SEN);
-	SPEAKER_TurnOff(SPEAKER_OWNER_FM);
-}
-
 // Public
 
 void RADIO_Init(void)
@@ -273,7 +262,7 @@ void RADIO_Tune(uint8_t Vfo)
 
 void RADIO_StartRX(void)
 {
-	VFO_SetMode(1);
+	FM_Disable(FM_MODE_STANDBY);
 	BK4819_StartAudio();
 	if (!gFrequencyDetectMode) {
 		DTMF_ClearString();
@@ -309,7 +298,7 @@ void RADIO_EndRX(void)
 	gTailToneCounter = 0;
 	BK4819_SetAF(BK4819_AF_MUTE);
 	SPEAKER_TurnOff(SPEAKER_OWNER_RX);
-	BK4819_EnableFFSK1200(false);
+	BK4819_EnableMDC1200(false);
 	BK4819_ResetFSK();
 	DTMF_Disable();
 	if (gScannerMode) {
@@ -367,21 +356,6 @@ void RADIO_EndAudio(void)
 	gNoToneCounter = 0;
 	gIncomingTimer = 250;
 	NOAA_NextChannelCountdown = 3000;
-}
-
-void VFO_SetMode(uint8_t Mode)
-{
-	if (gVfoMode != VFO_MODE_MAIN) {
-		DisableFM();
-		if (gVfoMode > VFO_MODE_FM) {
-			SETTINGS_SaveGlobals();
-		}
-		gVfoMode = Mode;
-		if (gRadioMode != RADIO_MODE_RX && gRadioMode != RADIO_MODE_TX) {
-			RADIO_Tune(gSettings.CurrentVfo);
-		}
-		UI_DrawMain(true);
-	}
 }
 
 void RADIO_Sleep(void)
@@ -521,9 +495,9 @@ void RADIO_EndTX(void)
 		DTMF_PlayContact(&gDTMF_Contacts[gDTMF_Settings.Select]);
 	}
 	if (gSettings.RogerBeep == 3) {
-		BK4819_EnableFFSK1200(true);
+		BK4819_EnableMDC1200(true);
 		DATA_SendDeviceName();
-		BK4819_EnableFFSK1200(false);
+		BK4819_EnableMDC1200(false);
 		BK4819_ResetFSK();
 	} else if (gSettings.RogerBeep) {
 		PlayRogerBeep(gSettings.RogerBeep);

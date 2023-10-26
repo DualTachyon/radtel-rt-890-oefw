@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "app/fm.h"
 #include "app/radio.h"
 #include "driver/beep.h"
 #include "driver/bk4819.h"
@@ -58,7 +59,7 @@ void Task_CheckSideKeys(void)
 
 	SCHEDULER_ClearTask(TASK_CHECK_SIDE_KEYS);
 
-	if (gSettings.Lock || gVfoMode != VFO_MODE_MAIN || gScreenMode != 0 || gDTMF_InputMode ||
+	if (gSettings.Lock || gFM_Mode != FM_MODE_OFF || gScreenMode != 0 || gDTMF_InputMode ||
 			(!gpio_input_data_bit_read(GPIOF, BOARD_GPIOF_KEY_SIDE1) && !gpio_input_data_bit_read(GPIOA, BOARD_GPIOA_KEY_SIDE2)) ||
 			!gpio_input_data_bit_read(GPIOB, BOARD_GPIOB_KEY_PTT)
 	   ) {

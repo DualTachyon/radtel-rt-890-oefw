@@ -46,16 +46,6 @@ enum PTT_Lock_t {
 
 typedef enum PTT_Lock_t PTT_Lock_t;
 
-enum VFO_Mode_t {
-	VFO_MODE_MAIN = 0,
-	VFO_MODE_1,
-	VFO_MODE_FM,
-	VFO_MODE_FM_SCROLL_UP,
-	VFO_MODE_FM_SCROLL_DOWN,
-};
-
-typedef enum VFO_Mode_t VFO_Mode_t;
-
 enum {
 	BUSY_LOCK_OFF = 0U,
 	BUSY_LOCK_CARRIER,
@@ -76,7 +66,6 @@ extern uint8_t gFskDataReceived;
 extern bool gDataDisplay;
 extern bool gDTMF_InputMode;
 extern uint8_t gDTMF_WriteIndex;
-extern VFO_Mode_t gVfoMode;
 extern bool gFrequencyDetectMode;
 extern bool gEnableBlink;
 extern bool gRedrawScreen;

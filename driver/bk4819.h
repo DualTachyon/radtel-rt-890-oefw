@@ -49,7 +49,7 @@ void BK4819_EnableScramble(bool bIsNarrow);
 void BK4819_EnableCompander(bool bIsNarrow);
 void BK4819_EnableVox(bool bEnable);
 void BK4819_SetToneFrequency(uint16_t Tone);
-void BK4819_EnableFFSK1200(bool bEnable);
+void BK4819_EnableMDC1200(bool bEnable);
 void BK4819_ResetFSK(void);
 void BK4819_StartAudio(void);
 void BK4819_SetAfGain(uint16_t Gain);
