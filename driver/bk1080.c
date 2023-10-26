@@ -109,12 +109,12 @@ static uint8_t RecvByte(void)
 	SDA_SetOutput();
 
 	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 
 	SDA_SetInput();
 
@@ -122,20 +122,20 @@ static uint8_t RecvByte(void)
 	for (i = 0; i < 8; i++) {
 		Value <<= 1;
 		gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-		DELAY_WaitNS(1);
+		DELAY_WaitUS(1);
 		if (gpio_input_data_bit_read(GPIOB, BOARD_GPIOB_BK1080_SDA)) {
 			Value |= 1;
 		}
 		gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-		DELAY_WaitNS(1);
+		DELAY_WaitUS(1);
 	}
 
 	SDA_SetOutput();
 
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 
 	return Value;
 }
@@ -147,9 +147,9 @@ static void SendByte(uint8_t Value)
 	SDA_SetOutput();
 
 	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
 
 	for (i = 0; i < 8; i++) {
@@ -181,7 +181,7 @@ static uint16_t AdjustFrequency(uint32_t Frequency)
 static void StopI2C(void)
 {
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK1080_SDA);
 }
 
@@ -189,11 +189,11 @@ static void RenameLater(void)
 {
 	SDA_SetOutput();
 	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 
 	StopI2C();
 }

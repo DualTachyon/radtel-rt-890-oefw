@@ -20,8 +20,7 @@
 #include <stdint.h>
 
 void DELAY_Init(void);
-void DELAY_WaitNS(uint32_t Delay);
-void DELAY_WaitUS(uint16_t Delay);
+void DELAY_WaitUS(uint32_t Delay);
 void DELAY_WaitMS(uint16_t Delay);
 
 #endif
