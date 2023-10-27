@@ -777,7 +777,7 @@ void UI_DrawSky(void)
 void UI_DrawFrequencyEx(const char *String, uint8_t Vfo, bool bReverse)
 {
 	uint8_t X = 20;
-	const uint8_t Y = 50 - (Vfo * 41);
+	const uint8_t Y = 52 - (Vfo * 41);
 	uint8_t i;
 
 	if (!bReverse) {
