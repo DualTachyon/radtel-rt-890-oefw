@@ -90,9 +90,16 @@ static void CheckRSSI(void)
 {
 	if (gVoxRssiUpdateTimer == 0 && !gDataDisplay && !gDTMF_InputMode && !gFrequencyDetectMode && !gReceptionMode && !gFskDataReceived && gScreenMode == SCREEN_MAIN) {
 		uint16_t RSSI;
+		int16_t RXdBM;
+		uint16_t uRXdBM;
+		bool isNeg;
+		uint16_t len;
 
 		gVoxRssiUpdateTimer = 100;
 		RSSI = BK4819_GetRSSI();
+		
+		RXdBM = (RSSI/2)-160;  // Using same rssi to dBM conversion as uv-k5.  Don't know if this is right.
+		
 		if (RSSI < 98U) {
 			RSSI = 0U;
 		} else {
@@ -102,7 +109,26 @@ static void CheckRSSI(void)
 		if (RSSI > 100) {
 			RSSI = 100;
 		}
+
+		// Convert to pos number to work with string funcs that require uint
+		if (RXdBM < 0) {
+			uRXdBM = RXdBM * -1;
+			isNeg = true;
+		} else {
+			uRXdBM = RXdBM;
+			isNeg = false;
+		}
+		
+		if (RXdBM < 10) {
+			len = 1;
+		} else if (RXdBM < 100) {
+			len = 2;
+		} else {
+			len = 3;
+		}
+		
 		UI_DrawBar(RSSI, gCurrentVfo);
+		UI_DrawRxDBM(uRXdBM, isNeg, len, gCurrentVfo, false);
 		gCurrentRssi[gCurrentVfo] = RSSI;
 	}
 }

@@ -45,6 +45,7 @@ void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo);
 void UI_DrawFrequency(uint32_t Frequency, uint8_t Vfo, uint16_t Color);
 void UI_DrawBigDigit(uint8_t X, uint8_t Y, uint8_t Digit);
 void UI_DrawCss(uint8_t CodeType, uint16_t Code, uint8_t Encrypt, bool bMute, uint8_t Vfo);
+void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Clear);
 void UI_DrawTxPower(bool bIsLow, uint8_t Vfo);
 void UI_DrawChannel(uint16_t Channel, uint8_t Vfo);
 void UI_DrawRX(uint8_t Vfo);

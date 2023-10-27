@@ -28,7 +28,7 @@
 static void DrawStatusBar(void)
 {
 	DISPLAY_Fill(0, 159, 0, 96, COLOR_BLACK);
-	DISPLAY_DrawRectangle0(0, 41, 160, 1, gSettings.BorderColor);
+	// DISPLAY_DrawRectangle0(0, 41, 160, 1, gSettings.BorderColor);
 
 	if (gSettings.DtmfState == DTMF_STATE_STUNNED) {
 		UI_DrawStatusIcon(4, ICON_LOCK, true, COLOR_RED);
@@ -48,7 +48,7 @@ void UI_DrawMain(bool bSkipStatus)
 {
 	if (bSkipStatus) {
 		DISPLAY_Fill(0, 159, 0, 81, COLOR_BLACK);
-		DISPLAY_DrawRectangle0(0, 41, 160, 1, gSettings.BorderColor);
+		// DISPLAY_DrawRectangle0(0, 41, 160, 1, gSettings.BorderColor);
 	} else {
 		DrawStatusBar();
 	}

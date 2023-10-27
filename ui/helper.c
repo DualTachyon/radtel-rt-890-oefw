@@ -393,18 +393,27 @@ void UI_DrawVoltage(uint8_t Vfo)
 void UI_DrawVfoFrame(uint8_t Y)
 {
 	Y = 43 - (Y * 41);
-	DISPLAY_DrawRectangle0( 20, Y, 100, 1, COLOR_WHITE);
+// Full size
+//	DISPLAY_DrawRectangle0( 20, Y, 100, 1, COLOR_WHITE);
+//	DISPLAY_DrawRectangle1( 20, Y,   6, 1, COLOR_WHITE);
+//	DISPLAY_DrawRectangle1(120, Y,   6, 1, COLOR_WHITE);
+//	DISPLAY_DrawRectangle1( 45, Y,   5, 1, COLOR_WHITE);
+//	DISPLAY_DrawRectangle1( 70, Y,   5, 1, COLOR_WHITE);
+//	DISPLAY_DrawRectangle1( 95, Y,   5, 1, COLOR_WHITE);
+
+// 80% size - allow room to right for dBM reading
+	DISPLAY_DrawRectangle0( 20, Y, 80, 1, COLOR_WHITE);
 	DISPLAY_DrawRectangle1( 20, Y,   6, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1(120, Y,   6, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1( 45, Y,   5, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1( 70, Y,   5, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1( 95, Y,   5, 1, COLOR_WHITE);
+	DISPLAY_DrawRectangle1(100, Y,   6, 1, COLOR_WHITE);
+	DISPLAY_DrawRectangle1( 40, Y,   5, 1, COLOR_WHITE);
+	DISPLAY_DrawRectangle1( 60, Y,   5, 1, COLOR_WHITE);
+	DISPLAY_DrawRectangle1( 80, Y,   5, 1, COLOR_WHITE);
 }
 
 void UI_DrawName(uint8_t Vfo, const char *pName)
 {
 	gColorForeground = COLOR_GREY;
-	UI_DrawString(34, 81 - (Vfo * 41), pName, 10);
+	UI_DrawString(34, 83 - (Vfo * 41), pName, 10);
 }
 
 void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo)
@@ -435,7 +444,7 @@ void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo)
 void UI_DrawFrequency(uint32_t Frequency, uint8_t Vfo, uint16_t Color)
 {
 	uint8_t X = 20;
-	uint8_t Y = 50 - (Vfo * 41);
+	uint8_t Y = 52 - (Vfo * 41);
 	uint32_t Divider = 10000000U;
 	uint8_t i;
 
@@ -512,10 +521,30 @@ void UI_DrawTxPower(bool bIsLow, uint8_t Vfo)
 
 	if (bIsLow) {
 		gColorForeground = COLOR_RED;
-		UI_DrawSmallString(124, Y, "L", 1);
+		UI_DrawSmallString(132, Y, "L", 1);
 	} else {
 		gColorForeground = COLOR_GREEN;
-		UI_DrawSmallString(124, Y, "H", 1);
+		UI_DrawSmallString(132, Y, "H", 1);
+	}
+}
+
+void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Clear)
+{
+	uint8_t Y = 43 - (Vfo * 41);
+		
+	gColorForeground = COLOR_WHITE;
+
+	if (Clear) {
+		UI_DrawSmallString(105, Y, "    ", 4);
+	} else {
+		Int2Ascii(RXdBM, len);
+
+		if (isNeg) {
+			UI_DrawSmallString(105, Y, "-", 1);
+		} else {
+			UI_DrawSmallString(105, Y, " ", 1);
+		}
+		UI_DrawSmallString(111, Y, gShortString, len);
 	}
 }
 
@@ -653,23 +682,31 @@ void UI_DrawBar(uint8_t Level, uint8_t Vfo)
 {
 	uint8_t Y = 44 - (Vfo * 41);
 	uint8_t i;
+	
+	// Adjust for 80% bar
+	Level = Level * .8;
 
-	if (Level < 25) {
+//	if (Level < 25) {
+	if (Level < 20) {
 		gColorForeground = COLOR_RED;
-	} else if (Level < 50) {
+//	} else if (Level < 50) {
+	} else if (Level < 40) {
 		gColorForeground = COLOR_RGB(31, 41, 0);
 	} else {
 		gColorForeground = COLOR_GREEN;
 	}
 
 	for (i = 0; i < Level; i++) {
-		if (i != 0 && i != 25 && i != 50 && i != 75) {
+//		if (i != 0 && i != 25 && i != 50 && i != 75) {
+		if (i != 0 && i != 20 && i != 40 && i != 60) {
 			DISPLAY_DrawRectangle1(20 + i, Y, 4, 1, gColorForeground);
 		}
 	}
 
-	for (; Level < 100; Level++) {
-		if (Level != 0 && Level != 25 && Level != 50 && Level != 75) {
+//	for (; Level < 100; Level++) {
+//		if (Level != 0 && Level != 25 && Level != 50 && Level != 75) {
+	for (; Level < 80; Level++) {
+		if (Level != 0 && Level != 20 && Level != 40 && Level != 60) {
 			DISPLAY_DrawRectangle1(20 + Level, Y, 4, 1, gColorBackground);
 		}
 	}
@@ -695,6 +732,7 @@ void UI_DrawSomething(void)
 		}
 		UI_DrawRX(gCurrentVfo);
 		UI_DrawBar(0, gCurrentVfo);
+		UI_DrawRxDBM(0, false, 0, gCurrentVfo, true);
 	}
 	UI_DrawMainBitmap(true, gSettings.CurrentVfo);
 }
