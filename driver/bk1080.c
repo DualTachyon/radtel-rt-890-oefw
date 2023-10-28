@@ -14,7 +14,6 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "bsp/gpio.h"
 #include "driver/bk1080.h"
 #include "driver/delay.h"
@@ -33,8 +32,6 @@ static const uint16_t InitTable[] = {
 	0x1CD8, 0x3A50, 0xEAF0, 0x3000,
 	0x0000, 0x0000,
 };
-
-static bool bLowerBand;
 
 static void SDA_SetOutput(void)
 {
@@ -109,12 +106,12 @@ static uint8_t RecvByte(void)
 	SDA_SetOutput();
 
 	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 
 	SDA_SetInput();
 
@@ -122,20 +119,20 @@ static uint8_t RecvByte(void)
 	for (i = 0; i < 8; i++) {
 		Value <<= 1;
 		gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-		DELAY_WaitNS(1);
+		DELAY_WaitUS(1);
 		if (gpio_input_data_bit_read(GPIOB, BOARD_GPIOB_BK1080_SDA)) {
 			Value |= 1;
 		}
 		gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-		DELAY_WaitNS(1);
+		DELAY_WaitUS(1);
 	}
 
 	SDA_SetOutput();
 
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 
 	return Value;
 }
@@ -147,9 +144,9 @@ static void SendByte(uint8_t Value)
 	SDA_SetOutput();
 
 	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
 
 	for (i = 0; i < 8; i++) {
@@ -164,24 +161,10 @@ static void SendByte(uint8_t Value)
 	}
 }
 
-static uint16_t AdjustFrequency(uint32_t Frequency)
-{
-	int16_t Base;
-
-	if (bLowerBand) {
-		Base = 640;
-	} else {
-		Base = 760;
-	}
-
-	// TODO: Original has some dodgy signed division by 1
-	return (uint16_t)(Frequency - Base);
-}
-
 static void StopI2C(void)
 {
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOB, BOARD_GPIOB_BK1080_SDA);
 }
 
@@ -189,11 +172,11 @@ static void RenameLater(void)
 {
 	SDA_SetOutput();
 	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	DELAY_WaitNS(1);
+	DELAY_WaitUS(1);
 
 	StopI2C();
 }
@@ -245,74 +228,5 @@ void BK1080_ReadRegisters(uint8_t Index, uint8_t *pValues, uint8_t Size)
 	}
 
 	StopI2C();
-}
-
-void BK1080_Tune(uint16_t Frequency)
-{
-	uint8_t Values[4];
-
-	if (Frequency > 760) {
-		Values[0] = 0x0A;
-		Values[1] = 0x5F;
-		bLowerBand = false;
-	} else {
-		Values[0] = 0x0A;
-		Values[1] = 0xDF;
-		bLowerBand = true;
-	}
-
-	BK1080_WriteRegisters(0x05, Values, 2);
-	BK1080_ReadRegisters(0x02, Values, 4);
-
-	Frequency = AdjustFrequency(Frequency);
-	Values[0] &= 0xFE; // Clear Seek bit
-	Values[2] = 0;
-	Values[3] = (Frequency >> 0) & 0xFF;
-	BK1080_WriteRegisters(0x02, Values, 4);
-	Values[2] = 0x80 | ((Frequency >> 8) & 0xFF);
-	Values[3] = (Frequency >> 0) & 0xFF;
-	BK1080_WriteRegisters(0x02, Values, 4);
-
-	if (gVfoMode < VFO_MODE_FM_SCROLL_UP) {
-		if (SPEAKER_State == 0) {
-			gpio_bits_set(GPIOA, BOARD_GPIOA_SPEAKER);
-		}
-		SPEAKER_TurnOn(SPEAKER_OWNER_FM);
-	}
-}
-
-void BK1080_SetVolume(uint8_t Volume)
-{
-	uint8_t Values[2];
-
-	Values[0] = 0x0A;
-	Values[1] = Volume | 0x10;
-	BK1080_WriteRegisters(0x05, Values, 2);
-}
-
-bool BK1080_CheckSignal(void)
-{
-	uint8_t Values[8];
-	uint16_t Deviation;
-
-	BK1080_ReadRegisters(0x07, Values, 8);
-
-	Deviation = (Values[0] << 4) | ((Values[1] >> 4) & 0xF);
-
-	// AFC railed
-	if (Values[6] & 0x10U) {
-		return false;
-	}
-
-	// SNR < 2
-	if ((Values[1] & 0xF) < 2) {
-		return false;
-	}
-
-	if (Deviation >= 280 && Deviation < 3816) {
-		return false;
-	}
-
-	return true;
 }
 

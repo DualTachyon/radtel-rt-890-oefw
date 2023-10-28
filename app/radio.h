@@ -37,7 +37,6 @@ void RADIO_EndRX(void);
 void RADIO_StartAudio(void);
 void RADIO_EndAudio(void);
 
-void VFO_SetMode(uint8_t Value);
 void RADIO_Sleep(void);
 void RADIO_Retune(void);
 void RADIO_NoaaRetune(void);

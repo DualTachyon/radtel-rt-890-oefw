@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "app/fm.h"
 #include "driver/battery.h"
 #include "misc.h"
 #include "radio/hardware.h"
@@ -38,7 +39,7 @@ void Task_CheckBattery(void)
 
 	gBatteryVoltage = BATTERY_GetVoltage();
 
-	if (gRadioMode != RADIO_MODE_RX && VOX_Timer == 0 && gVfoMode == VFO_MODE_MAIN && gScreenMode == SCREEN_MAIN && !gDTMF_InputMode) {
+	if (gRadioMode != RADIO_MODE_RX && VOX_Timer == 0 && gFM_Mode == FM_MODE_OFF && gScreenMode == SCREEN_MAIN && !gDTMF_InputMode) {
 		UI_DrawVoltage(!gSettings.CurrentVfo);
 	}
 	UI_DrawBattery();

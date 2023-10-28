@@ -14,12 +14,10 @@
  *     limitations under the License.
  */
 
-#include <at32f421.h>
 #include "app/css.h"
 #include "app/fm.h"
 #include "app/radio.h"
 #include "driver/beep.h"
-#include "driver/bk1080.h"
 #include "driver/bk4819.h"
 #include "driver/delay.h"
 #include "driver/key.h"
@@ -53,7 +51,7 @@ FrequencyInfo_t gVfoInfo[2];
 bool gNoaaMode;
 uint16_t gCode;
 
-static void SetFilterPath(bool bEnable)
+static void EnableTxAmp(bool bEnable)
 {
 	if (!bEnable) {
 		gpio_bits_reset(GPIOB, BOARD_GPIOB_TX_BIAS_LDO);
@@ -94,7 +92,7 @@ static void TuneCurrentVfo(void)
 	gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_RED);
 
 	gRadioMode = RADIO_MODE_QUIET;
-	SetFilterPath(false);
+	EnableTxAmp(false);
 	BK4819_SetFrequency(gVfoInfo[gCurrentVfo].Frequency);
 	gCode = gVfoInfo[gCurrentVfo].Code;
 	if (gMainVfo->bMuteEnabled) {
@@ -107,7 +105,7 @@ static void TuneCurrentVfo(void)
 	BK4819_SetSquelchRSSI(gMainVfo->bIsNarrow);
 	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(gMainVfo->bIsNarrow);
-	BK4819_UpdateGpioOut(true);
+	BK4819_EnableFilter(true);
 }
 
 static bool TuneTX(bool bUseMic)
@@ -125,7 +123,7 @@ static bool TuneTX(bool bUseMic)
 	gCode = gVfoInfo[gCurrentVfo].Code;
 	BK4819_SetFrequency(gVfoInfo[gCurrentVfo].Frequency);
 	if (gSettings.BandInfo[gCurrentFrequencyBand] == BAND_136MHz && gVfoInfo[gCurrentVfo].Frequency >= 13600000) {
-		BK4819_UpdateGpioOut(false);
+		BK4819_EnableFilter(false);
 		if (gMainVfo->bMuteEnabled) {
 			CSS_SetCustomCode(gMainVfo->bIs24Bit, gMainVfo->Golay, gMainVfo->bIsNarrow);
 			gTxCodeType = CODE_TYPE_DCS_N;
@@ -143,7 +141,7 @@ static bool TuneTX(bool bUseMic)
 		} else {
 			BK4819_SetAFResponseCoefficients(true, true, 5);
 		}
-		SetFilterPath(true);
+		EnableTxAmp(true);
 		BK4819_SetupPowerAmplifier(gMainVfo->bIsLowPower ? gTxPowerLevelLow : gTxPowerLevelHigh);
 
 		return true;
@@ -182,7 +180,7 @@ static void TuneNOAA(void)
 	gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_RED);
 
 	gRadioMode = RADIO_MODE_QUIET;
-	SetFilterPath(false);
+	EnableTxAmp(false);
 	BK4819_SetFrequency(gMainVfo->RX.Frequency);
 	if (!gNoaaMode) {
 		BK4819_WriteRegister(0x51, 0x0000);
@@ -197,16 +195,7 @@ static void TuneNOAA(void)
 	BK4819_EnableCompander(false);
 	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(false);
-	BK4819_UpdateGpioOut(true);
-}
-
-static void DisableFM(void)
-{
-	BK1080_SetVolume(0);
-	gpio_bits_reset(GPIOB, BOARD_GPIOB_BK1080_SDA);
-	gpio_bits_reset(GPIOC, BOARD_GPIOC_BK1080_SCL);
-	gpio_bits_set(GPIOC, BOARD_GPIOC_BK1080_SEN);
-	SPEAKER_TurnOff(SPEAKER_OWNER_FM);
+	BK4819_EnableFilter(true);
 }
 
 // Public
@@ -273,7 +262,7 @@ void RADIO_Tune(uint8_t Vfo)
 
 void RADIO_StartRX(void)
 {
-	VFO_SetMode(1);
+	FM_Disable(FM_MODE_STANDBY);
 	BK4819_StartAudio();
 	if (!gFrequencyDetectMode) {
 		DTMF_ClearString();
@@ -369,25 +358,10 @@ void RADIO_EndAudio(void)
 	NOAA_NextChannelCountdown = 3000;
 }
 
-void VFO_SetMode(uint8_t Mode)
-{
-	if (gVfoMode != VFO_MODE_MAIN) {
-		DisableFM();
-		if (gVfoMode > VFO_MODE_FM) {
-			SETTINGS_SaveGlobals();
-		}
-		gVfoMode = Mode;
-		if (gRadioMode != RADIO_MODE_RX && gRadioMode != RADIO_MODE_TX) {
-			RADIO_Tune(gSettings.CurrentVfo);
-		}
-		UI_DrawMain(true);
-	}
-}
-
 void RADIO_Sleep(void)
 {
-	SetFilterPath(false);
-	BK4819_UpdateGpioOut(false);
+	EnableTxAmp(false);
+	BK4819_EnableFilter(false);
 	BK4819_WriteRegister(0x30, 0x0000);
 	BK4819_WriteRegister(0x37, 0x1D00);
 	gSaveMode = true;
@@ -560,7 +534,7 @@ void RADIO_DisableSaveMode(void)
 {
 	if (gSaveMode) {
 		BK4819_EnableRX();
-		BK4819_UpdateGpioOut(true);
+		BK4819_EnableFilter(true);
 		gSaveMode = false;
 		DELAY_WaitMS(10);
 	}

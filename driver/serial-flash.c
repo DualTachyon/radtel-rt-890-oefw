@@ -172,7 +172,7 @@ void SFLASH_Write(const void *pBuffer, uint32_t Address, uint16_t Size)
 		Address += Remaining;
 		Size -= Remaining;
 		Remaining = 0x100;
-		if (Size < 0x101) {
+		if (Size <= 0x100) {
 			Remaining = Size;
 		}
 	}
@@ -220,7 +220,7 @@ void SFLASH_Update(const void *pBuffer, uint32_t Address, uint16_t Size)
 		Address += Remaining;
 		Size -= Remaining;
 		Remaining = 0x1000;
-		if (Size < 0x1001) {
+		if (Size <= 0x1000) {
 			Remaining = Size;
 		}
 	}

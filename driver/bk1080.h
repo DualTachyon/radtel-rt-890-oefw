@@ -23,9 +23,6 @@
 void BK1080_Init(void);
 void BK1080_WriteRegisters(uint8_t Index, const uint8_t *pValues, uint8_t Size);
 void BK1080_ReadRegisters(uint8_t Index, uint8_t *pValues, uint8_t Size);
-void BK1080_Tune(uint16_t Frequency);
-void BK1080_SetVolume(uint8_t Volume);
-bool BK1080_CheckSignal(void);
 
 #endif
 

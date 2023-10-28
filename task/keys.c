@@ -20,7 +20,6 @@
 #include "app/radio.h"
 #include "driver/audio.h"
 #include "driver/beep.h"
-#include "driver/bk1080.h"
 #include "driver/bk4819.h"
 #include "driver/key.h"
 #include "driver/pins.h"
@@ -102,8 +101,8 @@ static void MAIN_KeyHandler(KEY_t Key)
 	case KEY_0: case KEY_1: case KEY_2: case KEY_3:
 	case KEY_4: case KEY_5: case KEY_6: case KEY_7:
 	case KEY_8: case KEY_9:
-		if (gVfoMode < VFO_MODE_FM_SCROLL_UP) {
-			if (gVfoMode == VFO_MODE_FM) {
+		if (gFM_Mode < FM_MODE_SCROLL_UP) {
+			if (gFM_Mode == FM_MODE_PLAY) {
 				FM_AppendDigit(Key);
 			} else if (gSettings.WorkMode) {
 				CHANNEL_AppendDigit(Key);
@@ -117,14 +116,14 @@ static void MAIN_KeyHandler(KEY_t Key)
 
 	case KEY_MENU:
 		if (gInputBoxWriteIndex == 0) {
-			if (gVfoMode > VFO_MODE_1) {
+			if (gFM_Mode > FM_MODE_STANDBY) {
 				break;
 			}
 			gFrequencyReverse = false;
 			MENU_Redraw(true);
 		} else {
 			INPUTBOX_Pad(gInputBoxWriteIndex, 0);
-			if (gVfoMode == VFO_MODE_FM) {
+			if (gFM_Mode == FM_MODE_PLAY) {
 				FM_UpdateFrequency();
 				UI_DrawFMFrequency(gSettings.FmFrequency);
 			} else if (gSettings.WorkMode) {
@@ -139,7 +138,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 	case KEY_UP:
 	case KEY_DOWN:
 		if (gInputBoxWriteIndex == 0) {
-			if (gVfoMode < VFO_MODE_FM) {
+			if (gFM_Mode < FM_MODE_PLAY) {
 				if (!gReceptionMode) {
 					if (!gScannerMode) {
 						RADIO_CancelMode();
@@ -163,7 +162,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 					CHANNELS_NextNOAA(Key);
 					NOAA_NextChannelCountdown = 3000;
 				}
-			} else if (gVfoMode == VFO_MODE_FM) {
+			} else if (gFM_Mode == FM_MODE_PLAY) {
 				CHANNELS_NextFM(Key);
 			} else {
 				FM_Play();
@@ -174,7 +173,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 
 	case KEY_EXIT:
 		if (gInputBoxWriteIndex) {
-			if (gVfoMode == VFO_MODE_FM) {
+			if (gFM_Mode == FM_MODE_PLAY) {
 				RADIO_DrawFmMode();
 			} else if (gSettings.WorkMode) {
 				RADIO_DrawWorkMode();
@@ -184,7 +183,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 			BEEP_Play(440, 4, 80);
 			break;
 		}
-		if (gVfoMode < VFO_MODE_FM) {
+		if (gFM_Mode < FM_MODE_PLAY) {
 			if (gFrequencyReverse) {
 				gFrequencyReverse = false;
 				UI_DrawVfo(gSettings.CurrentVfo);
@@ -217,7 +216,7 @@ static void MAIN_KeyHandler(KEY_t Key)
 		break;
 
 	case KEY_HASH:
-		if (gVfoMode < VFO_MODE_FM) {
+		if (gFM_Mode < FM_MODE_PLAY) {
 			gFrequencyReverse = false;
 			RADIO_CancelMode();
 			if (gFreeChannelsCount == 0) {
@@ -327,12 +326,12 @@ static void HandlerLong(KEY_t Key)
 		return;
 	}
 	bBeep740 = true;
-	if (!gReceptionMode && (gVfoMode == VFO_MODE_MAIN || Key == KEY_0 || Key == KEY_HASH || Key == KEY_UP || Key == KEY_DOWN)) {
+	if (!gReceptionMode && (gFM_Mode == FM_MODE_OFF || Key == KEY_0 || Key == KEY_HASH || Key == KEY_UP || Key == KEY_DOWN)) {
 		SCREEN_TurnOn();
 		if (gScreenMode == SCREEN_MAIN) {
 			switch (Key) {
 			case KEY_0:
-				if (gVfoMode == VFO_MODE_MAIN) {
+				if (gFM_Mode == FM_MODE_OFF) {
 					RADIO_DisableSaveMode();
 					if (gSettings.DualStandby) {
 						RADIO_Tune(gSettings.CurrentVfo);
@@ -340,7 +339,7 @@ static void HandlerLong(KEY_t Key)
 					}
 					FM_Play();
 				} else {
-					VFO_SetMode(VFO_MODE_MAIN);
+					FM_Disable(FM_MODE_OFF);
 				}
 				break;
 
@@ -348,7 +347,7 @@ static void HandlerLong(KEY_t Key)
 				if (gSettings.bFLock) {
 					return;
 				}
-				if (gVfoMode != VFO_MODE_MAIN) {
+				if (gFM_Mode != FM_MODE_OFF) {
 					return;
 				}
 				if (gFrequencyReverse) {
@@ -418,7 +417,7 @@ static void HandlerLong(KEY_t Key)
 				break;
 
 			case KEY_MENU:
-				if (gVfoMode != VFO_MODE_MAIN) {
+				if (gFM_Mode != FM_MODE_OFF) {
 					return;
 				}
 				if (!gDTMF_InputMode) {
@@ -444,7 +443,7 @@ static void HandlerLong(KEY_t Key)
 			case KEY_UP:
 			case KEY_DOWN:
 				if (gInputBoxWriteIndex == 0) {
-					if (gVfoMode == VFO_MODE_MAIN) {
+					if (gFM_Mode == FM_MODE_OFF) {
 						RADIO_CancelMode();
 						if (gSettings.WorkMode) {
 							do {
@@ -463,27 +462,27 @@ static void HandlerLong(KEY_t Key)
 						RADIO_Tune(gSettings.CurrentVfo);
 					} else {
 						if (Key == KEY_UP) {
-							gVfoMode = VFO_MODE_FM_SCROLL_UP;
+							gFM_Mode = FM_MODE_SCROLL_UP;
 							gSettings.FmFrequency += 2;
 							if (gSettings.FmFrequency > 1080) {
 								gSettings.FmFrequency = 640;
 							}
 						} else {
-							gVfoMode = VFO_MODE_FM_SCROLL_DOWN;
+							gFM_Mode = FM_MODE_SCROLL_DOWN;
 							gSettings.FmFrequency -= 2;
 							if (gSettings.FmFrequency < 640) {
 								gSettings.FmFrequency = 1080;
 							}
 						}
 						UI_DrawFMFrequency(gSettings.FmFrequency);
-						BK1080_SetVolume(0);
+						FM_SetVolume(0);
 					}
 					bBeep740 = Key - KEY_UP;
 				}
 				break;
 
 			case KEY_EXIT:
-				if (gVfoMode != VFO_MODE_MAIN) {
+				if (gFM_Mode != FM_MODE_OFF) {
 					return;
 				}
 				gSettings.DualDisplay ^= 1;

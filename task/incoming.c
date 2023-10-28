@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "app/fm.h"
 #include "app/radio.h"
 #include "driver/bk4819.h"
 #include "driver/pins.h"
@@ -25,7 +26,7 @@
 
 void Task_CheckIncoming(void)
 {
-	if ((gVfoMode == VFO_MODE_MAIN || gSettings.FmStandby) && gRadioMode != RADIO_MODE_TX && !gSaveMode && SCHEDULER_CheckTask(TASK_CHECK_INCOMING) && gIncomingTimer == 0) {
+	if ((gFM_Mode == FM_MODE_OFF || gSettings.FmStandby) && gRadioMode != RADIO_MODE_TX && !gSaveMode && SCHEDULER_CheckTask(TASK_CHECK_INCOMING) && gIncomingTimer == 0) {
 		bool bGotLink;
 
 		SCHEDULER_ClearTask(TASK_CHECK_INCOMING);

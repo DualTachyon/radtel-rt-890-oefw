@@ -94,7 +94,7 @@ static void UpdateBand(bool bToggleBand)
 		gSettings.bUseVHF ^= 1;
 	}
 	gUseUhfFilter = !gSettings.bUseVHF;
-	BK4819_UpdateGpioOut(true);
+	BK4819_EnableFilter(true);
 	if (bToggleBand) {
 		SETTINGS_SaveGlobals();
 	}
@@ -370,7 +370,7 @@ void RADIO_FrequencyDetect(void)
 	UI_DrawBand();
 	VFO_ClearCss();
 	VFO_ClearMute();
-	BK4819_UpdateGpioOut(true);
+	BK4819_EnableFilter(true);
 	DETECTOR_Loop();
 }
 

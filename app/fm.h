@@ -17,9 +17,28 @@
 #ifndef APP_FM_H
 #define APP_FM_H
 
+#include <stdbool.h>
+#include <stdint.h>
+
+enum FM_Mode_t {
+	FM_MODE_OFF = 0,
+	FM_MODE_STANDBY,
+	FM_MODE_PLAY,
+	FM_MODE_SCROLL_UP,
+	FM_MODE_SCROLL_DOWN,
+};
+
+typedef enum FM_Mode_t FM_Mode_t;
+
+extern FM_Mode_t gFM_Mode;
+
 void FM_Play(void);
 void FM_Resume(void);
 void FM_UpdateFrequency(void);
+void FM_Disable(bool bStandby);
+void FM_Tune(uint16_t Frequency);
+void FM_SetVolume(uint8_t Volume);
+bool FM_CheckSignal(void);
 
 #endif
 
