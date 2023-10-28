@@ -99,7 +99,7 @@ static void CheckRSSI(void)
 		gVoxRssiUpdateTimer = 100;
 		RSSI = BK4819_GetRSSI();
 		
-		RXdBM = (RSSI/2)-160;  // Using same rssi to dBM conversion as uv-k5.  Don't know if this is right.
+		RXdBM = (RSSI>>1)-160;  // Using same rssi to dBM conversion as uv-k5.  Don't know if this is right.
 
 		//Valid range is 36 - 166
 		if (RSSI < 36) {
