@@ -223,7 +223,7 @@ uint16_t BK4819_GetRSSI(void)
 {
 	uint16_t RawRSSI;
 	
-	RawRSSI = BK4819_ReadRegister(0x67) & 0x01FE;
+	RawRSSI = BK4819_ReadRegister(0x67) & 0x01FF;
 	// RawRSSI = RawRSSI >> 1;
 	return RawRSSI;
 //	return BK4819_ReadRegister(0x67) & 0x01FF;
@@ -438,6 +438,21 @@ void BK4819_EnableVox(bool bEnable)
 		Value &= ~4U;
 	}
 	BK4819_WriteRegister(0x31, Value);
+}
+
+void BK4819_ToggleAGCMode(bool bAuto)
+{
+	// REG_7E[15] - AGC Mode
+	// 1 - Fixed, 0 - Auto
+	uint16_t Value;
+	Value = BK4819_ReadRegister(0x7E);
+	if (bAuto) {
+		Value &= ~0x8000U;
+	} else {
+		Value |= 0x8000U;
+		// Set bits 14:12 to 110 (AGC index 4) without affecting the other bits
+		Value = (Value & 0x8FFFU) | 0x6000U;
+	}
 }
 
 void BK4819_SetToneFrequency(uint16_t Tone)
