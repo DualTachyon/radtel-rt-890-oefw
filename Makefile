@@ -3,6 +3,7 @@ TARGET = firmware
 MOTO_STARTUP_TONE 		:= 1
 LIGHT_THEME			:= 1
 ENABLE_AM_FIX			:= 0
+ENABLE_LTO			:= 0
 
 OBJS =
 # Startup files
@@ -153,6 +154,9 @@ ifeq ($(LIGHT_THEME),1)
 endif
 ifeq ($(ENABLE_AM_FIX),1)
 	CFLAGS += -DENABLE_AM_FIX
+endif
+ifeq ($(ENABLE_LTO),1)
+	CFLAGS += -flto
 endif
 
 all: $(TARGET)

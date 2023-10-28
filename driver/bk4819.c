@@ -221,7 +221,12 @@ void BK4819_WriteRegister(uint8_t Reg, uint16_t Data)
 
 uint16_t BK4819_GetRSSI(void)
 {
-	return BK4819_ReadRegister(0x67) & 0x01FF;
+	uint16_t RawRSSI;
+	
+	RawRSSI = BK4819_ReadRegister(0x67) & 0x01FE;
+	// RawRSSI = RawRSSI >> 1;
+	return RawRSSI;
+//	return BK4819_ReadRegister(0x67) & 0x01FF;
 }
 
 void BK4819_Init(void)
