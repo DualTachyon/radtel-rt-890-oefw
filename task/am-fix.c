@@ -100,8 +100,7 @@
 	//
 	static const t_gain_table gain_table[] =
 	{
-		{0x035E, -17},         //   0 .. 3 2 3 6 ..   0dB -14dB  0dB  -3dB .. -17dB original
-
+		{0x03BE, -7},   //  3 5 3 6 ..  0dB  -4dB  0dB  -3dB .. -7dB original
 		{0x0000, -98},         //   1 .. 0 0 0 0 .. -33dB -24dB -8dB -33dB .. -98dB
 		{0x0008, -96},         //   2 .. 0 0 1 0 .. -33dB -24dB -6dB -33dB .. -96dB
 		{0x0100, -95},         //   3 .. 1 0 0 0 .. -30dB -24dB -8dB -33dB .. -95dB
@@ -181,26 +180,26 @@
 		{0x03D3, -20},         //  77 .. 3 6 2 3 ..   0dB  -2dB -3dB -15dB .. -20dB
 		{0x03BB, -19},         //  78 .. 3 5 3 3 ..   0dB  -4dB  0dB -15dB .. -19dB
 		{0x037C, -18},         //  79 .. 3 3 3 4 ..   0dB  -9dB  0dB  -9dB .. -18dB
-		{0x035E, -17},         //  80 .. 3 2 3 6 ..   0dB -14dB  0dB  -3dB .. -17dB original
+		{0x03CC, -17},         //  80 .. 3 6 1 4 ..   0dB  -2dB -6dB  -9dB .. -17dB
 		{0x03C5, -16},         //  81 .. 3 6 0 5 ..   0dB  -2dB -8dB  -6dB .. -16dB
 		{0x03EC, -15},         //  82 .. 3 7 1 4 ..   0dB   0dB -6dB  -9dB .. -15dB
 		{0x035F, -14},         //  83 .. 3 2 3 7 ..   0dB -14dB  0dB   0dB .. -14dB
-		{0x03C6, -13},         //  84 .. 3 6 0 6 ..   0dB  -2dB -8dB  -3dB .. -13dB
-		{0x0377, -12},         //  85 .. 3 3 2 7 ..   0dB  -9dB -3dB   0dB .. -12dB
+		{0x03BC, -13},         //  84 .. 3 5 3 4 ..   0dB  -4dB  0dB  -9dB .. -13dB
+		{0x038F, -12},         //  85 .. 3 4 1 7 ..   0dB  -6dB -6dB   0dB .. -12dB
 		{0x03E6, -11},         //  86 .. 3 7 0 6 ..   0dB   0dB -8dB  -3dB .. -11dB
-		{0x03BD, -10},         //  87 .. 3 5 3 5 ..   0dB  -4dB  0dB  -6dB .. -10dB
+		{0x03AF, -10},         //  87 .. 3 5 1 7 ..   0dB  -4dB -6dB   0dB .. -10dB
 		{0x03F5,  -9},         //  88 .. 3 7 2 5 ..   0dB   0dB -3dB  -6dB ..  -9dB
-		{0x03DD,  -8},         //  89 .. 3 6 3 5 ..   0dB  -2dB  0dB  -6dB ..  -8dB
-		{0x03B7,  -7},         //  90 .. 3 5 2 7 ..   0dB  -4dB -3dB   0dB ..  -7dB
+		{0x03D6,  -8},         //  89 .. 3 6 2 6 ..   0dB  -2dB -3dB  -3dB ..  -8dB
+		{0x03BE,  -7},         //  90 .. 3 5 3 6 ..   0dB  -4dB  0dB  -3dB ..  -7dB original
 		{0x03F6,  -6},         //  91 .. 3 7 2 6 ..   0dB   0dB -3dB  -3dB ..  -6dB
-		{0x03D7,  -5},         //  92 .. 3 6 2 7 ..   0dB  -2dB -3dB   0dB ..  -5dB
+		{0x03DE,  -5},         //  92 .. 3 6 3 6 ..   0dB  -2dB  0dB  -3dB ..  -5dB
 		{0x03BF,  -4},         //  93 .. 3 5 3 7 ..   0dB  -4dB  0dB   0dB ..  -4dB
 		{0x03F7,  -3},         //  94 .. 3 7 2 7 ..   0dB   0dB -3dB   0dB ..  -3dB
 		{0x03DF,  -2},         //  95 .. 3 6 3 7 ..   0dB  -2dB  0dB   0dB ..  -2dB
-		{0x03FF,   0}          //  96 .. 3 7 3 7 ..   0dB   0dB  0dB   0dB ..   0dB
+		{0x03FF,   0},         //  96 .. 3 7 3 7 ..   0dB   0dB  0dB   0dB ..   0dB
 	};
 
-	static const unsigned int original_index = 80;
+	static const unsigned int original_index = 90;
     uint16_t gAmFixCountdown;
 
 
@@ -233,7 +232,7 @@
 	unsigned int max_index = ARRAY_SIZE(gain_table) - 1;
 
 	#ifndef ENABLE_AM_FIX_TEST1
-		// -89dBm, any higher and the AM demodulator starts to saturate/clip/distort
+		// -89 dBm, any higher and the AM demodulator starts to saturate/clip/distort
 		const int16_t desired_rssi = (-89 + 160) * 2;
 	#endif
 
@@ -250,22 +249,6 @@
 				gain_table_index[i] = original_index;  // re-start with original QS setting
 			#endif
 		}
-
-		#if 0
-		{	// set a maximum gain to use
-//			const int16_t max_gain_dB = gain_dB[original_index];
-			const int16_t max_gain_dB = -10;
-
-			max_index = ARRAY_SIZE(gain_table);
-			while (--max_index > 1)
-//				if (gain_dB[max_index] <= max_gain_dB)
-				if (gain_table[max_index].gain_dB <= max_gain_dB)
-					break;
-		}
-		#else
-			// use the full range of available gains
-			max_index = ARRAY_SIZE(gain_table) - 1;
-		#endif
 	}
 
 	void AM_fix_reset(const int vfo)
@@ -410,7 +393,7 @@
                         index--;     // slow step-by-step gain reduction
                 }
 
-                index = (index < 1) ? 1 : (index > max_index) ? max_index : index;
+                index = (index < 1) ? 1 : (index > (ARRAY_SIZE(gain_table) - 1)) ? ARRAY_SIZE(gain_table) - 1 : index;
 
                 if (gain_table_index[vfo] != index)
                 {
@@ -426,7 +409,7 @@
             {	// hold has been released, we're free to increase gain
                 gpio_bits_flip(GPIOA, BOARD_GPIOA_LED_RED);
                 const unsigned int index = gain_table_index[vfo] + 1;                 // move up to next gain index
-                gain_table_index[vfo] = (index <= max_index) ? index : max_index;     // limit the gain index
+                gain_table_index[vfo] = (index < ARRAY_SIZE(gain_table)) ? index : ARRAY_SIZE(gain_table) - 1;     // limit the gain index
             }
 
             #if 0
@@ -467,28 +450,13 @@
 			gAmFixCountdown = 1000;
 			// original radtel front end register settings
             const uint8_t orig_lna_short = 3;
-            const uint8_t orig_lna = 6; 
+            const uint8_t orig_lna = 6;
             const uint8_t orig_mixer = 3;
-            const uint8_t orig_pga = 6;     
+            const uint8_t orig_pga = 6;
 			if(BK4819_ReadRegister(0x13) != ((orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0))) {
             	BK4819_WriteRegister(0x13, (orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0));
 			}
         }
 	}
-
-	#ifdef ENABLE_AM_FIX_SHOW_DATA
-
-		void AM_fix_print_data(const int vfo, char *s)
-		{
-			if (s != NULL && vfo >= 0 && vfo < (int)ARRAY_SIZE(gain_table_index))
-			{
-				const unsigned int index = gain_table_index[vfo];
-//				sprintf(s, "%2u.%u %4ddB %3u", index, ARRAY_SIZE(gain_table) - 1, gain_table[index].gain_dB, prev_rssi[vfo]);
-				sprintf(s, "%2u %4ddB %3u", index, gain_table[index].gain_dB, prev_rssi[vfo]);
-				counter = 0;
-			}
-		}
-
-	#endif
 
 #endif
