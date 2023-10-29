@@ -27,6 +27,13 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 	gColorForeground = COLOR_RED;
 
 	switch (Text) {
+	case DIALOG_AM_FIX:
+		if (bSet) {
+			UI_DrawString(10, 48, "AM Fix: On", 10);
+		} else {
+			UI_DrawString(10, 48, "AM Fix: Off", 11);
+		}
+		break;
 	case DIALOG_TX_PRIORITY:
 		if (bSet) {
 			UI_DrawString(10, 48, "TX PRI: Busy", 12);

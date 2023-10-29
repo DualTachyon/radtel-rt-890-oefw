@@ -360,9 +360,8 @@ static void HandlerLong(KEY_t Key)
 				break;
 
 			case KEY_2:
-				gSettings.TxPriority ^= 1;
-				SETTINGS_SaveGlobals();
-				UI_DrawDialogText(DIALOG_TX_PRIORITY, gSettings.TxPriority);
+				gAmFixEnabled = !gAmFixEnabled;
+				UI_DrawDialogText(DIALOG_AM_FIX, gAmFixEnabled);
 				break;
 
 			case KEY_3:
