@@ -46,6 +46,7 @@ enum {
 	ACTION_SEND_TONE,
 	ACTION_ROGER_BEEP,
 	ACTION_FM_RADIO,
+	ACTION_SCAN,
 };
 
 //
@@ -222,6 +223,13 @@ void Task_CheckSideKeys(void)
 				gIdleMode = IDLE_MODE_DUAL_STANDBY;
 			}
 			FM_Play();
+			break;
+
+		case ACTION_SCAN:
+			if (!gSettings.bFLock && gFM_Mode == FM_MODE_OFF && !gFrequencyReverse) {
+				RADIO_CancelMode();
+				gScannerMode = !gScannerMode;
+			}
 			break;
 		}
 	}

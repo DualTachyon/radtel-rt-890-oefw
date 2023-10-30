@@ -136,7 +136,7 @@ void UI_DrawDtmfDelay(uint8_t Delay)
 
 void UI_DrawActions(uint8_t Index)
 {
-	static const char Actions[11][16] = {
+	static const char Actions[12][16] = {
 		"None            ",
 		"Monit           ",
 		"Freq Detect     ",
@@ -148,10 +148,11 @@ void UI_DrawActions(uint8_t Index)
 		"Send Tone       ",
 		"Roger Beep      ",
 		"FM Radio        ",
+		"Freq Scanner    ",
 	};
 
 	UI_DrawSettingOption(Actions[Index], 0);
-	UI_DrawSettingOption(Actions[(Index + 1) % 11], 1);
+	UI_DrawSettingOption(Actions[(Index + 1) % 12], 1);
 }
 
 void UI_DrawChannelName(uint16_t Channel)

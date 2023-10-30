@@ -842,9 +842,9 @@ void MENU_DrawSetting(void)
 	case MENU_K1_SHORT:
 	case MENU_K2_LONG:
 	case MENU_K2_SHORT:
-		gSettingCurrentValue = gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 11U;
-		gSettingMaxValues = 11;
-		UI_DrawActions(gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 11U);
+		gSettingCurrentValue = gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 12U;
+		gSettingMaxValues = 12;
+		UI_DrawActions(gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 12U);
 		break;
 
 	case MENU_DTMF_DELAY:
