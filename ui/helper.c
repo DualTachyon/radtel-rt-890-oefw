@@ -424,9 +424,9 @@ void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo)
 	case 0:
 		gColorForeground = COLOR_BLUE;
 		if(gModulationType < 2)
-			UI_DrawSmallString(4, Y, gModulationType ? "AM" : "FM", 2);
+			UI_DrawSmallString(2, Y, gModulationType ? " AM" : " FM", 3);
 		else
-			UI_DrawSmallString(4, Y-2, "SSB", 3);
+			UI_DrawSmallString(2, Y, "SSB", 3);
 		break;
 
 	case 1: // TX mode
