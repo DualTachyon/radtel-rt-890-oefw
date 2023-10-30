@@ -774,9 +774,9 @@ void MENU_DrawSetting(void)
 		break;
 
 	case MENU_MODULATION:
-		gSettingIndex = gVfoState[gSettings.CurrentVfo].gModulationType;
+		gSettingCurrentValue = gVfoState[gSettings.CurrentVfo].gModulationType;
 		gSettingMaxValues = 4;
-		UI_DrawSettingModulation(gSettingIndex);
+		UI_DrawSettingModulation(gSettingCurrentValue);
 		break;
 
 	case MENU_BAND_WIDTH:
