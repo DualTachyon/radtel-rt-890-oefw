@@ -47,6 +47,7 @@ void UI_DrawSettingTxPower(void);
 void UI_DrawSettingModulation(uint8_t Index);
 void UI_DrawSettingBandwidth(void);
 void UI_DrawSettingBusyLock(uint8_t Index);
+void UI_DrawSettingSkipScan(void);
 
 #endif
 

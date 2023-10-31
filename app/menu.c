@@ -35,7 +35,7 @@
 #include "ui/menu.h"
 #include "ui/version.h"
 
-static const char Menu[47][16] = {
+static const char Menu[48][16] = {
 	"Startup Logo  01",
 	"Voltage       02",
 	"Ringtone      03",
@@ -65,24 +65,25 @@ static const char Menu[47][16] = {
 	"TX Power      27",
 	"Modulation    28",
 	"Band Width    29",
-	"Busy Lock     30",
-	"Scrambler     31",
-	"DCS Encrypt   32",
-	"Mute Code     33",
-	"CH Name       34",
-	"Save CH       35",
-	"Delete CH     36",
-	"K1 Long       37",
-	"K1 Short      38",
-	"K2 Long       39",
-	"K2 Short      40",
-	"DTMF Delay    41",
-	"DTMF Interval 42",
-	"DTMF Mode     43",
-	"DTMF Select   44",
-	"DTMF Display  45",
-	"Initialize    46",
-	"Version       47",
+	"Skip Scan     30",
+	"Busy Lock     31",
+	"Scrambler     32",
+	"DCS Encrypt   33",
+	"Mute Code     34",
+	"CH Name       35",
+	"Save CH       36",
+	"Delete CH     37",
+	"K1 Long       38",
+	"K1 Short      39",
+	"K2 Long       40",
+	"K2 Short      41",
+	"DTMF Delay    42",
+	"DTMF Interval 43",
+	"DTMF Mode     44",
+	"DTMF Select   45",
+	"DTMF Display  46",
+	"Initialize    47",
+	"Version       48",
 };
 
 static const ChannelInfo_t EmptyChannel = {
@@ -467,6 +468,11 @@ void MENU_AcceptSetting(void)
 		CHANNELS_SaveVfo();
 		break;
 
+	case MENU_SKIP_SCAN:
+		gVfoState[gSettings.CurrentVfo].ScanAdd = gSettingIndex;
+		CHANNELS_SaveVfo();
+		break;
+
 	case MENU_BUSY_LOCK:
 		gVfoState[gSettings.CurrentVfo].BCL = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
 		CHANNELS_SaveVfo();
@@ -782,6 +788,11 @@ void MENU_DrawSetting(void)
 	case MENU_BAND_WIDTH:
 		gSettingIndex = gVfoState[gSettings.CurrentVfo].bIsNarrow;
 		UI_DrawSettingBandwidth();
+		break;
+
+	case MENU_SKIP_SCAN:
+		gSettingIndex = gVfoState[gSettings.CurrentVfo].ScanAdd;
+		UI_DrawSettingSkipScan();
 		break;
 
 	case MENU_BUSY_LOCK:
@@ -1107,6 +1118,10 @@ void MENU_ScrollSetting(uint8_t Key)
 
 	case MENU_BAND_WIDTH:
 		UI_DrawSettingBandwidth();
+		break;
+
+	case MENU_SKIP_SCAN:
+		UI_DrawSettingSkipScan();
 		break;
 
 	case MENU_BUSY_LOCK:

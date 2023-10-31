@@ -467,3 +467,8 @@ void UI_DrawSettingBusyLock(uint8_t Index)
 	UI_DrawSettingOption(Mode[(Index + 1) % 3], 1);
 }
 
+void UI_DrawSettingSkipScan(void)
+{
+	UI_DrawSettingOption("Skip            ", 0);
+	UI_DrawSettingOption("Scan            ", 1);
+}
