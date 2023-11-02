@@ -101,13 +101,13 @@ static void CheckRSSI(void)
 		
 		RXdBM = (RSSI>>1)-160;  // Using same rssi to dBM conversion as uv-k5.  Don't know if this is right.
 
-		//Valid range is 36 - 166
-		if (RSSI < 36) {
+		//Valid range is 72 - 330
+		if (RSSI < 72) {
 			Power = 0;
-		} else if (RSSI > 166) {
+		} else if (RSSI > 330) {
 			Power = 100;
 		} else {
-			Power = ((RSSI-36)*100)/130;
+			Power = ((RSSI-72)*100)/258;
 		}
 
 		// Convert to pos number to work with string funcs that require uint
