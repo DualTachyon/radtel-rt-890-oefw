@@ -1,3 +1,40 @@
+# Radtel RT-890 Custom Firmware
+
+This project is an effort to improve the firmware of the Radtel RT-890 in terms of features and radio performance.
+
+It is based on [DualTachyon's OEFW](https://github.com/DualTachyon/radtel-rt-890-oefw) which is reversed from the original Radtel 1.34 firmware.  
+Thanks to him for making this possible!
+
+## Disclaimer
+This firmware is a work in progress and could be unstable; it could alter your radio and its data.  
+Use at your own risk and remember to back up your SPI memory before installing any custom firmware.
+
+## Instructions
+### SPI memory backup
+Use [RT-890-Flasher](https://github.com/DualTachyon/radtel-rt-890-flasher)
+
+### SPI memory restore
+Use [RT-890-SPI-restore-CLI](https://github.com/DualTachyon/radtel-rt-890-spi-restore-cli)
+
+### Customizations
+```
+MOTO_STARTUP_TONE   => Moto XPS startup beeps
+LIGHT_THEME         => Light theme (white background)
+ENABLE_AM_FIX       => Experimental port of the great UV-K5 AM fix from OneOfEleven
+ENABLE_LTO          => Link Time Optimization
+```
+
+### Build & Flash
+See __Compiler__, __Building__ and __Flashing__ sections below.
+
+## Telegram group
+If you want to discuss this project, you can join the [Telegram group](https://t.me/RT890_OEFW).
+
+
+
+---
+_Original OEFW readme_
+
 # Support
 
 * If you like my work, you can support me through https://ko-fi.com/DualTachyon
