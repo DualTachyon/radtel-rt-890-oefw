@@ -150,7 +150,6 @@ void Task_CheckRSSI(void)
 				gNoToneCounter++;
 			}
 			if (gTailToneCounter <= 10 && gNoToneCounter <= 1000) {
-				SCANNER_Countdown = 0;
 				gNoToneCounter = 0;
 				CheckRSSI();
 			} else if (!gReceptionMode) {

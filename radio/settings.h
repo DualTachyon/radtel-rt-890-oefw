@@ -156,11 +156,22 @@ typedef struct __attribute__((packed)) {
 	uint8_t _0x5F;
 } gSettings_t;
 
+// Extended settings added to the custom firmware
+// stored outside of the original settings area to avoid breaking something
+typedef struct __attribute__((packed)) {
+	// 0x00
+	uint8_t ScanResume: 2;	// Carrier=1, Time=2, No=3
+	uint8_t Undefined: 6;	// free for use
+	// 0x01
+	// ...
+} gExtendedSettings_t;
+
 extern Calibration_t gCalibration;
 extern char gDeviceName[16];
 extern gSettings_t gSettings;
 extern char WelcomeString[32];
 extern uint32_t gFrequencyStep;
+extern gExtendedSettings_t gExtendedSettings;
 
 void SETTINGS_BackupCalibration(void);
 void SETTINGS_LoadCalibration(void);

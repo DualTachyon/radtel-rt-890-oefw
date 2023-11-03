@@ -275,6 +275,9 @@ void RADIO_StartRX(void)
 		VOX_Timer = 0;
 		Task_UpdateScreen();
 		SCREEN_TurnOn();
+		if (gScannerMode && gExtendedSettings.ScanResume == 2) {	// Time Operated
+			SCANNER_Countdown = 5000;
+		}
 		if (gScreenMode == SCREEN_MAIN && !gDTMF_InputMode) {
 			if (gSettings.DualDisplay == 0 && gSettings.CurrentVfo != gCurrentVfo) {
 				const uint8_t Y = gCurrentVfo * 41;
@@ -307,7 +310,16 @@ void RADIO_EndRX(void)
 	BK4819_ResetFSK();
 	DTMF_Disable();
 	if (gScannerMode) {
-		SETTINGS_SaveState();
+		switch (gExtendedSettings.ScanResume) {
+			case 1:		// Carrier Operated
+				SCANNER_Countdown = 3000;
+			case 2:		// Time Operated
+				gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_GREEN);
+				break;
+			case 3:		// No resume
+				SETTINGS_SaveState();
+				break;
+		}
 	}
 	TuneCurrentVfo();
 	if (!gFrequencyDetectMode) {
@@ -330,7 +342,6 @@ void RADIO_EndRX(void)
 		}
 		gRxLinkCounter = 0;
 		gNoToneCounter = 0;
-		SCANNER_Countdown = 5000;
 		gIdleTimer = 10000;
 		PTT_ClearLock(PTT_LOCK_INCOMING);
 		PTT_ClearLock(PTT_LOCK_BUSY);

@@ -26,10 +26,15 @@
 
 uint16_t SCANNER_Countdown;
 
-void Task_Scanner(void)
-{
-	if (gRadioMode < RADIO_MODE_RX && gScannerMode && SCANNER_Countdown == 0 && SCHEDULER_CheckTask(TASK_SCANNER)) {
+void Task_Scanner(void) {
+	if (gRadioMode < (gExtendedSettings.ScanResume == 2 ? RADIO_MODE_TX : RADIO_MODE_RX) 	// Allows Task_Scanner in RX mode if ScanResume is set to Time Operated
+			&& gScannerMode
+			&& SCANNER_Countdown == 0
+			&& SCHEDULER_CheckTask(TASK_SCANNER)) {
 		SCHEDULER_ClearTask(TASK_SCANNER);
+		if (gRadioMode == RADIO_MODE_RX) {	// Scanner timeout
+			RADIO_EndRX();
+		}
 		if (gSettings.WorkMode) {
 			CHANNELS_NextChannelMr(gSettings.ScanDirection ? KEY_DOWN : KEY_UP, true);
 		} else {

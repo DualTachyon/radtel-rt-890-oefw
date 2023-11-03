@@ -31,6 +31,7 @@ char gDeviceName[16];
 gSettings_t gSettings;
 char WelcomeString[32];
 uint32_t gFrequencyStep = 25;
+gExtendedSettings_t gExtendedSettings;
 
 static void RestoreCalibration(void)
 {
@@ -101,6 +102,8 @@ void SETTINGS_LoadSettings(void)
 	SFLASH_Read(&gDTMF_Kill, 0x3C9E30, sizeof(gDTMF_Kill));
 	SFLASH_Read(&gDTMF_Stun, 0x3C9E40, sizeof(gDTMF_Stun));
 	SFLASH_Read(&gDTMF_Wake, 0x3C9E50, sizeof(gDTMF_Wake));
+	// Extended Settings bits are all 1 at first read as the flash is full of 0xFF
+	SFLASH_Read(&gExtendedSettings, 0x3D5000, sizeof(gExtendedSettings));
 
 	gFrequencyStep = FREQUENCY_GetStep(gSettings.FrequencyStep);
 
@@ -122,6 +125,7 @@ void SETTINGS_LoadSettings(void)
 void SETTINGS_SaveGlobals(void)
 {
 	SFLASH_Update(&gSettings, 0x3C1030, sizeof(gSettings));
+	SFLASH_Update(&gExtendedSettings, 0x3D5000, sizeof(gExtendedSettings));
 }
 
 void SETTINGS_SaveState(void)

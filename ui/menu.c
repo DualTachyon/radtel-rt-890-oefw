@@ -472,3 +472,15 @@ void UI_DrawSettingSkipScan(void)
 	UI_DrawSettingOption("Skip            ", 0);
 	UI_DrawSettingOption("Scan            ", 1);
 }
+
+void UI_DrawSettingScanResume(uint8_t Index)
+{
+	static const char Mode[3][16] = {
+			"Carrier Operated",	// 1
+			"Time Operated   ",	// 2
+			"No Resume       ",	// 3
+	};
+	// Values start at 1 instead of 0 for this setting
+	UI_DrawSettingOption(Mode[Index - 1], 0);
+	UI_DrawSettingOption(Mode[(Index) % 3], 1);
+}

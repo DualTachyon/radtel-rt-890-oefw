@@ -35,7 +35,7 @@
 #include "ui/menu.h"
 #include "ui/version.h"
 
-static const char Menu[48][16] = {
+static const char Menu[49][16] = {
 	"Startup Logo  01",
 	"Voltage       02",
 	"Ringtone      03",
@@ -59,31 +59,32 @@ static const char Menu[48][16] = {
 	"Scan DIR      21",
 	"Personal ID   22",
 	"Repeater Mode 23",
-	"CTCSS/DCS     24",
-	"RX CTCSS/DCS  25",
-	"TX CTCSS/DCS  26",
-	"TX Power      27",
-	"Modulation    28",
-	"Band Width    29",
-	"Skip Scan     30",
-	"Busy Lock     31",
-	"Scrambler     32",
-	"DCS Encrypt   33",
-	"Mute Code     34",
-	"CH Name       35",
-	"Save CH       36",
-	"Delete CH     37",
-	"K1 Long       38",
-	"K1 Short      39",
-	"K2 Long       40",
-	"K2 Short      41",
-	"DTMF Delay    42",
-	"DTMF Interval 43",
-	"DTMF Mode     44",
-	"DTMF Select   45",
-	"DTMF Display  46",
-	"Initialize    47",
-	"Version       48",
+	"Scan Resume   24",
+	"CTCSS/DCS     25",
+	"RX CTCSS/DCS  26",
+	"TX CTCSS/DCS  27",
+	"TX Power      28",
+	"Modulation    29",
+	"Band Width    30",
+	"Skip Scan     31",
+	"Busy Lock     32",
+	"Scrambler     33",
+	"DCS Encrypt   34",
+	"Mute Code     35",
+	"CH Name       36",
+	"Save CH       37",
+	"Delete CH     38",
+	"K1 Long       39",
+	"K1 Short      40",
+	"K2 Long       41",
+	"K2 Short      42",
+	"DTMF Delay    43",
+	"DTMF Interval 44",
+	"DTMF Mode     45",
+	"DTMF Select   46",
+	"DTMF Display  47",
+	"Initialize    48",
+	"Version       49",
 };
 
 static const ChannelInfo_t EmptyChannel = {
@@ -433,6 +434,11 @@ void MENU_AcceptSetting(void)
 		SETTINGS_SaveGlobals();
 		break;
 
+	case MENU_SCAN_RESUME:
+		gExtendedSettings.ScanResume = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
+		SETTINGS_SaveGlobals();
+		break;
+
 	case MENU_CTCSS_DCS:
 		gVfoState[gSettings.CurrentVfo].TX.CodeType = gSettingCodeType;
 		gVfoState[gSettings.CurrentVfo].TX.Code = gSettingCode;
@@ -751,6 +757,12 @@ void MENU_DrawSetting(void)
 		gSettingCurrentValue = gSettings.RepeaterMode;
 		gSettingMaxValues = 3;
 		UI_DrawSettingRepeaterMode(gSettingCurrentValue);
+		break;
+
+	case MENU_SCAN_RESUME:
+		gSettingCurrentValue = gExtendedSettings.ScanResume;
+		gSettingMaxValues = 3;
+		UI_DrawSettingScanResume(gSettingCurrentValue);
 		break;
 
 	case MENU_CTCSS_DCS:
@@ -1106,6 +1118,10 @@ void MENU_ScrollSetting(uint8_t Key)
 
 	case MENU_REPEATER_MODE:
 		UI_DrawSettingRepeaterMode(gSettingCurrentValue);
+		break;
+
+	case MENU_SCAN_RESUME:
+		UI_DrawSettingScanResume(gSettingCurrentValue);
 		break;
 
 	case MENU_TX_POWER:
