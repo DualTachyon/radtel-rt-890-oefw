@@ -22,6 +22,9 @@
 void UART_Init(uint32_t BaudRate);
 void UART_SendByte(uint8_t Data);
 void UART_Send(const void *pBuffer, uint8_t Size);
+#ifdef UART_DEBUG
+	void UART_printf(const char *str, ...);
+#endif
 
 #endif
 

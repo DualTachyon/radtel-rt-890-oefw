@@ -23,6 +23,9 @@
 #include "driver/bk4819.h"
 #include "driver/key.h"
 #include "driver/pins.h"
+#ifdef UART_DEBUG
+	#include "driver/uart.h"
+#endif
 #include "helper/dtmf.h"
 #include "helper/helper.h"
 #include "helper/inputbox.h"
@@ -361,6 +364,9 @@ static void HandlerLong(KEY_t Key)
 
 			case KEY_2:
 				gAmFixEnabled = !gAmFixEnabled;
+				#ifdef UART_DEBUG
+					//UART_printf("AM fix toggled to %s\r\n", gAmFixEnabled ? "ON" : "OFF");
+				#endif
 				UI_DrawDialogText(DIALOG_AM_FIX, gAmFixEnabled);
 				break;
 

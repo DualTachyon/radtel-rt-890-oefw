@@ -17,6 +17,9 @@
 #include <at32f421.h>
 #include <stdbool.h>
 #include "driver/uart.h"
+#ifdef UART_DEBUG
+	#include "external/printf/printf.h"
+#endif
 
 static void usart_reset_ex(usart_type *uart, uint32_t baudrate)
 {
@@ -79,3 +82,15 @@ void UART_Send(const void *pBuffer, uint8_t Size)
 	}
 }
 
+#ifdef UART_DEBUG
+	void UART_printf(const char *str, ...)
+	{
+		char text[256];
+		int  len;
+		va_list va;
+		va_start(va, str);
+		len = vsnprintf(text, sizeof(text), str, va);
+		va_end(va);
+		UART_Send(text, len);
+	}
+#endif

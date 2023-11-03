@@ -1,6 +1,7 @@
 TARGET = firmware
 
-MOTO_STARTUP_TONE 		:= 1
+UART_DEBUG			:= 0
+MOTO_STARTUP_TONE		:= 1
 LIGHT_THEME			:= 1
 ENABLE_AM_FIX			:= 1
 ENABLE_LTO			:= 0
@@ -9,7 +10,9 @@ OBJS =
 # Startup files
 OBJS += startup/start.o
 OBJS += startup/init.o
-#OBJS += external/printf/printf.o
+ifeq ($(UART_DEBUG),1)
+	OBJS += external/printf/printf.o
+endif
 
 # BSP
 OBJS += bsp/crm.o
@@ -146,6 +149,9 @@ LIBS =
 
 DEPS = $(OBJS:.o=.d)
 
+ifeq ($(UART_DEBUG),1)
+	CFLAGS += -DUART_DEBUG
+endif
 ifeq ($(MOTO_STARTUP_TONE),1)
 	CFLAGS += -DMOTO_STARTUP_TONE
 endif
