@@ -257,7 +257,7 @@
 	//
 	void Task_AM_fix()
 	{
-        if(gAmFixCountdown != 0 || !gAmFixEnabled) return;
+        if(gAmFixCountdown != 0 || !gExtendedSettings.AmFixEnabled) return;
         if(gVfoState[gSettings.CurrentVfo].gModulationType == 1) { // AM
             int16_t diff_dB;
             int16_t rssi;

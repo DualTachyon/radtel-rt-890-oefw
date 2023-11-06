@@ -26,7 +26,6 @@ bool gFrequencyDetectMode;
 bool gEnableBlink;
 bool gRedrawScreen;
 bool gScannerMode;
-bool gAmFixEnabled = false;
 bool gSaveMode;
 bool gReceptionMode;
 bool gReceivingAudio;

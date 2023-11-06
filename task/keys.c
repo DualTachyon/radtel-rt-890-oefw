@@ -363,11 +363,14 @@ static void HandlerLong(KEY_t Key)
 				break;
 
 			case KEY_2:
-				gAmFixEnabled = !gAmFixEnabled;
-				#ifdef UART_DEBUG
-					//UART_printf("AM fix toggled to %s\r\n", gAmFixEnabled ? "ON" : "OFF");
+				#ifdef ENABLE_AM_FIX
+					gExtendedSettings.AmFixEnabled = !gExtendedSettings.AmFixEnabled;
+					SETTINGS_SaveGlobals();
+					#ifdef UART_DEBUG
+						//UART_printf("AM fix toggled to %s\r\n", gExtendedSettings.AmFixEnabled ? "ON" : "OFF");
+					#endif
+					UI_DrawDialogText(DIALOG_AM_FIX, gExtendedSettings.AmFixEnabled);
 				#endif
-				UI_DrawDialogText(DIALOG_AM_FIX, gAmFixEnabled);
 				break;
 
 			case KEY_3:
