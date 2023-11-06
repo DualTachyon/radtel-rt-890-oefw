@@ -282,8 +282,8 @@ void RADIO_StartRX(void)
 			if (gSettings.DualDisplay == 0 && gSettings.CurrentVfo != gCurrentVfo) {
 				const uint8_t Y = gCurrentVfo * 41;
 
-				DISPLAY_Fill(1, 158, 1 + Y, 40 + Y, COLOR_BLACK);
-				DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BLACK);
+				DISPLAY_Fill(1, 158, 1 + Y, 40 + Y, COLOR_BACKGROUND);
+				DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BACKGROUND);
 
 				UI_DrawVoltage(!gCurrentVfo);
 			}
@@ -591,7 +591,7 @@ void RADIO_DrawFrequencyMode(void)
 	if (gFrequencyReverse) {
 		UI_DrawFrequency(gVfoState[gSettings.CurrentVfo].TX.Frequency, gSettings.CurrentVfo, COLOR_RED);
 	} else {
-		UI_DrawFrequency(gVfoState[gSettings.CurrentVfo].RX.Frequency, gSettings.CurrentVfo, COLOR_WHITE);
+		UI_DrawFrequency(gVfoState[gSettings.CurrentVfo].RX.Frequency, gSettings.CurrentVfo, COLOR_FOREGROUND);
 	}
 }
 

@@ -2,7 +2,6 @@ TARGET = firmware
 
 UART_DEBUG			:= 0
 MOTO_STARTUP_TONE		:= 1
-LIGHT_THEME			:= 1
 ENABLE_AM_FIX			:= 1
 ENABLE_LTO			:= 0
 
@@ -154,9 +153,6 @@ ifeq ($(UART_DEBUG),1)
 endif
 ifeq ($(MOTO_STARTUP_TONE),1)
 	CFLAGS += -DMOTO_STARTUP_TONE
-endif
-ifeq ($(LIGHT_THEME),1)
-	CFLAGS += -DLIGHT_THEME
 endif
 ifeq ($(ENABLE_AM_FIX),1)
 	CFLAGS += -DENABLE_AM_FIX

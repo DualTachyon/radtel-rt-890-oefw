@@ -43,7 +43,7 @@ uint8_t gNOAA_ChannelNow;
 uint8_t gNOAA_ChannelNext;
 uint8_t gTailToneCounter;
 uint16_t gNoToneCounter;
-uint8_t gSettingsCount = 47;
+uint8_t gSettingsCount = 50;
 bool gFrequencyReverse;
 char gString[32];
 char gBigString[40];

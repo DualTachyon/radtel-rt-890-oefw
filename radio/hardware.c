@@ -198,7 +198,7 @@ void HARDWARE_Init(void)
 void HARDWARE_Reboot(void)
 {
 	DELAY_WaitMS(1000);
-	DISPLAY_Fill(0, 159, 0, 96, COLOR_BLACK);
+	DISPLAY_Fill(0, 159, 0, 96, COLOR_BACKGROUND);
 	RADIO_Sleep();
 	NVIC_SystemReset();
 }

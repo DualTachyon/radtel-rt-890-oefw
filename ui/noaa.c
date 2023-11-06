@@ -44,6 +44,6 @@ void UI_DrawNOAA(uint8_t Channel)
 	UI_DrawString( 8, 32, "CH-", 3);
 	Int2Ascii(Channel + 1, 2);
 	UI_DrawString(32, 32, gShortString, 2);
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 }
 

@@ -195,8 +195,8 @@ static void MAIN_KeyHandler(KEY_t Key)
 			}
 			RADIO_CancelMode();
 			if (gSettings.DualDisplay == 0) {
-				DISPLAY_Fill(1, 158, 1 + (gCurrentVfo * 41), 40 + (gCurrentVfo * 41), COLOR_BLACK);
-				DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BLACK);
+				DISPLAY_Fill(1, 158, 1 + (gCurrentVfo * 41), 40 + (gCurrentVfo * 41), COLOR_BACKGROUND);
+				DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BACKGROUND);
 				UI_DrawVoltage(gSettings.CurrentVfo);
 			}
 			UI_DrawMainBitmap(false, gSettings.CurrentVfo);
@@ -382,7 +382,7 @@ static void HandlerLong(KEY_t Key)
 					RADIO_EndTX();
 					VOX_IsTransmitting = false;
 				}
-				UI_DrawStatusIcon(80, ICON_VOX, gSettings.Vox, COLOR_WHITE);
+				UI_DrawStatusIcon(80, ICON_VOX, gSettings.Vox, COLOR_FOREGROUND);
 				UI_DrawDialogText(DIALOG_VOX, gSettings.Vox);
 				break;
 
@@ -396,7 +396,7 @@ static void HandlerLong(KEY_t Key)
 
 			case KEY_5:
 				gMenuIndex = MENU_SQ_LEVEL;
-				DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
+				DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
 				DISPLAY_DrawRectangle0(0, 56, 160, 1, gSettings.BorderColor);
 				MENU_DrawSetting();
 				break;
@@ -407,13 +407,13 @@ static void HandlerLong(KEY_t Key)
 				RADIO_Tune(gSettings.CurrentVfo);
 				SETTINGS_SaveGlobals();
 				gIdleMode = IDLE_MODE_OFF;
-				UI_DrawStatusIcon(56, ICON_DUAL_WATCH, gSettings.DualStandby, COLOR_WHITE);
+				UI_DrawStatusIcon(56, ICON_DUAL_WATCH, gSettings.DualStandby, COLOR_FOREGROUND);
 				UI_DrawDialogText(DIALOG_DUAL_STANDBY, gSettings.DualStandby);
 				break;
 
 			case KEY_8:
 				gMenuIndex = MENU_FREQ_STEP;
-				DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
+				DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
 				DISPLAY_DrawRectangle0(0, 56, 160, 1, gSettings.BorderColor);
 				MENU_DrawSetting();
 				break;

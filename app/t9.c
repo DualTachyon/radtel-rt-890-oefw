@@ -99,7 +99,7 @@ static void UpDownEx(char c)
 	DISPLAY_Fill(1, 158, 1, 19, gColorBackground);
 	gColorForeground = COLOR_RED;
 	UI_DrawString(4, 18, String, 15);
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 }
 
 static void InsertChar(uint8_t Limit, char c)
@@ -140,7 +140,7 @@ static void DrawT9Sequence(char c)
 	DISPLAY_Fill(1, 158, 1, 19, gColorBackground);
 	gColorForeground = COLOR_RED;
 	UI_DrawString(4, 18, String, 15);
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 }
 
 void T9_Editor(uint8_t Key, uint8_t Limit)

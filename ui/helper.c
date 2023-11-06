@@ -260,7 +260,7 @@ void UI_DrawDigits(const char *pDigits, uint8_t Vfo)
 
 	X = 136;
 	Y = 73 + (Vfo * 215);
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 	for (i = 0; i < 3; i++) {
 		if (pDigits[i] == '-') {
 			UI_DrawSmallCharacter(X, Y, '-');
@@ -308,23 +308,23 @@ void UI_DrawStatusIcon(uint8_t X, UI_Icon_t Icon, bool bDraw, uint16_t Color)
 
 void UI_DrawRoger(void)
 {
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 
 	switch (gSettings.RogerBeep) {
 	case 0:
-		UI_DrawStatusIcon(20, ICON_BELL, false, COLOR_WHITE);
+		UI_DrawStatusIcon(20, ICON_BELL, false, COLOR_FOREGROUND);
 		UI_DrawSmallString(32, 85, "  ", 2);
 		break;
 	case 1:
-		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_WHITE);
+		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_FOREGROUND);
 		UI_DrawSmallString(32, 86, " 1", 2);
 		break;
 	case 2:
-		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_WHITE);
+		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_FOREGROUND);
 		UI_DrawSmallString(32, 86, " 2", 2);
 		break;
 	case 3:
-		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_WHITE);
+		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_FOREGROUND);
 		UI_DrawSmallString(32, 86, "ID", 2);
 		break;
 	}
@@ -394,20 +394,20 @@ void UI_DrawVfoFrame(uint8_t Y)
 {
 	Y = 43 - (Y * 41);
 // Full size
-//	DISPLAY_DrawRectangle0( 20, Y, 100, 1, COLOR_WHITE);
-//	DISPLAY_DrawRectangle1( 20, Y,   6, 1, COLOR_WHITE);
-//	DISPLAY_DrawRectangle1(120, Y,   6, 1, COLOR_WHITE);
-//	DISPLAY_DrawRectangle1( 45, Y,   5, 1, COLOR_WHITE);
-//	DISPLAY_DrawRectangle1( 70, Y,   5, 1, COLOR_WHITE);
-//	DISPLAY_DrawRectangle1( 95, Y,   5, 1, COLOR_WHITE);
+//	DISPLAY_DrawRectangle0( 20, Y, 100, 1, COLOR_FOREGROUND);
+//	DISPLAY_DrawRectangle1( 20, Y,   6, 1, COLOR_FOREGROUND);
+//	DISPLAY_DrawRectangle1(120, Y,   6, 1, COLOR_FOREGROUND);
+//	DISPLAY_DrawRectangle1( 45, Y,   5, 1, COLOR_FOREGROUND);
+//	DISPLAY_DrawRectangle1( 70, Y,   5, 1, COLOR_FOREGROUND);
+//	DISPLAY_DrawRectangle1( 95, Y,   5, 1, COLOR_FOREGROUND);
 
 // 80% size - allow room to right for dBM reading
-	DISPLAY_DrawRectangle0( 20, Y, 80, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1( 20, Y,   6, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1(100, Y,   6, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1( 40, Y,   5, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1( 60, Y,   5, 1, COLOR_WHITE);
-	DISPLAY_DrawRectangle1( 80, Y,   5, 1, COLOR_WHITE);
+	DISPLAY_DrawRectangle0( 20, Y, 80, 1, COLOR_FOREGROUND);
+	DISPLAY_DrawRectangle1( 20, Y,   6, 1, COLOR_FOREGROUND);
+	DISPLAY_DrawRectangle1(100, Y,   6, 1, COLOR_FOREGROUND);
+	DISPLAY_DrawRectangle1( 40, Y,   5, 1, COLOR_FOREGROUND);
+	DISPLAY_DrawRectangle1( 60, Y,   5, 1, COLOR_FOREGROUND);
+	DISPLAY_DrawRectangle1( 80, Y,   5, 1, COLOR_FOREGROUND);
 }
 
 void UI_DrawName(uint8_t Vfo, const char *pName)
@@ -486,7 +486,7 @@ void UI_DrawCss(uint8_t CodeType, uint16_t Code, uint8_t Encrypt, bool bMute, ui
 {
 	const uint8_t Y = 58 - (Vfo * 41);
 
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 
 	if (bMute) {
 		UI_DrawSmallString(124, Y, "MUTE ", 5);
@@ -532,7 +532,7 @@ void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Cl
 {
 	uint8_t Y = 43 - (Vfo * 41);
 		
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 
 	if (Clear) {
 		UI_DrawSmallString(105, Y, "    ", 4);
@@ -552,7 +552,7 @@ void UI_DrawChannel(uint16_t Channel, uint8_t Vfo)
 {
 	uint8_t Y = 73 - (Vfo * 41);
 
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 	if (Channel > 998) {
 		UI_DrawSmallString(124, Y, "VFO  ", 5);
 	} else {
@@ -633,7 +633,7 @@ void UI_DrawFMFrequency(uint16_t Frequency)
 void UI_DrawFM(void)
 {
 	gColorForeground = COLOR_GREY;
-	DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
+	DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
 	DISPLAY_DrawRectangle0(0, 81, 160, 1, gSettings.BorderColor);
 	UI_DrawFrame(12, 150, 6, 74, 2, gColorForeground);
 	UI_DrawFrame(72, 144, 36, 64, 2, gColorForeground);
@@ -674,7 +674,7 @@ void UI_DrawFrame(uint8_t X0, uint8_t X1, uint8_t Y0, uint8_t Y1, uint8_t Thickn
 
 void UI_DrawDialog(void)
 {
-	DISPLAY_Fill(4, 156, 19, 61, COLOR_BLACK);
+	DISPLAY_Fill(4, 156, 19, 61, COLOR_BACKGROUND);
 	UI_DrawFrame(4, 156, 19, 61, 2, gSettings.BorderColor);
 }
 
@@ -717,8 +717,8 @@ void UI_DrawSomething(void)
 	const uint8_t Y = gCurrentVfo * 41;
 
 	if (gSettings.DualDisplay == 0 && gSettings.CurrentVfo != gCurrentVfo) {
-		DISPLAY_Fill(1, 158, 1 + Y, 40 + Y, COLOR_BLACK);
-		DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BLACK);
+		DISPLAY_Fill(1, 158, 1 + Y, 40 + Y, COLOR_BACKGROUND);
+		DISPLAY_Fill(1, 158, 1 + ((!gCurrentVfo) * 41), 40 + ((!gCurrentVfo) * 41), COLOR_BACKGROUND);
 		UI_DrawVoltage(!gSettings.CurrentVfo);
 		UI_DrawVfo(gSettings.CurrentVfo);
 	} else {
@@ -769,7 +769,7 @@ void UI_DrawMainBitmap(bool bOverride, uint8_t Vfo)
 void UI_DrawSky(void)
 {
 	gColorForeground = COLOR_RGB(31, 63, 31);
-	DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
+	DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
 	DISPLAY_DrawRectangle0(0, 81, 160, 1, gSettings.BorderColor);
 	UI_DrawBitmap(90, 16, 7, 70, BitmapSKY);
 }
@@ -781,7 +781,7 @@ void UI_DrawFrequencyEx(const char *String, uint8_t Vfo, bool bReverse)
 	uint8_t i;
 
 	if (!bReverse) {
-		gColorForeground = COLOR_WHITE;
+		gColorForeground = COLOR_FOREGROUND;
 	} else {
 		gColorForeground = COLOR_RED;
 	}
@@ -846,12 +846,12 @@ void UI_DrawStringSwitchType(void)
 	DISPLAY_DrawRectangle0(1, 20, 159, 1, COLOR_RGB(31, 53, 0));
 	gColorForeground = COLOR_RED;
 	UI_DrawString(4, 18, "Switch type by [*]", 18);
-	gColorForeground = COLOR_WHITE;
+	gColorForeground = COLOR_FOREGROUND;
 }
 
 void UI_DrawRadar(void)
 {
-	DISPLAY_Fill(0, 159, 1, 81, COLOR_BLACK);
+	DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
 	DISPLAY_DrawRectangle0(0, 81, 160, 1, gSettings.BorderColor);
 	gColorForeground = COLOR_BLUE;
 	UI_DrawBitmap(4, 12, 8, 64, BitmapRadar);

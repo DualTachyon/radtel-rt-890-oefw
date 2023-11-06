@@ -79,15 +79,15 @@ void SETTINGS_LoadCalibration(void)
 	gpio_bits_set(GPIOA, BOARD_GPIOA_LCD_RESX);
 
 	while (1) {
-		DISPLAY_Fill(0, 159, 0, 96, COLOR_BLACK);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_RGB(0, 0, 0)); //Black
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, COLOR_WHITE);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_RGB(31, 63, 31)); //White
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, COLOR_RED);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_RGB(31, 0, 0)); //Red
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, COLOR_RGB(0, 32, 0));
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_RGB(0, 32, 0)); //Green
 		DELAY_WaitMS(1000);
-		DISPLAY_Fill(0, 159, 0, 96, COLOR_BLUE);
+		DISPLAY_Fill(0, 159, 0, 96, COLOR_RGB(0, 0, 31)); //Blue
 		DELAY_WaitMS(1000);
 	}
 }
@@ -106,6 +106,8 @@ void SETTINGS_LoadSettings(void)
 	SFLASH_Read(&gExtendedSettings, 0x3D5000, sizeof(gExtendedSettings));
 
 	gFrequencyStep = FREQUENCY_GetStep(gSettings.FrequencyStep);
+
+	UI_SetColors(gExtendedSettings.DarkMode);
 
 	gSettings.bEnableDisplay = 1;
 	if (!gpio_input_data_bit_read(GPIOA, BOARD_GPIOA_KEY_SIDE2)) {

@@ -146,7 +146,7 @@ bool DATA_ReceiverCheck(void)
 		} else if (gSettings.DtmfState == DTMF_STATE_STUNNED) {
 			gSettings.DtmfState = DTMF_STATE_NORMAL;
 			SETTINGS_SaveGlobals();
-			UI_DrawStatusIcon(4, ICON_LOCK, gSettings.Lock, COLOR_WHITE);
+			UI_DrawStatusIcon(4, ICON_LOCK, gSettings.Lock, COLOR_FOREGROUND);
 		} else if (gSettings.DtmfState == DTMF_STATE_KILLED) {
 			gSettings.DtmfState = DTMF_STATE_NORMAL;
 			SETTINGS_SaveGlobals();

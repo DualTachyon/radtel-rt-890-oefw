@@ -237,7 +237,7 @@ static void DETECTOR_Loop(void)
 	bScan = false;
 
 	while (1) {
-		DISPLAY_Fill(80, 159, 8, 40, COLOR_BLACK);
+		DISPLAY_Fill(80, 159, 8, 40, COLOR_BACKGROUND);
 		gRxLinkCounter = 0;
 		do {
 			if (gRxLinkCounter == 0 && !bCtdcScan) {
