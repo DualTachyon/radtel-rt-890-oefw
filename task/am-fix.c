@@ -19,14 +19,9 @@
 //
 // that is until someone works out how to properly configure the BK chip !
 
-#include <string.h>
-#include "bsp/gpio.h"
 #include "task/am-fix.h"
 #include "app/radio.h"
 #include "driver/bk4819.h"
-#include "driver/pins.h"
-#include "external/printf/printf.h"
-#include "radio/frequencies.h"
 #include "radio/settings.h"
 #include "misc.h"
 
@@ -202,19 +197,7 @@
 	static const unsigned int original_index = 90;
     uint16_t gAmFixCountdown;
 
-
-	#ifdef ENABLE_AM_FIX_SHOW_DATA
-		// display update rate
-		static const unsigned int display_update_rate = 250 / 10;   // max 250ms display update rate
-		unsigned int counter = 0;
-	#endif
-
-	#ifdef ENABLE_AM_FIX_TEST1
-		// user manually sets the table index .. used to calibrate the desired dB gain table
-		unsigned int gain_table_index[2] = {1 + g_setting_am_fix_test1, 1 + g_setting_am_fix_test1};
-	#else
-		unsigned int gain_table_index[2] = {original_index, original_index};
-	#endif
+	unsigned int gain_table_index[2] = {original_index, original_index};
 
 	// used simply to detect a changed gain setting
 	unsigned int gain_table_index_prev[2] = {0, 0};
@@ -223,7 +206,7 @@
 	int16_t prev_rssi[2] = {0, 0};
 
 	// to help reduce gain hunting, peak hold count down tick
-	unsigned int hold_counter[2] = {0, 0};
+	uint8_t hold_counter[2] = {0, 0};
 
 	// used to correct the RSSI readings after our RF gain adjustments
 	int16_t rssi_gain_diff[2] = {0, 0};
@@ -243,20 +226,12 @@
 
 		for (i = 0; i < 2; i++)
 		{
-			#ifdef ENABLE_AM_FIX_TEST1
-				gain_table_index[i] = 1 + g_setting_am_fix_test1;
-			#else
-				gain_table_index[i] = original_index;  // re-start with original QS setting
-			#endif
+			gain_table_index[i] = original_index;  // re-start with original QS setting
 		}
 	}
 
 	void AM_fix_reset(const int vfo)
 	{	// reset the AM fixer upper
-
-		#ifdef ENABLE_AM_FIX_SHOW_DATA
-			counter = 0;
-		#endif
 
 		prev_rssi[vfo] = 0;
 
@@ -292,10 +267,7 @@
             {
                     case RADIO_MODE_QUIET:
                     case RADIO_MODE_TX:
-                    #ifdef ENABLE_AM_FIX_SHOW_DATA
-                        counter = display_update_rate;  // queue up a display update as soon as we switch to RX mode
-                    #endif
-                    gAmFixCountdown = 10;
+                    gAmFixCountdown = 100;
                     return;
 
                 // only adjust stuff if we're in one of these modes
@@ -303,17 +275,6 @@
                 case RADIO_MODE_RX:
                     break;
             }
-
-            #ifdef ENABLE_AM_FIX_SHOW_DATA
-                if (counter > 0)
-                {
-                    if (++counter >= display_update_rate)
-                    {	// trigger a display update
-                        counter        = 0;
-                        g_update_display = true;
-                    }
-                }
-            #endif
 
             {	// sample the current RSSI level
                 // average it with the previous rssi (a bit of noise/spike immunity)
@@ -323,39 +284,8 @@
             }
 
             // save the corrected RSSI level
-            #ifdef ENABLE_AM_FIX_SHOW_DATA
-            {
-                const int16_t new_rssi = rssi - rssi_gain_diff[vfo];
-                if (gCurrentRssi[vfo] != new_rssi)
-                {
-                    gCurrentRssi[vfo] = new_rssi;
-            
-                    if (counter == 0)
-                    {	// trigger a display update
-                        counter        = 1;
-                        g_update_display = true;
-                    }
-                }
-            }
-            #else
-                gCurrentRssi[vfo] = rssi - rssi_gain_diff[vfo];
-            #endif
+            gCurrentRssi[vfo] = rssi - rssi_gain_diff[vfo];
 
-    #ifdef ENABLE_AM_FIX_TEST1
-            // user is manually adjusting a gain register - don't do anything automatically
-
-            {
-                int i = 1 + (int)g_setting_am_fix_test1;
-                i = (i < 1) ? 1 : (i > ((int)ARRAY_SIZE(gain_table) - 1) ? ARRAY_SIZE(gain_table) - 1 : i;
-
-                if (gain_table_index[vfo] == i)
-                    gAmFixCountdown = 10;
-                    return;    // no change
-
-                gain_table_index[vfo] = i;
-            }
-
-    #else
             // automatically adjust the RF RX gain
 
             // update the gain hold counter
@@ -398,26 +328,20 @@
                 if (gain_table_index[vfo] != index)
                 {
                     gain_table_index[vfo] = index;
-                    hold_counter[vfo] = 30;       // 300ms hold
+                    hold_counter[vfo] = 250;       // 300ms hold
                 }
             }
 
             if (diff_dB >= -6)                    // 6dB hysterisis (help reduce gain hunting)
-                hold_counter[vfo] = 30;           // 300ms hold
+                hold_counter[vfo] = 250;           // 300ms hold
 
             if (hold_counter[vfo] == 0)
             {	// hold has been released, we're free to increase gain
-                gpio_bits_flip(GPIOA, BOARD_GPIOA_LED_RED);
                 const unsigned int index = gain_table_index[vfo] + 1;                 // move up to next gain index
                 gain_table_index[vfo] = (index < ARRAY_SIZE(gain_table)) ? index : ARRAY_SIZE(gain_table) - 1;     // limit the gain index
             }
 
-            #if 0
-                if (gain_table_index[vfo] == gain_table_index_prev[vfo])
-                    return;     // no gain change - this is to reduce writing to the BK chip on ever call
-            #endif
 
-    #endif
 
             {	// apply the new settings to the front end registers
 
@@ -437,22 +361,15 @@
             // save the corrected RSSI level
             gCurrentRssi[vfo] = rssi - rssi_gain_diff[vfo];
 
-            #ifdef ENABLE_AM_FIX_SHOW_DATA
-                if (counter == 0)
-                {
-                    counter        = 1;
-                    g_update_display = true;
-                }
-            #endif
-            gAmFixCountdown = 10;
+            gAmFixCountdown = 100;
         } else
         {
 			gAmFixCountdown = 1000;
 			// original radtel front end register settings
-            const uint8_t orig_lna_short = 3;
-            const uint8_t orig_lna = 6;
-            const uint8_t orig_mixer = 3;
-            const uint8_t orig_pga = 6;
+            const uint8_t orig_lna_short = 2;
+            const uint8_t orig_lna = 5;
+            const uint8_t orig_mixer = 2;
+            const uint8_t orig_pga = 5;
 			if(BK4819_ReadRegister(0x13) != ((orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0))) {
             	BK4819_WriteRegister(0x13, (orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0));
 			}
