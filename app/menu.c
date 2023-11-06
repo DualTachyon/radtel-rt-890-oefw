@@ -652,6 +652,7 @@ void MENU_DrawSetting(void)
 	case MENU_ROGER_BEEP:
 		gSettingCurrentValue = gSettings.RogerBeep;
 		gSettingMaxValues = 4;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingRoger(gSettingCurrentValue);
 		break;
 
@@ -662,6 +663,7 @@ void MENU_DrawSetting(void)
 
 	case MENU_TX_PRIORITY:
 		gSettingIndex = gSettings.TxPriority;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawTxPriority();
 		break;
 
@@ -736,6 +738,7 @@ void MENU_DrawSetting(void)
 
 	case MENU_SCAN_DIR:
 		gSettingIndex = gSettings.ScanDirection;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawScanDirection();
 		break;
 
@@ -756,6 +759,7 @@ void MENU_DrawSetting(void)
 	case MENU_REPEATER_MODE:
 		gSettingCurrentValue = gSettings.RepeaterMode;
 		gSettingMaxValues = 3;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingRepeaterMode(gSettingCurrentValue);
 		break;
 
@@ -788,28 +792,33 @@ void MENU_DrawSetting(void)
 
 	case MENU_TX_POWER:
 		gSettingIndex = gVfoState[gSettings.CurrentVfo].bIsLowPower;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingTxPower();
 		break;
 
 	case MENU_MODULATION:
 		gSettingCurrentValue = gVfoState[gSettings.CurrentVfo].gModulationType;
 		gSettingMaxValues = 4;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingModulation(gSettingCurrentValue);
 		break;
 
 	case MENU_BAND_WIDTH:
 		gSettingIndex = gVfoState[gSettings.CurrentVfo].bIsNarrow;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingBandwidth();
 		break;
 
 	case MENU_SKIP_SCAN:
 		gSettingIndex = gVfoState[gSettings.CurrentVfo].ScanAdd;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingSkipScan();
 		break;
 
 	case MENU_BUSY_LOCK:
 		gSettingCurrentValue = gVfoState[gSettings.CurrentVfo].BCL;
 		gSettingMaxValues = 3;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingBusyLock(gSettingCurrentValue);
 		break;
 
@@ -823,6 +832,7 @@ void MENU_DrawSetting(void)
 	case MENU_DCS_ENCRYPT:
 		gSettingCurrentValue = gVfoState[gSettings.CurrentVfo].Encrypt;
 		gSettingMaxValues = 4;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawEncrypt(gSettingCurrentValue);
 		break;
 
@@ -836,6 +846,7 @@ void MENU_DrawSetting(void)
 		gSettingGolay = gVfoState[gSettings.CurrentVfo].Golay;
 		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawSettingArrow(0);
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawMute(gSettingCurrentValue, gSettingGolay, true);
 		return;
 
@@ -867,6 +878,7 @@ void MENU_DrawSetting(void)
 	case MENU_K2_SHORT:
 		gSettingCurrentValue = gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 12U;
 		gSettingMaxValues = 12;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
 		UI_DrawActions(gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 12U);
 		break;
 

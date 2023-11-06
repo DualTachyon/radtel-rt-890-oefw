@@ -35,16 +35,15 @@ void UI_DrawSettingOption(const char *pString, uint8_t Index)
 
 void UI_DrawSettingRoger(uint8_t Index)
 {
-	static const char Mode[4][16] = {
-		"Off             ",
-		"Roger 1         ",
-		"Roger 2         ",
-		"Send ID         ",
-
+	static const char Mode[4][7] = {
+		"Off    ",
+		"Roger 1",
+		"Roger 2",
+		"Send ID",
 	};
 
-	UI_DrawSettingOption(Mode[Index], 0);
-	UI_DrawSettingOption(Mode[(Index + 1) % 4], 1);
+	UI_DrawSettingOptionEx(Mode[Index], 7, 0);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 4], 7, 1);
 }
 
 void UI_DrawDtmfMode(uint8_t Index)
@@ -71,13 +70,13 @@ void UI_DrawDtmfSelect(uint8_t Index)
 
 void UI_DrawToggle(void)
 {
-	static const char Toggle[2][16] = {
-		"Off             ",
-		"On              ",
+	static const char Toggle[2][3] = {
+		"Off",
+		"On ",
 	};
-
-	UI_DrawSettingOption(Toggle[0], 0);
-	UI_DrawSettingOption(Toggle[1], 1);
+	DISPLAY_Fill(0, 159, 1, 55, COLOR_BLACK);
+	UI_DrawSettingOptionEx(Toggle[0], 3, 0);
+	UI_DrawSettingOptionEx(Toggle[1], 3, 1);
 }
 
 void UI_DrawSettingArrow(uint8_t Selection)
@@ -136,23 +135,23 @@ void UI_DrawDtmfDelay(uint8_t Delay)
 
 void UI_DrawActions(uint8_t Index)
 {
-	static const char Actions[12][16] = {
-		"None            ",
-		"Monit           ",
-		"Freq Detect     ",
-		"Repeat Mode     ",
-		"Preset CH       ",
-		"Local Alarm     ",
-		"Remote Alarm    ",
-		"NOAA CH         ",
-		"Send Tone       ",
-		"Roger Beep      ",
-		"FM Radio        ",
-		"Freq Scanner    ",
+	static const char Actions[12][12] = {
+		"None        ",
+		"Monit       ",
+		"Freq Detect ",
+		"Repeat Mode ",
+		"Preset CH   ",
+		"Local Alarm ",
+		"Remote Alarm",
+		"NOAA CH     ",
+		"Send Tone   ",
+		"Roger Beep  ",
+		"FM Radio    ",
+		"Freq Scanner",
 	};
 
-	UI_DrawSettingOption(Actions[Index], 0);
-	UI_DrawSettingOption(Actions[(Index + 1) % 12], 1);
+	UI_DrawSettingOptionEx(Actions[Index], 12, 0);
+	UI_DrawSettingOptionEx(Actions[(Index + 1) % 12], 12, 1);
 }
 
 void UI_DrawChannelName(uint16_t Channel)
@@ -200,13 +199,13 @@ void UI_DrawChannelName(uint16_t Channel)
 
 void UI_DrawMute(uint8_t Index, uint16_t Golay, bool bEnabled)
 {
-	static const char Mode[3][16] = {
-		"Off             ",
-		"23bits          ",
-		"24bits          ",
+	static const char Mode[3][6] = {
+		"Off   ",
+		"23bits",
+		"24bits",
 	};
 
-	UI_DrawSettingOption(Mode[Index], 0);
+	UI_DrawSettingOptionEx(Mode[Index], 6, 0);
 
 	if (bEnabled) {
 		Int2Ascii(Golay, 8);
@@ -216,15 +215,15 @@ void UI_DrawMute(uint8_t Index, uint16_t Golay, bool bEnabled)
 
 void UI_DrawEncrypt(uint8_t Index)
 {
-	static const char Mode[4][16] = {
-		"Off             ",
-		"Encrypt 1       ",
-		"Encrypt 2       ",
-		"Encrypt 3       ",
+	static const char Mode[4][9] = {
+		"Off      ",
+		"Encrypt 1",
+		"Encrypt 2",
+		"Encrypt 3",
 	};
 
-	UI_DrawSettingOption(Mode[Index], 0);
-	UI_DrawSettingOption(Mode[(Index + 1) % 4], 1);
+	UI_DrawSettingOptionEx(Mode[Index], 9, 0);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 4], 9, 1);
 }
 
 void UI_DrawScrambler(uint8_t Index)
@@ -262,76 +261,31 @@ void UI_DrawCursor(uint8_t X, bool bVisible)
 
 void UI_DrawTxPriority(void)
 {
-	UI_DrawSettingOption("Edit            ", 0);
-	UI_DrawSettingOption("Busy            ", 1);
+	UI_DrawSettingOptionEx("Edit", 4, 0);
+	UI_DrawSettingOptionEx("Busy", 4, 1);
 }
 
 void UI_DrawFrequencyStep(uint8_t Index)
 {
-	gColorForeground = COLOR_WHITE;
+	static const char Mode[14][5] = {
+			"0.25K",
+			"1.25K",
+			"2.5K ",
+			"5K   ",
+			"6.25K",
+			"10K  ",
+			"20K  ",
+			"25K  ",
+			"50K  ",
+			"100K ",
+			"500K ",
+			"1M   ",
+			"5M   ",
+			"0.01K",
+	};
 
-	switch (Index) {
-	case 0:
-		UI_DrawSettingOptionEx("0.25K", 5, 0);
-		UI_DrawSettingOptionEx("1.25K", 5, 1);
-		break;
-	case 1:
-		UI_DrawSettingOptionEx("1.25K", 5, 0);
-		UI_DrawSettingOptionEx("2.5K ", 5, 1);
-		break;
-	case 2:
-		UI_DrawSettingOptionEx("2.5K ", 5, 0);
-		UI_DrawSettingOptionEx("5K   ", 5, 1);
-		break;
-	case 3:
-		UI_DrawSettingOptionEx("5K   ", 5, 0);
-		UI_DrawSettingOptionEx("6.25K", 5, 1);
-		break;
-	case 4:
-		UI_DrawSettingOptionEx("6.25K", 5, 0);
-		UI_DrawSettingOptionEx("10K  ", 5, 1);
-		break;
-	case 5:
-		UI_DrawSettingOptionEx("10K  ", 5, 0);
-		UI_DrawSettingOptionEx("12.5K", 5, 1);
-		break;
-	case 6:
-		UI_DrawSettingOptionEx("12.5K", 5, 0);
-		UI_DrawSettingOptionEx("20K  ", 5, 1);
-		break;
-	case 7:
-		UI_DrawSettingOptionEx("20K  ", 5, 0);
-		UI_DrawSettingOptionEx("25K  ", 5, 1);
-		break;
-	case 8:
-		UI_DrawSettingOptionEx("25K  ", 5, 0);
-		UI_DrawSettingOptionEx("50K  ", 5, 1);
-		break;
-	case 9:
-		UI_DrawSettingOptionEx("50K  ", 5, 0);
-		UI_DrawSettingOptionEx("100K ", 5, 1);
-		break;
-	case 10:
-		UI_DrawSettingOptionEx("100K ", 5, 0);
-		UI_DrawSettingOptionEx("500K ", 5, 1);
-		break;
-	case 11:
-		UI_DrawSettingOptionEx("500K ", 5, 0);
-		UI_DrawSettingOptionEx("1M   ", 5, 1);
-		break;
-	case 12:
-		UI_DrawSettingOptionEx("1M   ", 5, 0);
-		UI_DrawSettingOptionEx("5M   ", 5, 1);
-		break;
-	case 13:
-		UI_DrawSettingOptionEx("5M   ", 5, 0);
-		UI_DrawSettingOptionEx("0.01K", 5, 1);
-		break;
-	case 14:
-		UI_DrawSettingOptionEx("0.01K", 5, 0);
-		UI_DrawSettingOptionEx("0.25K", 5, 1);
-		break;
-	}
+	UI_DrawSettingOptionEx(Mode[Index], 5, 0);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 14], 5, 1);
 }
 
 void UI_DrawTimer(uint8_t Index)
@@ -409,8 +363,8 @@ void UI_DrawLevel(uint8_t Index)
 
 void UI_DrawScanDirection(void)
 {
-	UI_DrawSettingOption("Up              ", 0);
-	UI_DrawSettingOption("Down            ", 1);
+	UI_DrawSettingOptionEx("Up  ", 4, 0);
+	UI_DrawSettingOptionEx("Down", 4, 1);
 }
 
 void UI_DrawDeviceName(const char *pName)
@@ -420,57 +374,57 @@ void UI_DrawDeviceName(const char *pName)
 
 void UI_DrawSettingRepeaterMode(uint8_t Index)
 {
-	static const char Mode[3][16] = {
-		"Off             ",
-		"Talkaround      ",
-		"Freq Reversal   ",
+	static const char Mode[3][13] = {
+		"Off          ",
+		"Talkaround   ",
+		"Freq Reversal",
 	};
 
-	UI_DrawSettingOption(Mode[Index], 0);
-	UI_DrawSettingOption(Mode[(Index + 1) % 3], 1);
+	UI_DrawSettingOptionEx(Mode[Index], 13, 0);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 3], 13, 1);
 }
 
 void UI_DrawSettingTxPower(void)
 {
-	UI_DrawSettingOption("High            ", 0);
-	UI_DrawSettingOption("Low             ", 1);
+	UI_DrawSettingOptionEx("High", 4, 0);
+	UI_DrawSettingOptionEx("Low ", 4, 1);
 }
 
 void UI_DrawSettingModulation(uint8_t Index)
 {
-	static const char Mode[4][16] = {
-		"FM              ",
-		"AM              ",
-		"LSB             ",
-		"USB             ",
+	static const char Mode[4][3] = {
+		"FM ",
+		"AM ",
+		"LSB",
+		"USB",
 	};
 
-	UI_DrawSettingOption(Mode[Index], 0);
-	UI_DrawSettingOption(Mode[(Index + 1) % 4], 1);
+	UI_DrawSettingOptionEx(Mode[Index], 3, 0);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 4], 3, 1);
 }
 
 void UI_DrawSettingBandwidth(void)
 {
-	UI_DrawSettingOption("Wide            ", 0);
-	UI_DrawSettingOption("Narrow          ", 1);
+	UI_DrawSettingOptionEx("Wide  ", 6, 0);
+	UI_DrawSettingOptionEx("Narrow", 6, 1);
 }
 
 void UI_DrawSettingBusyLock(uint8_t Index)
 {
-	static const char Mode[3][16] = {
-		"Off             ",
-		"Carrier         ",
-		"CTC/DCS         ",
+	static const char Mode[3][7] = {
+		"Off    ",
+		"Carrier",
+		"CTC/DCS",
 	};
 
-	UI_DrawSettingOption(Mode[Index], 0);
-	UI_DrawSettingOption(Mode[(Index + 1) % 3], 1);
+	UI_DrawSettingOptionEx(Mode[Index], 7, 0);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 3], 7,1);
 }
 
 void UI_DrawSettingSkipScan(void)
 {
-	UI_DrawSettingOption("Skip            ", 0);
-	UI_DrawSettingOption("Scan            ", 1);
+	UI_DrawSettingOptionEx("Skip", 4, 0);
+	UI_DrawSettingOptionEx("Scan", 4, 1);
 }
 
 void UI_DrawSettingScanResume(uint8_t Index)
