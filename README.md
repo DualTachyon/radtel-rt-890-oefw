@@ -9,6 +9,10 @@ Thanks to him for making this possible!
 This firmware is a work in progress and could be unstable; it could alter your radio and its data.  
 Use at your own risk and remember to back up your SPI memory before installing any custom firmware.
 
+## Features
+- All stock features (check user's manual)
+- TODO...
+
 ## Instructions
 ### SPI memory backup
 Use [RT-890-Flasher](https://github.com/DualTachyon/radtel-rt-890-flasher)
@@ -18,10 +22,11 @@ Use [RT-890-SPI-restore-CLI](https://github.com/DualTachyon/radtel-rt-890-spi-re
 
 ### Customizations
 ```
+UART_DEBUG          => UART debug output
 MOTO_STARTUP_TONE   => Moto XPS startup beeps
-LIGHT_THEME         => Light theme (white background)
 ENABLE_AM_FIX       => Experimental port of the great UV-K5 AM fix from OneOfEleven
 ENABLE_LTO          => Link Time Optimization
+ENABLE_NOAA         => NOAA weather channels
 ```
 
 ### Build & Flash
