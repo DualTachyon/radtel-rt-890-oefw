@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "app/flashlight.h"
 #include "app/fm.h"
 #include "app/lock.h"
 #include "app/menu.h"
@@ -266,6 +267,11 @@ static void MAIN_KeyHandler(KEY_t Key)
 
 static void HandlerShort(KEY_t Key)
 {
+	if (gFlashlightMode) {
+		FLASHLIGHT_Toggle();
+		return;
+	}
+
 	if (gSettings.Lock || gRadioMode == RADIO_MODE_TX || (gReceptionMode && Key != KEY_UP && Key != KEY_DOWN)) {
 		return;
 	}
@@ -289,6 +295,11 @@ static void HandlerShort(KEY_t Key)
 
 static void HandlerLong(KEY_t Key)
 {
+	if (gFlashlightMode) {
+		FLASHLIGHT_Toggle();
+		return;
+	}
+
 	bool bBeep740;
 
 	if (gDTMF_InputMode && Key != KEY_MENU) {

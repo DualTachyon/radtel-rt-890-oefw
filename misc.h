@@ -72,6 +72,7 @@ extern bool gFrequencyDetectMode;
 extern bool gEnableBlink;
 extern bool gRedrawScreen;
 extern bool gScannerMode;
+extern bool gFlashlightMode;
 extern bool gSaveMode;
 extern bool gReceptionMode;
 extern bool gReceivingAudio;

@@ -38,6 +38,7 @@ OBJS += driver/uart.o
 
 # "App" logic
 OBJS += app/css.o
+OBJS += app/flashlight.o
 OBJS += app/fm.o
 OBJS += app/lock.o
 OBJS += app/menu.o

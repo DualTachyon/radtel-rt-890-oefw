@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 
+#include "app/flashlight.h"
 #include "app/fm.h"
 #include "app/radio.h"
 #include "app/fm.h"
@@ -30,6 +31,7 @@
 #include "task/alarm.h"
 #include "task/idle.h"
 #include "task/sidekeys.h"
+#include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/main.h"
 #include "ui/vfo.h"
@@ -77,6 +79,11 @@ void Task_CheckSideKeys(void)
 	}
 
 	if (Slot >= 4) {
+		return;
+	}
+
+	if (gFlashlightMode) {
+		FLASHLIGHT_Toggle();
 		return;
 	}
 
@@ -218,6 +225,12 @@ void Task_CheckSideKeys(void)
 			if (!gSettings.bFLock && gFM_Mode == FM_MODE_OFF && !gFrequencyReverse) {
 				RADIO_CancelMode();
 				gScannerMode = !gScannerMode;
+			}
+			break;
+
+		case ACTION_FLASHLIGHT:
+			if (!gFlashlightMode) {
+				FLASHLIGHT_Toggle();
 			}
 			break;
 		}

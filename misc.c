@@ -30,6 +30,7 @@ bool gSaveMode;
 bool gReceptionMode;
 bool gReceivingAudio;
 bool gMonitorMode;
+bool gFlashlightMode;
 bool gEnableLocalAlarm;
 bool gSendTone;
 bool KEY_SideKeyLongPressed;

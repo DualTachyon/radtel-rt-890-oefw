@@ -1,5 +1,5 @@
-/* Copyright 2023 Dual Tachyon
- * https://github.com/DualTachyon
+/* Copyright 2023 Reppad
+ * https://github.com/reppad
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,10 @@
  *     limitations under the License.
  */
 
-#ifndef TASK_SIDEKEYS_H
-#define TASK_SIDEKEYS_H
+#ifndef APP_FLASHLIGHT_H
+#define APP_FLASHLIGHT_H
 
-enum {
-	ACTION_NONE = 0,
-	ACTION_MONITOR,
-	ACTION_FREQUENCY_DETECT,
-	ACTION_REPEATER_MODE,
-	ACTION_PRESET_CHANNEL,
-	ACTION_LOCAL_ALARM,
-	ACTION_REMOTE_ALARM,
-#ifdef ENABLE_NOAA
-	ACTION_NOAA_CHANNEL,
-#endif
-	ACTION_SEND_TONE,
-	ACTION_ROGER_BEEP,
-	ACTION_FM_RADIO,
-	ACTION_SCAN,
-	ACTION_FLASHLIGHT,
-	ACTIONS_COUNT,	// used to count the number of actions, keep this last
-};
-
-void Task_CheckSideKeys(void);
+void FLASHLIGHT_Toggle(void);
 
 #endif
 

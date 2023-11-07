@@ -138,7 +138,7 @@ void UI_DrawActions(uint8_t Index)
 {
 	static const char Actions[][12] = {
 		"None        ",
-		"Monit       ",
+		"Monitor     ",
 		"Freq Detect ",
 		"Repeat Mode ",
 		"Preset CH   ",
@@ -151,6 +151,7 @@ void UI_DrawActions(uint8_t Index)
 		"Roger Beep  ",
 		"FM Radio    ",
 		"Freq Scanner",
+		"Flashlight  ",
 	};
 
 	UI_DrawSettingOptionEx(Actions[Index], 12, 0);
