@@ -76,6 +76,7 @@ enum {
 extern uint16_t gSettingGolay;
 extern uint8_t gMenuIndex;
 extern uint8_t gSettingIndex;
+extern uint8_t gSettingsCount;
 
 void MENU_SetMaxCssValues(void);
 void MENU_AcceptSetting(void);

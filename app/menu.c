@@ -35,57 +35,57 @@
 #include "ui/menu.h"
 #include "ui/version.h"
 
-static const char Menu[50][16] = {
-	"Startup Logo  01",
-	"Voltage       02",
-	"Ringtone      03",
-	"Prompt Text   04",
-	"Voice Prompt  05",
-	"Key Beep      06",
-	"Roger Beep    07",
-	"Dual Display  08",
-	"TX Priority   09",
-	"Save Mode     10",
-	"Freq Step     11",
-	"SQ Level      12",
-	"LED Timer     13",
-	"Lock Timer    14",
-	"TOT           15",
-	"VOX Level     16",
-	"VOX Delay     17",
-	"NOAA Monitor  18",
-	"FM Standby    19",
-	"Tail Tone     20",
-	"Scan DIR      21",
-	"Personal ID   22",
-	"Repeater Mode 23",
-	"Scan Resume   24",
-	"CTCSS/DCS     25",
-	"RX CTCSS/DCS  26",
-	"TX CTCSS/DCS  27",
-	"TX Power      28",
-	"Modulation    29",
-	"Band Width    30",
-	"Skip Scan     31",
-	"Busy Lock     32",
-	"Scrambler     33",
-	"DCS Encrypt   34",
-	"Mute Code     35",
-	"CH Name       36",
-	"Save CH       37",
-	"Delete CH     38",
-	"K1 Long       39",
-	"K1 Short      40",
-	"K2 Long       41",
-	"K2 Short      42",
-	"DTMF Delay    43",
-	"DTMF Interval 44",
-	"DTMF Mode     45",
-	"DTMF Select   46",
-	"DTMF Display  47",
-	"Dark Mode     48",
-	"Initialize    49",
-	"Version       50",
+static const char Menu[50][14] = {
+	"Startup Logo  ",
+	"Voltage       ",
+	"Ringtone      ",
+	"Prompt Text   ",
+	"Voice Prompt  ",
+	"Key Beep      ",
+	"Roger Beep    ",
+	"Dual Display  ",
+	"TX Priority   ",
+	"Save Mode     ",
+	"Freq Step     ",
+	"SQ Level      ",
+	"LED Timer     ",
+	"Lock Timer    ",
+	"TOT           ",
+	"VOX Level     ",
+	"VOX Delay     ",
+	"NOAA Monitor  ",
+	"FM Standby    ",
+	"Tail Tone     ",
+	"Scan DIR      ",
+	"Personal ID   ",
+	"Repeater Mode ",
+	"Scan Resume   ",
+	"CTCSS/DCS     ",
+	"RX CTCSS/DCS  ",
+	"TX CTCSS/DCS  ",
+	"TX Power      ",
+	"Modulation    ",
+	"Band Width    ",
+	"Skip Scan     ",
+	"Busy Lock     ",
+	"Scrambler     ",
+	"DCS Encrypt   ",
+	"Mute Code     ",
+	"CH Name       ",
+	"Save CH       ",
+	"Delete CH     ",
+	"K1 Long       ",
+	"K1 Short      ",
+	"K2 Long       ",
+	"K2 Short      ",
+	"DTMF Delay    ",
+	"DTMF Interval ",
+	"DTMF Mode     ",
+	"DTMF Select   ",
+	"DTMF Display  ",
+	"Dark Mode     ",
+	"Initialize    ",
+	"Version       ",
 };
 
 static const ChannelInfo_t EmptyChannel = {
@@ -123,13 +123,19 @@ uint16_t gSettingGolay;
 
 uint8_t gMenuIndex;
 uint8_t gSettingIndex;
+//uint8_t gSettingsCount = 50;
+uint8_t gSettingsCount = sizeof(Menu) / sizeof(Menu[0]);
 
 //
 
 static void DrawMenu(uint8_t Index)
 {
-	UI_DrawString(24, 48, Menu[Index], 16);
-	UI_DrawString(24, 24, Menu[(Index + 1) % gSettingsCount], 16);
+	UI_DrawString(24, 48, Menu[Index], 14);
+	Int2Ascii(Index+1, 2);
+	UI_DrawString(140, 48, gShortString, 2);
+	UI_DrawString(24, 24, Menu[(Index + 1) % gSettingsCount], 14);
+	Int2Ascii(Index+2, 2);
+	UI_DrawString(140, 24, gShortString, 2);
 }
 
 static void EnableTextEditor(void)
