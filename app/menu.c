@@ -35,7 +35,7 @@
 #include "ui/menu.h"
 #include "ui/version.h"
 
-static const char Menu[50][14] = {
+static const char Menu[][14] = {
 	"Startup Logo  ",
 	"Voltage       ",
 	"Ringtone      ",
@@ -53,7 +53,9 @@ static const char Menu[50][14] = {
 	"TOT           ",
 	"VOX Level     ",
 	"VOX Delay     ",
+	#ifdef ENABLE_NOAA
 	"NOAA Monitor  ",
+	#endif
 	"FM Standby    ",
 	"Tail Tone     ",
 	"Scan DIR      ",

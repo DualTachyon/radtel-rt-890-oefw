@@ -37,7 +37,9 @@
 #include "task/incoming.h"
 #include "task/keys.h"
 #include "task/lock.h"
-#include "task/noaa.h"
+#ifdef ENABLE_NOAA
+	#include "task/noaa.h"
+#endif
 #include "task/ptt.h"
 #include "task/rssi.h"
 #include "task/scanner.h"
@@ -91,7 +93,9 @@ void Main(void)
 				Task_Idle();
 				Task_CheckBattery();
 				Task_CheckScannerFM();
+#ifdef ENABLE_NOAA
 				Task_CheckNOAA();
+#endif
 				Task_LocalAlarm();
 			}
 		} while (gSettings.DtmfState != DTMF_STATE_KILLED);

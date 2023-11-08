@@ -55,7 +55,9 @@ extern uint16_t gFreeChannelsCount;
 
 void CHANNELS_NextChannelMr(uint8_t Key, bool OnlyScan);
 void CHANNELS_NextChannelVfo(uint8_t Key);
+#ifdef ENABLE_NOAA
 void CHANNELS_NextNOAA(uint8_t Key);
+#endif
 void CHANNELS_NextFM(uint8_t Key);
 
 void CHANNELS_UpdateChannel(void);
@@ -68,7 +70,9 @@ void CHANNELS_LoadWorkMode(void);
 uint16_t CHANNELS_GetChannelUp(uint16_t Channel, uint8_t Vfo);
 uint16_t CHANNELS_GetChannelDown(uint16_t Channel, uint8_t Vfo);
 void CHANNELS_SaveChannel(uint16_t Channel, const ChannelInfo_t *pChannel);
+#ifdef ENABLE_NOAA
 void CHANNELS_SetNoaaChannel(uint8_t Channel);
+#endif
 void CHANNELS_SaveVfo(void);
 
 #endif

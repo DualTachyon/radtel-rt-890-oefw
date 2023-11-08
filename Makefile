@@ -1,9 +1,10 @@
 TARGET = firmware
 
 UART_DEBUG			:= 0
-MOTO_STARTUP_TONE		:= 1
-ENABLE_AM_FIX			:= 1
+MOTO_STARTUP_TONE	:= 1
+ENABLE_AM_FIX		:= 1
 ENABLE_LTO			:= 0
+ENABLE_NOAA			:= 1
 
 OBJS =
 # Startup files
@@ -74,7 +75,9 @@ OBJS += task/keys.o
 OBJS += task/idle.o
 OBJS += task/incoming.o
 OBJS += task/lock.o
+ifeq ($(ENABLE_NOAA), 1)
 OBJS += task/noaa.o
+endif
 OBJS += task/ptt.o
 OBJS += task/rssi.o
 OBJS += task/scanner.o
@@ -93,7 +96,9 @@ OBJS += ui/helper.o
 OBJS += ui/logo.o
 OBJS += ui/main.o
 OBJS += ui/menu.o
+ifeq ($(ENABLE_NOAA), 1)
 OBJS += ui/noaa.o
+endif
 OBJS += ui/version.o
 OBJS += ui/vfo.o
 OBJS += ui/welcome.o
@@ -159,6 +164,9 @@ ifeq ($(ENABLE_AM_FIX),1)
 endif
 ifeq ($(ENABLE_LTO),1)
 	CFLAGS += -flto
+endif
+ifeq ($(ENABLE_NOAA),1)
+	CFLAGS += -DENABLE_NOAA
 endif
 
 all: $(TARGET)

@@ -36,7 +36,9 @@
 #include "task/alarm.h"
 #include "task/keys.h"
 #include "task/lock.h"
-#include "task/noaa.h"
+#ifdef ENABLE_NOAA
+	#include "task/noaa.h"
+#endif
 #include "task/scanner.h"
 #include "task/screen.h"
 #include "task/vox.h"
@@ -161,9 +163,11 @@ static void MAIN_KeyHandler(KEY_t Key)
 						gSettings.StandbyArea = (Key + 1) & 1;
 						SETTINGS_SaveGlobals();
 					}
+#ifdef ENABLE_NOAA
 				} else {
 					CHANNELS_NextNOAA(Key);
 					NOAA_NextChannelCountdown = 3000;
+#endif
 				}
 			} else if (gFM_Mode == FM_MODE_PLAY) {
 				CHANNELS_NextFM(Key);

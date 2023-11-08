@@ -135,7 +135,7 @@ void UI_DrawDtmfDelay(uint8_t Delay)
 
 void UI_DrawActions(uint8_t Index)
 {
-	static const char Actions[12][12] = {
+	static const char Actions[][12] = {
 		"None        ",
 		"Monit       ",
 		"Freq Detect ",
@@ -143,7 +143,9 @@ void UI_DrawActions(uint8_t Index)
 		"Preset CH   ",
 		"Local Alarm ",
 		"Remote Alarm",
+#ifdef ENABLE_NOAA
 		"NOAA CH     ",
+#endif
 		"Send Tone   ",
 		"Roger Beep  ",
 		"FM Radio    ",

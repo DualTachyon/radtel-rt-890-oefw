@@ -25,7 +25,9 @@
 #include "task/alarm.h"
 #include "task/cursor.h"
 #include "task/lock.h"
-#include "task/noaa.h"
+#ifdef ENABLE_NOAA
+	#include "task/noaa.h"
+#endif
 #include "task/scanner.h"
 #include "task/vox.h"
 
@@ -117,9 +119,11 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 	if (gBatteryTimer) {
 		gBatteryTimer--;
 	}
+	#ifdef ENABLE_NOAA
 	if (NOAA_NextChannelCountdown) {
 		NOAA_NextChannelCountdown--;
 	}
+	#endif
 	if (gSaveModeTimer) {
 		gSaveModeTimer--;
 	}

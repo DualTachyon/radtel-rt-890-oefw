@@ -40,8 +40,10 @@ void RADIO_EndAudio(void);
 
 void RADIO_Sleep(void);
 void RADIO_Retune(void);
+#ifdef ENABLE_NOAA
 void RADIO_NoaaRetune(void);
 void RADIO_NoaaTune(void);
+#endif
 void VFO_ClearCss(void);
 void VFO_ClearMute(void);
 void RADIO_SaveCurrentVfo(void);

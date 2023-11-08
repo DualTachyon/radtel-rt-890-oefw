@@ -26,7 +26,9 @@
 #include "radio/channels.h"
 #include "radio/settings.h"
 #include "ui/helper.h"
-#include "ui/noaa.h"
+#ifdef ENABLE_NOAA
+	#include "ui/noaa.h"
+#endif
 #include "ui/vfo.h"
 
 static const ChannelInfo_t VfoTemplate[2] = {
@@ -81,6 +83,7 @@ static const ChannelInfo_t VfoTemplate[2] = {
 	},
 };
 
+#ifdef ENABLE_NOAA
 static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 	{
 		.RX = { .Frequency = 16255000, .Code = 0x000, .CodeType = CODE_TYPE_OFF, },
@@ -347,6 +350,7 @@ static const ChannelInfo_t gNoaaDefaultChannels[11] = {
 		.Name = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF },
 	},
 };
+#endif
 
 uint16_t gFreeChannelsCount;
 
@@ -443,6 +447,7 @@ void CHANNELS_NextChannelVfo(uint8_t Key)
 	UI_DrawVfo(gSettings.CurrentVfo);
 }
 
+#ifdef ENABLE_NOAA
 void CHANNELS_NextNOAA(uint8_t Key)
 {
 	if (gRadioMode == RADIO_MODE_RX) {
@@ -457,6 +462,7 @@ void CHANNELS_NextNOAA(uint8_t Key)
 	CHANNELS_SetNoaaChannel(gNOAA_ChannelNow);
 	RADIO_Tune(2);
 }
+#endif
 
 void CHANNELS_NextFM(uint8_t Key)
 {
@@ -666,10 +672,12 @@ void CHANNELS_SaveChannel(uint16_t Channel, const ChannelInfo_t *pChannel)
 	SFLASH_Update(pChannel, 0x3C2000 + (Channel * sizeof(*pChannel)), sizeof(*pChannel));
 }
 
+#ifdef ENABLE_NOAA
 void CHANNELS_SetNoaaChannel(uint8_t Channel)
 {
 	gVfoState[2] = gNoaaDefaultChannels[Channel];
 }
+#endif
 
 void CHANNELS_SaveVfo(void)
 {

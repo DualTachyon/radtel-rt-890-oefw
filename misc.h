@@ -31,7 +31,9 @@ typedef enum SCREEN_Mode_t SCREEN_Mode_t;
 enum IDLE_Mode_t {
 	IDLE_MODE_OFF = 0,
 	IDLE_MODE_DUAL_STANDBY,
+#ifdef ENABLE_NOAA
 	IDLE_MODE_NOAA,
+#endif
 	IDLE_MODE_SAVE,
 };
 

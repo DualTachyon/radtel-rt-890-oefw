@@ -76,7 +76,9 @@ void Task_CheckPTT(void)
 							gPttPressed = true;
 						}
 					} else {
+#ifdef ENABLE_NOAA
 						RADIO_NoaaRetune();
+#endif
 						gPttPressed = true;
 					}
 				} else {

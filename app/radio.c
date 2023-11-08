@@ -32,7 +32,10 @@
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/alarm.h"
-#include "task/noaa.h"
+#ifdef ENABLE_NOAA
+	#include "task/noaa.h"
+	#include "ui/noaa.h"
+#endif
 #include "task/ptt.h"
 #include "task/am-fix.h"
 #include "task/scanner.h"
@@ -41,7 +44,6 @@
 #include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/main.h"
-#include "ui/noaa.h"
 #include "ui/vfo.h"
 
 uint8_t gCurrentVfo;
@@ -371,7 +373,9 @@ void RADIO_EndAudio(void)
 	gRxLinkCounter = 0;
 	gNoToneCounter = 0;
 	gIncomingTimer = 250;
+#ifdef ENABLE_NOAA
 	NOAA_NextChannelCountdown = 3000;
+#endif
 }
 
 void RADIO_Sleep(void)
@@ -422,6 +426,7 @@ void RADIO_Retune(void)
 	RADIO_Tune(gSettings.CurrentVfo);
 }
 
+#ifdef ENABLE_NOAA
 void RADIO_NoaaRetune(void)
 {
 	gReceptionMode = false;
@@ -444,6 +449,7 @@ void RADIO_NoaaTune(void)
 	NOAA_NextChannelCountdown = 3000;
 	gNoaaMode = false;
 }
+#endif
 
 void VFO_ClearCss(void)
 {

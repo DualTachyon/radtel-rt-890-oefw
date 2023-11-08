@@ -28,16 +28,24 @@ void Task_Idle(void)
 	if (gRadioMode != RADIO_MODE_RX && gRadioMode != RADIO_MODE_TX && VOX_Counter == 0 && gRxLinkCounter == 0 && !gScannerMode && !gReceptionMode && !gMonitorMode && !gEnableLocalAlarm && gFM_Mode == FM_MODE_OFF && gSaveModeTimer == 0 && SPEAKER_State == 0) {
 		switch (gIdleMode) {
 		case IDLE_MODE_OFF:
+#ifdef ENABLE_NOAA
 			gNoaaMode = false;
+#endif
 			IDLE_SelectMode();
 			break;
 
 		case IDLE_MODE_DUAL_STANDBY:
+#ifdef ENABLE_NOAA
 			gNoaaMode = false;
+#endif
 			RADIO_Tune(!gSettings.CurrentVfo);
+#ifdef ENABLE_NOAA
 			if (gSettings.NoaaAlarm) {
 				gIdleMode = IDLE_MODE_NOAA;
 			} else if (gSettings.SaveMode) {
+#else
+			if (gSettings.SaveMode) {
+#endif
 				gIdleMode = IDLE_MODE_SAVE;
 			} else {
 				gIdleMode = IDLE_MODE_OFF;
@@ -45,6 +53,7 @@ void Task_Idle(void)
 			gSaveModeTimer = 150;
 			break;
 
+#ifdef ENABLE_NOAA
 		case IDLE_MODE_NOAA:
 			gNoaaMode = true;
 			gNOAA_ChannelNext = (gNOAA_ChannelNext + 1) % 11;
@@ -57,9 +66,12 @@ void Task_Idle(void)
 			}
 			gSaveModeTimer = 150;
 			break;
+#endif
 
 		case IDLE_MODE_SAVE:
+#ifdef ENABLE_NOAA
 			gNoaaMode = false;
+#endif
 			gIdleMode = IDLE_MODE_OFF;
 			if (gIdleTimer == 0) {
 				if (gTimeSinceBoot < 600000) {
@@ -83,13 +95,19 @@ void Task_Idle(void)
 void IDLE_SelectMode(void)
 {
 	RADIO_DisableSaveMode();
+#ifdef ENABLE_NOAA
 	if (gSettings.DualStandby || gSettings.NoaaAlarm) {
+#else
+	if (gSettings.DualStandby) {
+#endif
 		RADIO_Tune(gSettings.CurrentVfo);
 	}
 	if (gSettings.DualStandby) {
 		gIdleMode = IDLE_MODE_DUAL_STANDBY;
+#ifdef ENABLE_NOAA
 	} else if (gSettings.NoaaAlarm) {
 		gIdleMode = IDLE_MODE_NOAA;
+#endif
 	} else if (gSettings.SaveMode) {
 		gIdleMode = IDLE_MODE_SAVE;
 	}

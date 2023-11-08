@@ -42,7 +42,9 @@ enum {
 	ACTION_PRESET_CHANNEL,
 	ACTION_LOCAL_ALARM,
 	ACTION_REMOTE_ALARM,
+#ifdef ENABLE_NOAA
 	ACTION_NOAA_CHANNEL,
+#endif
 	ACTION_SEND_TONE,
 	ACTION_ROGER_BEEP,
 	ACTION_FM_RADIO,
@@ -127,7 +129,11 @@ void Task_CheckSideKeys(void)
 		return;
 	}
 
+#ifdef ENABLE_NOAA
 	if (!gReceptionMode || Action == ACTION_NOAA_CHANNEL) {
+#else
+	if (!gReceptionMode) {
+#endif
 		if (gRadioMode == RADIO_MODE_QUIET) {
 			IDLE_SelectMode();
 		}
@@ -183,6 +189,7 @@ void Task_CheckSideKeys(void)
 			RADIO_StartTX(false);
 			break;
 
+#ifdef ENABLE_NOAA
 		case ACTION_NOAA_CHANNEL:
 			if (gRadioMode != RADIO_MODE_TX) {
 				gInputBoxWriteIndex = 0;
@@ -199,6 +206,7 @@ void Task_CheckSideKeys(void)
 				}
 			}
 			break;
+#endif
 
 		case ACTION_SEND_TONE:
 			gEnableLocalAlarm = true;

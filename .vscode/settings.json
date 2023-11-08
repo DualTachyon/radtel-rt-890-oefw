@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "helper.h": "c"
-    }
+    },
+    "search.useIgnoreFiles": false
 }

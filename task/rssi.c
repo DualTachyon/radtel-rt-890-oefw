@@ -25,7 +25,9 @@
 #include "task/scanner.h"
 #include "task/vox.h"
 #include "ui/helper.h"
-#include "ui/noaa.h"
+#ifdef ENABLE_NOAA
+	#include "ui/noaa.h"
+#endif
 
 enum {
 	STATUS_NO_TONE = 0,
@@ -39,10 +41,12 @@ static uint8_t GetToneStatus(uint8_t CodeType, bool bMuteEnabled)
 	
 	Value = BK4819_ReadRegister(0x0C);
 
+#ifdef ENABLE_NOAA
 	if (gNoaaMode) {
 		// Checks CTC1
 		return (Value & 0x0400U) ? STATUS_GOT_TONE : STATUS_NO_TONE;
 	}
+#endif
 
 	// Check Interrupt Request
 	if (Value & 0x0001U && gRadioMode == RADIO_MODE_RX) {
@@ -157,12 +161,17 @@ void Task_CheckRSSI(void)
 			} else {
 				RADIO_EndAudio();
 			}
+#ifdef ENABLE_NOAA
 		} else if (!gNoaaMode) {
+#else
+		} else {
+#endif
 			if (gReceptionMode) {
 				RADIO_StartAudio();
 			} else if ((gVfoInfo[gCurrentVfo].CodeType == CODE_TYPE_OFF && !gMainVfo->bMuteEnabled) || gMainVfo->gModulationType > 0 || Status == STATUS_GOT_TONE) {
 				RADIO_StartRX();
 			}
+#ifdef ENABLE_NOAA
 		} else if (Status == STATUS_GOT_TONE) {
 			gReceptionMode = true;
 			gNoaaMode = false;
@@ -172,6 +181,7 @@ void Task_CheckRSSI(void)
 			gReceivingAudio = true;
 			SCREEN_TurnOn();
 			BK4819_StartAudio();
+#endif
 		}
 	}
 }
