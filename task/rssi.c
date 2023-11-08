@@ -161,11 +161,11 @@ void Task_CheckRSSI(void)
 			} else {
 				RADIO_EndAudio();
 			}
+		} else
 #ifdef ENABLE_NOAA
-		} else if (!gNoaaMode) {
-#else
-		} else {
+		if (!gNoaaMode)
 #endif
+		{
 			if (gReceptionMode) {
 				RADIO_StartAudio();
 			} else if ((gVfoInfo[gCurrentVfo].CodeType == CODE_TYPE_OFF && !gMainVfo->bMuteEnabled) || gMainVfo->gModulationType > 0 || Status == STATUS_GOT_TONE) {

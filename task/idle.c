@@ -42,10 +42,9 @@ void Task_Idle(void)
 #ifdef ENABLE_NOAA
 			if (gSettings.NoaaAlarm) {
 				gIdleMode = IDLE_MODE_NOAA;
-			} else if (gSettings.SaveMode) {
-#else
-			if (gSettings.SaveMode) {
+			} else
 #endif
+			if (gSettings.SaveMode) {
 				gIdleMode = IDLE_MODE_SAVE;
 			} else {
 				gIdleMode = IDLE_MODE_OFF;

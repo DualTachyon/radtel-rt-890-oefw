@@ -125,18 +125,15 @@ uint16_t gSettingGolay;
 
 uint8_t gMenuIndex;
 uint8_t gSettingIndex;
-//uint8_t gSettingsCount = 50;
 uint8_t gSettingsCount = sizeof(Menu) / sizeof(Menu[0]);
-
-//
 
 static void DrawMenu(uint8_t Index)
 {
 	UI_DrawString(24, 48, Menu[Index], 14);
-	Int2Ascii(Index+1, 2);
+	Int2Ascii(Index + 1, 2);
 	UI_DrawString(140, 48, gShortString, 2);
 	UI_DrawString(24, 24, Menu[(Index + 1) % gSettingsCount], 14);
-	Int2Ascii(Index+2, 2);
+	Int2Ascii(((Index + 1) % gSettingsCount) + 1, 2);
 	UI_DrawString(140, 24, gShortString, 2);
 }
 
