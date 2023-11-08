@@ -364,6 +364,7 @@ static void HandlerLong(KEY_t Key)
 
 			case KEY_2:
 				#ifdef ENABLE_AM_FIX
+					BK4819_RestoreGainSettings();
 					gExtendedSettings.AmFixEnabled = !gExtendedSettings.AmFixEnabled;
 					SETTINGS_SaveGlobals();
 					#ifdef UART_DEBUG

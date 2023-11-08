@@ -365,14 +365,7 @@
         } else
         {
 			gAmFixCountdown = 1000;
-			// original radtel front end register settings
-            const uint8_t orig_lna_short = 2;
-            const uint8_t orig_lna = 5;
-            const uint8_t orig_mixer = 2;
-            const uint8_t orig_pga = 5;
-			if(BK4819_ReadRegister(0x13) != ((orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0))) {
-            	BK4819_WriteRegister(0x13, (orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0));
-			}
+			BK4819_RestoreGainSettings();
         }
 	}
 
