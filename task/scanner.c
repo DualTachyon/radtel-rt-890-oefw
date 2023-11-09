@@ -42,7 +42,9 @@ void Task_Scanner(void) {
 			RADIO_Tune(gSettings.CurrentVfo);
 		}
 		SCANNER_Countdown = 50;
-		gpio_bits_flip(GPIOA, BOARD_GPIOA_LED_GREEN);
+		if (gExtendedSettings.ScanBlink) {
+			gpio_bits_flip(GPIOA, BOARD_GPIOA_LED_GREEN);
+		}
 	}
 }
 

@@ -63,6 +63,7 @@ static const char Menu[][14] = {
 	"Personal ID   ",
 	"Repeater Mode ",
 	"Scan Resume   ",
+	"Scan Blink    ",
 	"CTCSS/DCS     ",
 	"RX CTCSS/DCS  ",
 	"TX CTCSS/DCS  ",
@@ -446,6 +447,11 @@ void MENU_AcceptSetting(void)
 		SETTINGS_SaveGlobals();
 		break;
 
+	case MENU_SCAN_BLINK:
+		gExtendedSettings.ScanBlink = gSettingIndex;
+		SETTINGS_SaveGlobals();
+		break;
+
 	case MENU_CTCSS_DCS:
 		gVfoState[gSettings.CurrentVfo].TX.CodeType = gSettingCodeType;
 		gVfoState[gSettings.CurrentVfo].TX.Code = gSettingCode;
@@ -778,6 +784,11 @@ void MENU_DrawSetting(void)
 		gSettingCurrentValue = gExtendedSettings.ScanResume;
 		gSettingMaxValues = 3;
 		UI_DrawSettingScanResume(gSettingCurrentValue);
+		break;
+	
+	case MENU_SCAN_BLINK:
+		gSettingIndex = gExtendedSettings.ScanBlink;
+		UI_DrawToggle();
 		break;
 
 	case MENU_CTCSS_DCS:

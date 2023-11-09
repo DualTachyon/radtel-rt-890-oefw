@@ -62,7 +62,7 @@ void STANDBY_BlinkGreen(void)
 		gGreenLedTimer = 0;
 	}
 	if (gBlinkGreen && gGreenLedTimer > 199) {
-		if (!gScannerMode && gRadioMode != RADIO_MODE_RX) {
+		if ((!gScannerMode || !gExtendedSettings.ScanBlink) && gRadioMode != RADIO_MODE_RX) {
 			gpio_bits_reset(GPIOA, BOARD_GPIOA_LED_GREEN);
 		}
 		gBlinkGreen = false;

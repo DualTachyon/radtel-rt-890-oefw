@@ -163,7 +163,8 @@ typedef struct __attribute__((packed)) {
 	uint8_t ScanResume: 2;	// Carrier=1, Time=2, No=3
 	uint8_t AmFixEnabled: 1;
 	uint8_t DarkMode: 1;
-	uint8_t Undefined: 4;	// free for use
+	uint8_t ScanBlink: 1;
+	uint8_t Undefined: 3;	// free for use
 	// 0x01
 	// ...
 } gExtendedSettings_t;
