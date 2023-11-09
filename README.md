@@ -11,7 +11,10 @@ Use at your own risk and remember to back up your SPI memory before installing a
 
 ## Features
 - All stock features (check user's manual)
-- TODO...
+- SSB reception
+- Light theme
+- AM Fix (improvement in AM reception with strong signals, port of @OneOfEleven's excellent work on the Quansheng UV-K5)
+- And much more!
 
 ## Instructions
 ### SPI memory backup
