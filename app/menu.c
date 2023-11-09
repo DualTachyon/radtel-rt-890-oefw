@@ -29,6 +29,7 @@
 #include "radio/hardware.h"
 #include "radio/settings.h"
 #include "task/cursor.h"
+#include "task/sidekeys.h"
 #include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/main.h"
@@ -406,12 +407,12 @@ void MENU_AcceptSetting(void)
 		gSettings.VoxDelay = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
 		SETTINGS_SaveGlobals();
 		break;
-
+#ifdef ENABLE_NOAA
 	case MENU_NOAA_MONITOR:
 		gSettings.NoaaAlarm = gSettingIndex;
 		SETTINGS_SaveGlobals();
 		break;
-
+#endif
 	case MENU_FM_STANDBY:
 		gSettings.FmStandby = gSettingIndex;
 		SETTINGS_SaveGlobals();
@@ -730,12 +731,12 @@ void MENU_DrawSetting(void)
 		DISPLAY_Fill(0, 159, 1, 55, COLOR_BACKGROUND);
 		UI_DrawLevel(gSettingCurrentValue);
 		break;
-
+#ifdef ENABLE_NOAA
 	case MENU_NOAA_MONITOR:
 		gSettingIndex = gSettings.NoaaAlarm;
 		UI_DrawToggle();
 		break;
-
+#endif
 	case MENU_FM_STANDBY:
 		gSettingIndex = gSettings.FmStandby;
 		UI_DrawToggle();
@@ -886,10 +887,10 @@ void MENU_DrawSetting(void)
 	case MENU_K1_SHORT:
 	case MENU_K2_LONG:
 	case MENU_K2_SHORT:
-		gSettingCurrentValue = gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 12U;
-		gSettingMaxValues = 12;
+		gSettingCurrentValue = gSettings.Actions[gMenuIndex - MENU_K1_LONG] % ACTIONS_COUNT;
+		gSettingMaxValues = ACTIONS_COUNT;
 		DISPLAY_Fill(0, 159, 1, 55, COLOR_BACKGROUND);
-		UI_DrawActions(gSettings.Actions[gMenuIndex - MENU_K1_LONG] % 12U);
+		UI_DrawActions(gSettings.Actions[gMenuIndex - MENU_K1_LONG] % ACTIONS_COUNT);
 		break;
 
 	case MENU_DTMF_DELAY:
@@ -1235,7 +1236,9 @@ void MENU_PlayAudio(uint8_t MenuID)
 	case MENU_TOT:           ID = 0x19; break;
 	case MENU_VOX_LEVEL:     ID = 0x1A; break;
 	case MENU_VOX_DELAY:     ID = 0x1B; break;
+#ifdef ENABLE_NOAA
 	case MENU_NOAA_MONITOR:  ID = 0x1C; break;
+#endif
 	case MENU_FM_STANDBY:    ID = 0x1D; break;
 	case MENU_TAIL_TONE:     ID = 0x1F; break;
 	case MENU_SCAN_DIR:      ID = 0x20; break;

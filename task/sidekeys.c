@@ -34,25 +34,6 @@
 #include "ui/main.h"
 #include "ui/vfo.h"
 
-enum {
-	ACTION_NONE = 0,
-	ACTION_MONITOR,
-	ACTION_FREQUENCY_DETECT,
-	ACTION_REPEATER_MODE,
-	ACTION_PRESET_CHANNEL,
-	ACTION_LOCAL_ALARM,
-	ACTION_REMOTE_ALARM,
-#ifdef ENABLE_NOAA
-	ACTION_NOAA_CHANNEL,
-#endif
-	ACTION_SEND_TONE,
-	ACTION_ROGER_BEEP,
-	ACTION_FM_RADIO,
-	ACTION_SCAN,
-};
-
-//
-
 void Task_CheckSideKeys(void)
 {
 	uint8_t Slot;

@@ -19,6 +19,7 @@
 #include "helper/helper.h"
 #include "radio/channels.h"
 #include "radio/settings.h"
+#include "task/sidekeys.h"
 #include "ui/gfx.h"
 #include "ui/helper.h"
 #include "ui/menu.h"
@@ -153,7 +154,7 @@ void UI_DrawActions(uint8_t Index)
 	};
 
 	UI_DrawSettingOptionEx(Actions[Index], 12, 0);
-	UI_DrawSettingOptionEx(Actions[(Index + 1) % 12], 12, 1);
+	UI_DrawSettingOptionEx(Actions[(Index + 1) % ACTIONS_COUNT], 12, 1);
 }
 
 void UI_DrawChannelName(uint16_t Channel)
