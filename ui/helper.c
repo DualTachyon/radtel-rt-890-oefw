@@ -537,6 +537,9 @@ void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Cl
 	if (Clear) {
 		UI_DrawSmallString(105, Y, "    ", 4);
 	} else {
+		for (int i = len; i < 3; i++) {
+			gShortString[i] = ' ';
+		}
 		Int2Ascii(RXdBM, len);
 
 		if (isNeg) {
@@ -544,7 +547,7 @@ void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Cl
 		} else {
 			UI_DrawSmallString(105, Y, " ", 1);
 		}
-		UI_DrawSmallString(111, Y, gShortString, len);
+		UI_DrawSmallString(111, Y, gShortString, 3);
 	}
 }
 
