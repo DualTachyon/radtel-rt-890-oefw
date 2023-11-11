@@ -4,7 +4,7 @@ UART_DEBUG			:= 0
 MOTO_STARTUP_TONE		:= 1
 ENABLE_AM_FIX			:= 1
 ENABLE_LTO			:= 0
-ENABLE_NOAA			:= 1
+ENABLE_NOAA			:= 0
 
 OBJS =
 # Startup files

@@ -392,24 +392,24 @@ static void PlayRogerBeep(uint8_t Mode)
 	BEEP_Enable();
 
 	if (Mode == 1) {
-		BK4819_SetToneFrequency(1000);
+		BK4819_SetToneFrequency(false, 1000);
 		SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
 		DELAY_WaitMS(25);
-		BK4819_SetToneFrequency(0);
+		BK4819_SetToneFrequency(false, 0);
 		DELAY_WaitMS(25);
-		BK4819_SetToneFrequency(1000);
+		BK4819_SetToneFrequency(false, 1000);
 		DELAY_WaitMS(25);
-		BK4819_SetToneFrequency(0);
+		BK4819_SetToneFrequency(false, 0);
 		DELAY_WaitMS(25);
-		BK4819_SetToneFrequency(1000);
+		BK4819_SetToneFrequency(false, 1000);
 		DELAY_WaitMS(25);
 	} else {
-		BK4819_SetToneFrequency(590);
+		BK4819_SetToneFrequency(false, 590);
 		SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
 		DELAY_WaitMS(60);
-		BK4819_SetToneFrequency(660);
+		BK4819_SetToneFrequency(false, 660);
 		DELAY_WaitMS(60);
-		BK4819_SetToneFrequency(730);
+		BK4819_SetToneFrequency(false, 730);
 		DELAY_WaitMS(60);
 	}
 
@@ -501,7 +501,7 @@ void RADIO_StartTX(bool bUseMic)
 		if (gSettings.RogerBeep == 3) {
 			// Play a tone for 300ms to make sure squelch opens on remote end before FSK ID
 			BEEP_Enable();
-			BK4819_SetToneFrequency(610);
+			BK4819_SetToneFrequency(false, 610);
 			SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM); // The local user should also hear it, we want to make sure we don't cut their voice
 			DELAY_WaitMS(150);
 			BEEP_Disable();

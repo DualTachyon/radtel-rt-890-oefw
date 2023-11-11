@@ -79,6 +79,7 @@ extern bool gReceivingAudio;
 extern bool gMonitorMode;
 extern bool gEnableLocalAlarm;
 extern bool gSendTone;
+extern bool gStartupSoundPlaying;
 extern bool KEY_SideKeyLongPressed;
 extern PTT_Lock_t gPttLock;
 extern bool gSignalFound;

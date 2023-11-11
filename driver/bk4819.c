@@ -461,9 +461,9 @@ void BK4819_ToggleAGCMode(bool bAuto)
 	}
 }
 
-void BK4819_SetToneFrequency(uint16_t Tone)
+void BK4819_SetToneFrequency(bool Tone2, uint16_t Tone)
 {
-	BK4819_WriteRegister(0x71, (Tone * 103U) / 10U);
+	BK4819_WriteRegister(0x71 + Tone2, (Tone * 103U) / 10U);
 }
 
 void BK4819_EnableFFSK1200(bool bEnable)

@@ -27,6 +27,7 @@ bool gEnableBlink;
 bool gRedrawScreen;
 bool gScannerMode;
 bool gSaveMode;
+bool gStartupSoundPlaying = false;
 bool gReceptionMode;
 bool gReceivingAudio;
 bool gMonitorMode;

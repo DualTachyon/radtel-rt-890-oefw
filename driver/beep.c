@@ -65,7 +65,7 @@ void BEEP_Enable(void)
 void BEEP_Disable(void)
 {
 	SPEAKER_TurnOff(SPEAKER_OWNER_SYSTEM);
-	BK4819_SetToneFrequency(0);
+	BK4819_SetToneFrequency(false, 0);
 	BK4819_EnableTone1(false);
 }
 
@@ -91,6 +91,13 @@ void BEEP_SetFrequency(uint16_t Frequency)
 	if (gSaveMode) {
 		BK4819_EnableRX();
 	}
-	BK4819_SetToneFrequency(Frequency);
+	BK4819_SetToneFrequency(false, Frequency);
 }
 
+void BEEP_SetTone2Frequency(uint16_t Frequency)
+{
+	if (gSaveMode) {
+		BK4819_EnableRX();
+	}
+	BK4819_SetToneFrequency(true, Frequency);
+}

@@ -163,7 +163,8 @@ void DTMF_PlayTone(uint8_t Code)
 {
 	BK4819_SetAfGain(0xB32A);
 	Init();
-	BK4819_EnableTone1(true);
+	if(!gStartupSoundPlaying)
+		BK4819_EnableTone1(true);
 	SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
 	PlayDTMF(Code);
 	if (!gDTMF_Playing) {

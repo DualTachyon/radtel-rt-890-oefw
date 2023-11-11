@@ -201,7 +201,7 @@ void Task_CheckSideKeys(void)
 			gSendTone = true;
 			RADIO_StartTX(false);
 			BK4819_EnableTone1(true);
-			BK4819_SetToneFrequency(gSettings.ToneFrequency);
+			BK4819_SetToneFrequency(false, gSettings.ToneFrequency);
 			break;
 
 		case ACTION_ROGER_BEEP:
