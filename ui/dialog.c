@@ -66,11 +66,11 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 		}
 		break;
 
-	case DIALOG_KEY_BEEP:
+	case DIALOG_SKIP_SCAN:
 		if (bSet) {
-			UI_DrawString(10, 48, "Key Beep: On ", 13);
+			UI_DrawString(10, 48, "Skip Scan: Scan", 15);
 		} else {
-			UI_DrawString(10, 48, "Key Beep: Off", 13);
+			UI_DrawString(10, 48, "Skip Scan: Skip", 15);
 		}
 		break;
 

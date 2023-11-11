@@ -32,6 +32,24 @@ ENABLE_LTO          => Link Time Optimization
 ENABLE_NOAA         => NOAA weather channels (always re-set the sidekeys actions from menu after modifying the available actions)
 ```
 
+### Shortcut Keys (long press)
+```
+1    => Start/stop scanning memory channels
+2    => Toggle AM fix
+3    => Toggle VOX
+4    => Change TX power on current channel
+5    => Change squelch level
+6    => Toggle dual watch
+7    => Toggle backlight
+8    => Change frequency step
+9    => Toggle scan skip for current channel
+0    => Launch broadcast FM mode
+*    => Edit TX frequency on current channel
+#    => Toggle key lock
+Menu => DTMF decoder
+Exit => Single/dual VFO display
+```
+
 ### Build & Flash
 See __Compiler__, __Building__ and __Flashing__ sections below.
 

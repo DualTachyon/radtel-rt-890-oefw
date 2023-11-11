@@ -435,9 +435,11 @@ static void HandlerLong(KEY_t Key)
 				break;
 
 			case KEY_9:
-				gSettings.KeyBeep ^= 1;
-				SETTINGS_SaveGlobals();
-				UI_DrawDialogText(DIALOG_KEY_BEEP, gSettings.KeyBeep);
+				if (gSettings.WorkMode) {
+					gVfoState[gSettings.CurrentVfo].ScanAdd ^= 1;
+					CHANNELS_SaveVfo();
+					UI_DrawDialogText(DIALOG_SKIP_SCAN, gVfoState[gSettings.CurrentVfo].ScanAdd);
+				}
 				break;
 
 			case KEY_MENU:
