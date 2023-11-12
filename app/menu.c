@@ -131,6 +131,9 @@ uint8_t gSettingsCount = sizeof(Menu) / sizeof(Menu[0]);
 
 static void DrawMenu(uint8_t Index)
 {
+	UI_DrawString(24, 72, Menu[(Index + gSettingsCount - 1) % gSettingsCount], 14);
+	Int2Ascii(((Index + gSettingsCount - 1) % gSettingsCount) + 1, 2);
+	UI_DrawString(140, 72, gShortString, 2);
 	UI_DrawString(24, 48, Menu[Index], 14);
 	Int2Ascii(Index + 1, 2);
 	UI_DrawString(140, 48, gShortString, 2);
@@ -156,8 +159,11 @@ static void EnableTextEditor(void)
 
 static void DrawSettingName(uint8_t Index)
 {
+	gColorForeground = COLOR_BLUE;
+	UI_DrawString(24, 72, Menu[Index], 14);
+	Int2Ascii((Index + 1), 2);
+	UI_DrawString(140, 72, gShortString, 2);
 	gColorForeground = COLOR_FOREGROUND;
-	UI_DrawString(24, 76, Menu[Index], 14);
 }
 
 static void DrawNewSetting(void)
@@ -171,7 +177,7 @@ static void DrawNewSetting(void)
 	}
 	gInputBoxWriteIndex = 0;
 	INPUTBOX_Pad(0, 10);
-	UI_DrawString(136, 76, "  ", 2);
+	UI_DrawSettingArrow(0);
 	if (Index && Index <= gSettingsCount) {
 		gMenuIndex = Index - 1;
 		MENU_Redraw(false);
@@ -963,10 +969,8 @@ void MENU_Redraw(bool bClear)
 	gInputBoxWriteIndex = 0;
 	if (bClear) {
 		DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
-		DISPLAY_DrawRectangle0(0, 56, 160, 1, gSettings.BorderColor);
 	}
 	gColorForeground = COLOR_FOREGROUND;
-	UI_DrawStringMenuSettings();
 	UI_DrawSettingArrow(0);
 	DrawMenu(gMenuIndex);
 	MENU_PlayAudio(gMenuIndex);
@@ -1015,23 +1019,13 @@ void MENU_KeyHandler(uint8_t Key)
 
 void MENU_Next(uint8_t Key)
 {
+	UI_DrawSettingArrow(0);
 	if (Key == KEY_UP) {
-		if (gSettingIndex) {
-			gSettingIndex = 0;
-			UI_DrawSettingArrow(0);
-		} else {
-			gMenuIndex = (gMenuIndex + gSettingsCount - 1) % gSettingsCount;
-			DrawMenu(gMenuIndex);
-		}
+		gMenuIndex = (gMenuIndex + gSettingsCount - 1) % gSettingsCount;
 	} else {
-		if (gSettingIndex) {
-			gMenuIndex = (gMenuIndex + 1) % gSettingsCount;
-			DrawMenu(gMenuIndex);
-		} else {
-			gSettingIndex = 1;
-			UI_DrawSettingArrow(1);
-		}
+		gMenuIndex = (gMenuIndex + 1) % gSettingsCount;
 	}
+	DrawMenu(gMenuIndex);
 }
 
 void MENU_SettingKeyHandler(uint8_t Key)

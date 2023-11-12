@@ -94,7 +94,7 @@ void UI_DrawSettingArrow(uint8_t Selection)
 	Bitmap[5] = 0x0080;
 
 	DISPLAY_Fill(8, 16,  8, 23, COLOR_BACKGROUND);
-	DISPLAY_Fill(8, 16, 32, 47, COLOR_BACKGROUND);
+	DISPLAY_Fill(1, 16, 32, 47, COLOR_BACKGROUND);
 
 	for (i = 0; i < 6; i++) {
 		uint16_t Pixel = Bitmap[i];

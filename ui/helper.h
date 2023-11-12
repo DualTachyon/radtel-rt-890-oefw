@@ -63,7 +63,6 @@ void UI_DrawFrequencyEx(const char *String, uint8_t Vfo, bool bFlag);
 void UI_DrawBootVoltage(uint8_t X, uint8_t Y);
 void UI_DrawDecimal(const char *pInput);
 void UI_DrawMenuPosition(const char *pString);
-void UI_DrawStringMenuSettings(void);
 void UI_DrawStringSwitchType(void);
 void UI_DrawRadar(void);
 void UI_DrawGolay(void);

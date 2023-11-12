@@ -836,12 +836,7 @@ void UI_DrawMenuPosition(const char *pString)
 			gString[i] = '0' + pString[i];
 		}
 	}
-	UI_DrawString(136, 76, gString, 2);
-}
-
-void UI_DrawStringMenuSettings(void)
-{
-	UI_DrawString(24, 76, "Menu Settings   ", 16);
+	UI_DrawString(1, 48, gString, 2);
 }
 
 void UI_DrawStringSwitchType(void)
