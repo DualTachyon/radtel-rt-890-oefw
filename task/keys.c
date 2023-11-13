@@ -16,38 +16,30 @@
 
 #include "app/flashlight.h"
 #include "app/fm.h"
-#include "app/lock.h"
 #include "app/menu.h"
 #include "app/radio.h"
 #include "driver/audio.h"
 #include "driver/beep.h"
-#include "driver/bk4819.h"
 #include "driver/key.h"
-#include "driver/pins.h"
-#ifdef UART_DEBUG
-	#include "driver/uart.h"
-#endif
 #include "helper/dtmf.h"
 #include "helper/helper.h"
 #include "helper/inputbox.h"
 #include "misc.h"
-#include "radio/channels.h"
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/alarm.h"
-#include "task/keys.h"
+#include "task/keyaction.h"
 #include "task/lock.h"
 #ifdef ENABLE_NOAA
 	#include "task/noaa.h"
 #endif
-#include "task/scanner.h"
 #include "task/screen.h"
-#include "task/vox.h"
 #include "ui/dialog.h"
 #include "ui/gfx.h"
 #include "ui/helper.h"
-#include "ui/main.h"
 #include "ui/vfo.h"
+
+bool bBeep740;
 
 static void FM_AppendDigit(char Digit)
 {
@@ -295,177 +287,17 @@ static void HandlerShort(KEY_t Key)
 
 static void HandlerLong(KEY_t Key)
 {
-	if (gFlashlightMode) {
-		FLASHLIGHT_Toggle();
-		return;
-	}
-
-	bool bBeep740;
-
-	if (gDTMF_InputMode && Key != KEY_MENU) {
-		return;
-	}
-
-	if (gSettings.Lock && Key != KEY_HASH) {
-		return;
-	}
-
-	if (gFrequencyDetectMode || gRadioMode == RADIO_MODE_TX) {
-		return;
-	}
-
-	if (gScannerMode) {
-		SETTINGS_SaveState();
-		BEEP_Play(440, 4, 80);
-		return;
-	}
-
-	if (gEnableLocalAlarm) {
-		ALARM_Stop();
-		return;
-	}
-
-	if (Key == KEY_7) {
-		gSettings.bEnableDisplay ^= 1;
-		if (gSettings.bEnableDisplay) {
-			SCREEN_TurnOn();
-			BEEP_Play(740, 3, 80);
-		} else {
-			gpio_bits_reset(GPIOA, BOARD_GPIOA_LCD_RESX);
-			BEEP_Play(440, 4, 80);
-		}
-		SETTINGS_SaveGlobals();
-		return;
-	}
-
 	if (gSettings.bEnableDisplay && gEnableBlink) {
 		SCREEN_TurnOn();
 		BEEP_Play(740, 2, 100);
 		return;
 	}
+
 	bBeep740 = true;
 	if (!gReceptionMode && (gFM_Mode == FM_MODE_OFF || Key == KEY_0 || Key == KEY_HASH || Key == KEY_UP || Key == KEY_DOWN)) {
 		SCREEN_TurnOn();
 		if (gScreenMode == SCREEN_MAIN) {
 			switch (Key) {
-			case KEY_0:
-				if (gFM_Mode == FM_MODE_OFF) {
-					RADIO_DisableSaveMode();
-					if (gSettings.DualStandby) {
-						RADIO_Tune(gSettings.CurrentVfo);
-						gIdleMode = IDLE_MODE_DUAL_STANDBY;
-					}
-					FM_Play();
-				} else {
-					FM_Disable(FM_MODE_OFF);
-				}
-				break;
-
-			case KEY_1:
-				if (gSettings.bFLock) {
-					return;
-				}
-				if (gFM_Mode != FM_MODE_OFF) {
-					return;
-				}
-				if (gFrequencyReverse) {
-					return;
-				}
-				RADIO_CancelMode();
-				gScannerMode = !gScannerMode;
-				bBeep740 = gScannerMode;
-				SCANNER_Countdown = 50;
-				break;
-
-			case KEY_2:
-				#ifdef ENABLE_AM_FIX
-					BK4819_RestoreGainSettings();
-					gExtendedSettings.AmFixEnabled = !gExtendedSettings.AmFixEnabled;
-					SETTINGS_SaveGlobals();
-					#ifdef UART_DEBUG
-						//UART_printf("AM fix toggled to %s\r\n", gExtendedSettings.AmFixEnabled ? "ON" : "OFF");
-					#endif
-					UI_DrawDialogText(DIALOG_AM_FIX, gExtendedSettings.AmFixEnabled);
-				#endif
-				break;
-
-			case KEY_3:
-				RADIO_CancelMode();
-				gSettings.Vox ^= 1;
-				BK4819_EnableVox(gSettings.Vox);
-				SETTINGS_SaveGlobals();
-				if (VOX_IsTransmitting) {
-					RADIO_EndTX();
-					VOX_IsTransmitting = false;
-				}
-				UI_DrawStatusIcon(80, ICON_VOX, gSettings.Vox, COLOR_FOREGROUND);
-				UI_DrawDialogText(DIALOG_VOX, gSettings.Vox);
-				break;
-
-			case KEY_4:
-				RADIO_CancelMode();
-				gVfoState[gSettings.CurrentVfo].bIsLowPower ^= 1;
-				UI_DrawTxPower(gVfoState[gSettings.CurrentVfo].bIsLowPower, gSettings.CurrentVfo);
-				CHANNELS_SaveVfo();
-				UI_DrawDialogText(DIALOG_TX_POWER, gVfoState[gSettings.CurrentVfo].bIsLowPower);
-				break;
-
-			case KEY_5:
-				gMenuIndex = MENU_SQ_LEVEL;
-				DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
-				DISPLAY_DrawRectangle0(0, 56, 160, 1, gSettings.BorderColor);
-				MENU_DrawSetting();
-				break;
-
-			case KEY_6:
-				RADIO_CancelMode();
-				gSettings.DualStandby ^= 1;
-				RADIO_Tune(gSettings.CurrentVfo);
-				SETTINGS_SaveGlobals();
-				gIdleMode = IDLE_MODE_OFF;
-				UI_DrawStatusIcon(56, ICON_DUAL_WATCH, gSettings.DualStandby, COLOR_FOREGROUND);
-				UI_DrawDialogText(DIALOG_DUAL_STANDBY, gSettings.DualStandby);
-				break;
-
-			case KEY_8:
-				gMenuIndex = MENU_FREQ_STEP;
-				DISPLAY_Fill(0, 159, 1, 81, COLOR_BACKGROUND);
-				DISPLAY_DrawRectangle0(0, 56, 160, 1, gSettings.BorderColor);
-				MENU_DrawSetting();
-				break;
-
-			case KEY_9:
-				if (gSettings.WorkMode) {
-					gVfoState[gSettings.CurrentVfo].ScanAdd ^= 1;
-					CHANNELS_SaveVfo();
-					UI_DrawDialogText(DIALOG_SKIP_SCAN, gVfoState[gSettings.CurrentVfo].ScanAdd);
-				}
-				break;
-
-			case KEY_MENU:
-				if (gFM_Mode != FM_MODE_OFF) {
-					return;
-				}
-				if (!gDTMF_InputMode) {
-					if (gRadioMode == RADIO_MODE_RX) {
-						return;
-					}
-					if (VOX_Timer) {
-						VOX_Timer = 0;
-						Task_UpdateScreen();
-					}
-					DTMF_ResetString();
-					gDTMF_InputMode = true;
-					UI_DrawDialog();
-					UI_DrawDTMF();
-				} else {
-					DTMF_ResetString();
-					gDTMF_InputMode = false;
-					UI_DrawMain(true);
-					bBeep740 = false;
-				}
-				break;
-
 			case KEY_UP:
 			case KEY_DOWN:
 				if (gInputBoxWriteIndex == 0) {
@@ -507,27 +339,33 @@ static void HandlerLong(KEY_t Key)
 				}
 				break;
 
-			case KEY_EXIT:
-				if (gFM_Mode != FM_MODE_OFF) {
-					return;
-				}
-				gSettings.DualDisplay ^= 1;
-				SETTINGS_SaveGlobals();
-				VOX_Timer = 0;
-				UI_DrawMain(true);
+			case KEY_0:
+			case KEY_1:
+			case KEY_2:
+			case KEY_3:
+			case KEY_4:
+			case KEY_5:
+			case KEY_6:
+			case KEY_7:
+			case KEY_8:
+			case KEY_9:
+				KeypressAction(gExtendedSettings.KeyShortcut[Key]);
 				break;
-
+			
 			case KEY_STAR:
-				gFrequencyReverse = !gFrequencyReverse;
-				bBeep740 = gFrequencyReverse;
-				UI_DrawVfo(gSettings.CurrentVfo);
-				gInputBoxWriteIndex = 0;
-				INPUTBOX_Pad(0, 10);
+				KeypressAction(gExtendedSettings.KeyShortcut[10]);
+				break;
+			
+			case KEY_HASH:
+				KeypressAction(gExtendedSettings.KeyShortcut[11]);
 				break;
 
-			case KEY_HASH:
-				LOCK_Toggle();
-				bBeep740 = gSettings.Lock;
+			case KEY_MENU:
+				KeypressAction(gExtendedSettings.KeyShortcut[12]);
+				break;
+			
+			case KEY_EXIT:
+				KeypressAction(gExtendedSettings.KeyShortcut[13]);
 				break;
 
 			default:

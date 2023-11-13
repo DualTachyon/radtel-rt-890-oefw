@@ -14,6 +14,7 @@ Use at your own risk and remember to back up your SPI memory before installing a
 - SSB reception
 - Light theme
 - AM Fix (improvement in AM reception with strong signals, port of @OneOfEleven's excellent work on the Quansheng UV-K5)
+- Full control over side key and main key shortcuts
 - And much more!
 
 ## Instructions
@@ -32,7 +33,7 @@ ENABLE_LTO          => Link Time Optimization
 ENABLE_NOAA         => NOAA weather channels (always re-set the sidekeys actions from menu after modifying the available actions)
 ```
 
-### Shortcut Keys (long press)
+### Default Shortcut Keys - Configurable in main menu
 ```
 1    => Start/stop scanning memory channels
 2    => Toggle AM fix

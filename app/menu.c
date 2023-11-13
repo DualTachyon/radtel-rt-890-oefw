@@ -29,6 +29,7 @@
 #include "radio/hardware.h"
 #include "radio/settings.h"
 #include "task/cursor.h"
+#include "task/keyaction.h"
 #include "task/sidekeys.h"
 #include "ui/gfx.h"
 #include "ui/helper.h"
@@ -54,9 +55,7 @@ static const char Menu[][14] = {
 	"TOT           ",
 	"VOX Level     ",
 	"VOX Delay     ",
-	#ifdef ENABLE_NOAA
 	"NOAA Monitor  ",
-	#endif
 	"FM Standby    ",
 	"Tail Tone     ",
 	"Scan DIR      ",
@@ -78,10 +77,25 @@ static const char Menu[][14] = {
 	"CH Name       ",
 	"Save CH       ",
 	"Delete CH     ",
-	"K1 Long       ",
-	"K1 Short      ",
-	"K2 Long       ",
-	"K2 Short      ",
+	"Side 1 Long   ",
+	"Side 1 Short  ",
+	"Side 2 Long   ",
+	"Side 2 Short  ",
+	"Key 0 Long    ",
+	"Key 1 Long    ",
+	"Key 2 Long    ",
+	"Key 3 Long    ",
+	"Key 4 Long    ",
+	"Key 5 Long    ",
+	"Key 6 Long    ",
+	"Key 7 Long    ",
+	"Key 8 Long    ",
+	"Key 9 Long    ",
+	"Key * Long    ",
+	"Key # Long    ",
+	"Key Menu Long ",
+	"Key Exit Long ",
+	"Reset Keys    ",
 	"DTMF Delay    ",
 	"DTMF Interval ",
 	"DTMF Mode     ",
@@ -587,7 +601,25 @@ void MENU_AcceptSetting(void)
 	case MENU_K1_SHORT:
 	case MENU_K2_LONG:
 	case MENU_K2_SHORT:
-		gSettings.Actions[gMenuIndex - MENU_K1_LONG] = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
+	case MENU_0_LONG:
+	case MENU_1_LONG:
+	case MENU_2_LONG:
+	case MENU_3_LONG:
+	case MENU_4_LONG:
+	case MENU_5_LONG:
+	case MENU_6_LONG:
+	case MENU_7_LONG:
+	case MENU_8_LONG:
+	case MENU_9_LONG:
+	case MENU_STAR_LONG:
+	case MENU_HASH_LONG:
+	case MENU_MENU_LONG:
+	case MENU_EXIT_LONG:
+		if (gMenuIndex >= MENU_0_LONG) {
+			gExtendedSettings.KeyShortcut[gMenuIndex - MENU_0_LONG] = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
+		} else {
+			gSettings.Actions[gMenuIndex - MENU_K1_LONG] = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
+		}
 		SETTINGS_SaveGlobals();
 		break;
 
@@ -625,6 +657,12 @@ void MENU_AcceptSetting(void)
 		if (gSettingIndex == 1) {
 			SETTINGS_FactoryReset();
 			HARDWARE_Reboot();
+		}
+		break;
+
+	case MENU_KEYS_RESET:
+		if (gSettingIndex == 1) {
+			SetDefaultKeyShortcuts(true);
 		}
 		break;
 	}
@@ -904,10 +942,32 @@ void MENU_DrawSetting(void)
 	case MENU_K1_SHORT:
 	case MENU_K2_LONG:
 	case MENU_K2_SHORT:
-		gSettingCurrentValue = gSettings.Actions[gMenuIndex - MENU_K1_LONG] % ACTIONS_COUNT;
+	case MENU_0_LONG:
+	case MENU_1_LONG:
+	case MENU_2_LONG:
+	case MENU_3_LONG:
+	case MENU_4_LONG:
+	case MENU_5_LONG:
+	case MENU_6_LONG:
+	case MENU_7_LONG:
+	case MENU_8_LONG:
+	case MENU_9_LONG:
+	case MENU_STAR_LONG:
+	case MENU_HASH_LONG:
+	case MENU_MENU_LONG:
+	case MENU_EXIT_LONG:
 		gSettingMaxValues = ACTIONS_COUNT;
 		DISPLAY_Fill(0, 159, 1, 55, COLOR_BACKGROUND);
-		UI_DrawActions(gSettings.Actions[gMenuIndex - MENU_K1_LONG] % ACTIONS_COUNT);
+		if (gMenuIndex >= MENU_0_LONG) {
+			gSettingCurrentValue = gExtendedSettings.KeyShortcut[gMenuIndex - MENU_0_LONG] % ACTIONS_COUNT;
+		} else {
+			gSettingCurrentValue = gSettings.Actions[gMenuIndex - MENU_K1_LONG] % ACTIONS_COUNT;
+		}
+		UI_DrawActions(gSettingCurrentValue);
+		break;
+
+	case MENU_KEYS_RESET:
+		UI_DrawToggle();
 		break;
 
 	case MENU_DTMF_DELAY:
@@ -1198,6 +1258,20 @@ void MENU_ScrollSetting(uint8_t Key)
 	case MENU_K1_SHORT:
 	case MENU_K2_LONG:
 	case MENU_K2_SHORT:
+	case MENU_0_LONG:
+	case MENU_1_LONG:
+	case MENU_2_LONG:
+	case MENU_3_LONG:
+	case MENU_4_LONG:
+	case MENU_5_LONG:
+	case MENU_6_LONG:
+	case MENU_7_LONG:
+	case MENU_8_LONG:
+	case MENU_9_LONG:
+	case MENU_STAR_LONG:
+	case MENU_HASH_LONG:
+	case MENU_MENU_LONG:
+	case MENU_EXIT_LONG:
 		UI_DrawActions(gSettingCurrentValue);
 		break;
 

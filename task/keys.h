@@ -17,6 +17,8 @@
 #ifndef TASK_KEYS_H
 #define TASK_KEYS_H
 
+extern bool bBeep740;
+
 void Task_CheckKeyPad(void);
 
 #endif

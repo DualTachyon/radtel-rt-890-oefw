@@ -165,8 +165,9 @@ typedef struct __attribute__((packed)) {
 	uint8_t DarkMode: 1;
 	uint8_t ScanBlink: 1;
 	uint8_t Undefined: 3;	// free for use
-	// 0x01
-	// ...
+	// 0x01 - 0x0E
+	uint8_t KeyShortcut[14];
+	// 0x0F...
 } gExtendedSettings_t;
 
 extern Calibration_t gCalibration;

@@ -23,6 +23,7 @@
 #include "misc.h"
 #include "radio/hardware.h"
 #include "radio/settings.h"
+#include "task/keyaction.h"
 #include "task/scanner.h"
 #include "ui/gfx.h"
 
@@ -104,6 +105,10 @@ void SETTINGS_LoadSettings(void)
 	SFLASH_Read(&gDTMF_Wake, 0x3C9E50, sizeof(gDTMF_Wake));
 	// Extended Settings bits are all 1 at first read as the flash is full of 0xFF
 	SFLASH_Read(&gExtendedSettings, 0x3D5000, sizeof(gExtendedSettings));
+
+	if (gExtendedSettings.KeyShortcut[0] == 0xFF) {
+		SetDefaultKeyShortcuts(false); //
+	}
 
 	gFrequencyStep = FREQUENCY_GetStep(gSettings.FrequencyStep);
 

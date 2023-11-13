@@ -4,7 +4,7 @@ UART_DEBUG			:= 0
 MOTO_STARTUP_TONE		:= 1
 ENABLE_AM_FIX			:= 1
 ENABLE_LTO			:= 0
-ENABLE_NOAA			:= 0
+ENABLE_NOAA			:= 1
 
 OBJS =
 # Startup files
@@ -72,6 +72,7 @@ OBJS += task/battery.o
 OBJS += task/cursor.o
 OBJS += task/encrypt.o
 OBJS += task/fmscanner.o
+OBJS += task/keyaction.o
 OBJS += task/keys.o
 OBJS += task/idle.o
 OBJS += task/incoming.o

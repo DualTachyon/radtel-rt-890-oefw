@@ -15,26 +15,18 @@
  */
 
 #include "app/flashlight.h"
-#include "app/fm.h"
 #include "app/radio.h"
 #include "app/fm.h"
 #include "driver/beep.h"
-#include "driver/bk4819.h"
 #include "driver/key.h"
 #include "driver/pins.h"
 #include "helper/helper.h"
-#include "helper/inputbox.h"
 #include "misc.h"
-#include "radio/detector.h"
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/alarm.h"
-#include "task/idle.h"
+#include "task/keyaction.h"
 #include "task/sidekeys.h"
-#include "ui/gfx.h"
-#include "ui/helper.h"
-#include "ui/main.h"
-#include "ui/vfo.h"
 
 void Task_CheckSideKeys(void)
 {
@@ -46,15 +38,6 @@ void Task_CheckSideKeys(void)
 	}
 
 	SCHEDULER_ClearTask(TASK_CHECK_SIDE_KEYS);
-
-	if (gSettings.Lock || gFM_Mode != FM_MODE_OFF || gScreenMode != 0 || gDTMF_InputMode ||
-			(!gpio_input_data_bit_read(GPIOF, BOARD_GPIOF_KEY_SIDE1) && !gpio_input_data_bit_read(GPIOA, BOARD_GPIOA_KEY_SIDE2)) ||
-			!gpio_input_data_bit_read(GPIOB, BOARD_GPIOB_KEY_PTT)
-	   ) {
-		KEY_Side1Counter = 0;
-		KEY_Side2Counter = 0;
-		return;
-	}
 
 	// ??? Such a specific number
 	Slot = 6;
@@ -82,11 +65,6 @@ void Task_CheckSideKeys(void)
 		return;
 	}
 
-	if (gFlashlightMode) {
-		FLASHLIGHT_Toggle();
-		return;
-	}
-
 	Action = gSettings.Actions[Slot];
 	if (gSettings.bEnableDisplay && gEnableBlink) {
 		SCREEN_TurnOn();
@@ -100,140 +78,6 @@ void Task_CheckSideKeys(void)
 
 	SCREEN_TurnOn();
 
-	if (gScannerMode) {
-		SETTINGS_SaveState();
-		BEEP_Play(440, 4, 80);
-		return;
-	}
-
-	if (gMonitorMode) {
-		gMonitorMode = false;
-		RADIO_EndRX();
-		return;
-	}
-
-	if (gEnableLocalAlarm) {
-		ALARM_Stop();
-		return;
-	}
-
-#ifdef ENABLE_NOAA
-	if (!gReceptionMode || Action == ACTION_NOAA_CHANNEL) {
-#else
-	if (!gReceptionMode) {
-#endif
-		if (gRadioMode == RADIO_MODE_QUIET) {
-			IDLE_SelectMode();
-		}
-		switch (Action) {
-		case ACTION_MONITOR:
-			gMonitorMode = true;
-			RADIO_Tune(gSettings.CurrentVfo);
-			break;
-
-		case ACTION_FREQUENCY_DETECT:
-			if (!gSettings.bFLock) {
-				gInputBoxWriteIndex = 0;
-				RADIO_FrequencyDetect();
-			}
-			break;
-
-		case ACTION_REPEATER_MODE:
-			gSettings.RepeaterMode = (gSettings.RepeaterMode + 1) % 3;
-			SETTINGS_SaveGlobals();
-			RADIO_Tune(gSettings.CurrentVfo);
-			UI_DrawRepeaterMode();
-			if (gSettings.DualDisplay == 0) {
-				UI_DrawVfo(gSettings.CurrentVfo);
-			} else {
-				UI_DrawVfo(0);
-				UI_DrawVfo(1);
-			}
-			BEEP_Play(740, 2, 100);
-			break;
-
-		case ACTION_PRESET_CHANNEL:
-			if (gSettings.WorkMode) {
-				gInputBoxWriteIndex = 0;
-				if (CHANNELS_LoadChannel(gSettings.PresetChannels[Slot], gSettings.CurrentVfo)) {
-					CHANNELS_LoadChannel(gSettings.VfoChNo[gSettings.CurrentVfo], gSettings.CurrentVfo);
-				} else {
-					gSettings.VfoChNo[gSettings.CurrentVfo] = gSettings.PresetChannels[Slot];
-					RADIO_Tune(gSettings.CurrentVfo);
-					UI_DrawVfo(gSettings.CurrentVfo);
-				}
-				BEEP_Play(740, 2, 100);
-			}
-			break;
-
-		case ACTION_LOCAL_ALARM:
-			ALARM_Start();
-			BK4819_SetAF(BK4819_AF_ALAM);
-			break;
-
-		case ACTION_REMOTE_ALARM:
-			ALARM_Start();
-			BK4819_SetAF(BK4819_AF_BEEP);
-			RADIO_StartTX(false);
-			break;
-
-#ifdef ENABLE_NOAA
-		case ACTION_NOAA_CHANNEL:
-			if (gRadioMode != RADIO_MODE_TX) {
-				gInputBoxWriteIndex = 0;
-				gReceptionMode = !gReceptionMode;
-				if (!gReceptionMode) {
-					RADIO_NoaaRetune();
-					BEEP_Play(440, 4, 80);
-				} else {
-					if (gRadioMode == RADIO_MODE_RX) {
-						RADIO_EndRX();
-					}
-					RADIO_NoaaTune();
-					BEEP_Play(740, 2, 100);
-				}
-			}
-			break;
-#endif
-
-		case ACTION_SEND_TONE:
-			gEnableLocalAlarm = true;
-			gSendTone = true;
-			RADIO_StartTX(false);
-			BK4819_EnableTone1(true);
-			BK4819_SetToneFrequency(false, gSettings.ToneFrequency);
-			break;
-
-		case ACTION_ROGER_BEEP:
-			gSettings.RogerBeep = (gSettings.RogerBeep + 1) % 4;
-			SETTINGS_SaveGlobals();
-			BEEP_Play(740, 2, 100);
-			UI_DrawRoger();
-			break;
-
-		case ACTION_FM_RADIO:
-			// TODO FM radio
-			RADIO_DisableSaveMode();
-			if (gSettings.DualStandby) {
-				RADIO_Tune(gSettings.CurrentVfo);
-				gIdleMode = IDLE_MODE_DUAL_STANDBY;
-			}
-			FM_Play();
-			break;
-
-		case ACTION_SCAN:
-			if (!gSettings.bFLock && gFM_Mode == FM_MODE_OFF && !gFrequencyReverse) {
-				RADIO_CancelMode();
-				gScannerMode = !gScannerMode;
-			}
-			break;
-
-		case ACTION_FLASHLIGHT:
-			if (!gFlashlightMode) {
-				FLASHLIGHT_Toggle();
-			}
-			break;
-		}
-	}
+	KeypressAction(Action);
 }
 

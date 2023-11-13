@@ -65,6 +65,14 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 			UI_DrawString(10, 48, "Dual Standby: Off", 17);
 		}
 		break;
+	
+	case DIALOG_KEY_BEEP:
+		if (bSet) {
+			UI_DrawString(10, 48, "Key Beep: On ", 13);
+		} else {
+			UI_DrawString(10, 48, "Key Beep: Off", 13);
+		}
+		break;
 
 	case DIALOG_SKIP_SCAN:
 		if (bSet) {
