@@ -10,11 +10,25 @@ This firmware is a work in progress and could be unstable; it could alter your r
 Use at your own risk and remember to back up your SPI memory before installing any custom firmware.
 
 ## Features
-- All stock features (check user's manual)
+- All stock features: [check user's manual](https://cdn.shopifycdn.net/s/files/1/0564/8855/8800/files/RT-890_user_manual.pdf?v=1670288968)
+- RX frequency can be set from 10 to 1300 MHz (results may vary)
 - SSB reception
 - Light theme
 - AM Fix (improvement in AM reception with strong signals, port of @OneOfEleven's excellent work on the Quansheng UV-K5)
 - Full control over side key and main key shortcuts
+- New configurable actions (FM Radio, Scanner, FLashlight)
+- 0.01K step
+- Displaying registers in single VFO mode
+- Displaying dBM when receiving
+- Reworked scanner
+  - Faster scanning
+  - Resume mode: Time, Carrier, No
+  - Skip flagged channels (default)
+  - Ignore skip flag (launch scan action while scanning)
+  - Change scan direction while scanning (up/down keys)
+  - Force scan resume (up/down keys)
+- Reworked main menu
+- Ability to disable LED toggling when scanning
 - And much more!
 
 ## Instructions
@@ -33,7 +47,7 @@ ENABLE_LTO          => Link Time Optimization
 ENABLE_NOAA         => NOAA weather channels (always re-set the sidekeys actions from menu after modifying the available actions)
 ```
 
-### Default Shortcut Keys - Configurable in main menu
+### Default Shortcut Keys (long press) - Configurable in main menu
 ```
 1    => Start/stop scanning memory channels
 2    => Toggle AM fix
@@ -53,6 +67,9 @@ Exit => Single/dual VFO display
 
 ### Build & Flash
 See __Compiler__, __Building__ and __Flashing__ sections below.
+
+## Pre-built firmware
+You can find pre-built firmwares in the [Actions](https://github.com/OEFW-community/RT-890-custom-firmware/actions)
 
 ## Telegram group
 If you want to discuss this project, you can join the [Telegram group](https://t.me/RT890_OEFW).
