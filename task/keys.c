@@ -153,8 +153,9 @@ static void MAIN_KeyHandler(KEY_t Key)
 						}
 					} else {
 						// TODO: Logic is correct but doesn't make sense
-						gSettings.StandbyArea = (Key + 1) & 1;
-						SETTINGS_SaveGlobals();
+						// gSettings.StandbyArea = (Key + 1) & 1;
+						// SETTINGS_SaveGlobals();
+						gManualScanDirection = (Key == KEY_DOWN);
 					}
 #ifdef ENABLE_NOAA
 				} else {

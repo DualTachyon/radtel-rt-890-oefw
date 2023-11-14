@@ -36,9 +36,9 @@ void Task_Scanner(void) {
 			RADIO_EndRX();
 		}
 		if (gSettings.WorkMode) {
-			CHANNELS_NextChannelMr(gSettings.ScanDirection ? KEY_DOWN : KEY_UP, true);
+			CHANNELS_NextChannelMr(gManualScanDirection ? KEY_DOWN : KEY_UP, true);
 		} else {
-			CHANNELS_NextChannelVfo(gSettings.ScanDirection ? KEY_DOWN : KEY_UP);
+			CHANNELS_NextChannelVfo(gManualScanDirection ? KEY_DOWN : KEY_UP);
 			RADIO_Tune(gSettings.CurrentVfo);
 		}
 		SCANNER_Countdown = 50;

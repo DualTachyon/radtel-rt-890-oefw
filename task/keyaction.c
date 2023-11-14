@@ -204,6 +204,7 @@ void KeypressAction(uint8_t Action) {
 
 			case ACTION_SCAN:
 				RADIO_CancelMode();
+				gManualScanDirection = gSettings.ScanDirection;
 				gScannerMode ^= 1;
 				bBeep740 = gScannerMode;
 				SCANNER_Countdown = 50;
