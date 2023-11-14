@@ -156,6 +156,9 @@ static void MAIN_KeyHandler(KEY_t Key)
 						// gSettings.StandbyArea = (Key + 1) & 1;
 						// SETTINGS_SaveGlobals();
 						gManualScanDirection = (Key == KEY_DOWN);
+						if (gRadioMode== RADIO_MODE_RX) {
+							gForceScan = true;
+						}
 					}
 #ifdef ENABLE_NOAA
 				} else {

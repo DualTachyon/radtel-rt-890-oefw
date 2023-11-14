@@ -47,6 +47,7 @@ uint8_t gTailToneCounter;
 uint16_t gNoToneCounter;
 bool gFrequencyReverse;
 bool gManualScanDirection;
+bool gForceScan;
 uint8_t gSlot;
 char gString[32];
 char gBigString[40];
