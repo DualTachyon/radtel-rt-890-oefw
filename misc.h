@@ -94,6 +94,7 @@ extern uint16_t gNoToneCounter;
 extern bool gFrequencyReverse;
 extern bool gManualScanDirection;
 extern bool gForceScan;
+extern bool gScanAll;
 extern uint8_t gSlot;
 extern char gString[32];
 extern char gBigString[40];

@@ -90,8 +90,8 @@ void KeypressAction(uint8_t Action) {
 	}
 
 	if (gScannerMode) {
-		SETTINGS_SaveState();
-		BEEP_Play(440, 4, 80);
+		gScanAll ^= 1;
+		// TODO add a user feedback, UI_DrawDialogText glitch
 		return;
 	}
 
