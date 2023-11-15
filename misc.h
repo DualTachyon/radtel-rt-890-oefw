@@ -92,6 +92,7 @@ extern uint8_t gNOAA_ChannelNext;
 extern uint8_t gTailToneCounter;
 extern uint16_t gNoToneCounter;
 extern bool gFrequencyReverse;
+extern uint8_t gSlot;
 extern char gString[32];
 extern char gBigString[40];
 

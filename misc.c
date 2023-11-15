@@ -46,6 +46,7 @@ uint8_t gNOAA_ChannelNext;
 uint8_t gTailToneCounter;
 uint16_t gNoToneCounter;
 bool gFrequencyReverse;
+uint8_t gSlot;
 char gString[32];
 char gBigString[40];
 

@@ -141,21 +141,21 @@ void KeypressAction(uint8_t Action) {
 				BEEP_Play(740, 2, 100);
 				break;
 
-/*  TODO: Fix this function to work with new key handler.  Need to see if there's any way to change presets in the radio.  Only see it in Chirp.
-		case ACTION_PRESET_CHANNEL:
-			if (gSettings.WorkMode) {
-				gInputBoxWriteIndex = 0;
-				if (CHANNELS_LoadChannel(gSettings.PresetChannels[Slot], gSettings.CurrentVfo)) {
-					CHANNELS_LoadChannel(gSettings.VfoChNo[gSettings.CurrentVfo], gSettings.CurrentVfo);
-				} else {
-					gSettings.VfoChNo[gSettings.CurrentVfo] = gSettings.PresetChannels[Slot];
-					RADIO_Tune(gSettings.CurrentVfo);
-					UI_DrawVfo(gSettings.CurrentVfo);
+			// This action acts like previous for when used from sidekeys and like "1 call" when used from keyboard
+			case ACTION_PRESET_CHANNEL:
+				if (gSettings.WorkMode) {
+					gInputBoxWriteIndex = 0;
+					uint8_t Slot = (gSlot < 4 ? gSlot : 0);
+					if (CHANNELS_LoadChannel(gSettings.PresetChannels[Slot], gSettings.CurrentVfo)) {
+						CHANNELS_LoadChannel(gSettings.VfoChNo[gSettings.CurrentVfo], gSettings.CurrentVfo);
+					} else {
+						gSettings.VfoChNo[gSettings.CurrentVfo] = gSettings.PresetChannels[Slot];
+						RADIO_Tune(gSettings.CurrentVfo);
+						UI_DrawVfo(gSettings.CurrentVfo);
+					}
+					BEEP_Play(740, 2, 100);
 				}
-				BEEP_Play(740, 2, 100);
-			}
-			break;
-*/
+				break;
 
 			case ACTION_LOCAL_ALARM:
 				ALARM_Start();

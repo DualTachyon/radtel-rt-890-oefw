@@ -30,7 +30,6 @@
 
 void Task_CheckSideKeys(void)
 {
-	uint8_t Slot;
 	uint8_t Action;
 
 	if (!SCHEDULER_CheckTask(TASK_CHECK_SIDE_KEYS) || gSettings.DtmfState != DTMF_STATE_NORMAL) {
@@ -40,32 +39,32 @@ void Task_CheckSideKeys(void)
 	SCHEDULER_ClearTask(TASK_CHECK_SIDE_KEYS);
 
 	// ??? Such a specific number
-	Slot = 6;
+	gSlot = 6;
 
 	if (!gpio_input_data_bit_read(GPIOF, BOARD_GPIOF_KEY_SIDE1) && KEY_Side1Counter > 1000) {
 		KEY_SideKeyLongPressed = true;
 		KEY_Side1Counter = 0;
-		Slot = 0;
+		gSlot = 0;
 	} else if (!gpio_input_data_bit_read(GPIOA, BOARD_GPIOA_KEY_SIDE2) && KEY_Side2Counter > 1000) {
 		KEY_SideKeyLongPressed = true;
 		KEY_Side2Counter = 0;
-		Slot = 2;
+		gSlot = 2;
 	} else if (gpio_input_data_bit_read(GPIOF, BOARD_GPIOF_KEY_SIDE1) && gpio_input_data_bit_read(GPIOA, BOARD_GPIOA_KEY_SIDE2)) {
 		if (KEY_Side1Counter > 100) {
-			Slot = 1;
+			gSlot = 1;
 		} else if (KEY_Side2Counter > 100) {
-			Slot = 3;
+			gSlot = 3;
 		}
 		KEY_SideKeyLongPressed = false;
 		KEY_Side1Counter = 0;
 		KEY_Side2Counter = 0;
 	}
 
-	if (Slot >= 4) {
+	if (gSlot >= 4) {
 		return;
 	}
 
-	Action = gSettings.Actions[Slot];
+	Action = gSettings.Actions[gSlot];
 	if (gSettings.bEnableDisplay && gEnableBlink) {
 		SCREEN_TurnOn();
 		BEEP_Play(740, 2, 100);
