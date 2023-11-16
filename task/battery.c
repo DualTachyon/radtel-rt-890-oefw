@@ -39,7 +39,12 @@ void Task_CheckBattery(void)
 
 	gBatteryVoltage = BATTERY_GetVoltage();
 
-	if (gRadioMode != RADIO_MODE_RX && VOX_Timer == 0 && gFM_Mode == FM_MODE_OFF && gScreenMode == SCREEN_MAIN && !gDTMF_InputMode) {
+	if (gRadioMode != RADIO_MODE_RX
+			&& VOX_Timer == 0
+			&& gFM_Mode == FM_MODE_OFF
+			&& gScreenMode == SCREEN_MAIN
+			&& !gDTMF_InputMode
+			&& !gFlashlightMode) {
 		UI_DrawVoltage(!gSettings.CurrentVfo);
 	}
 	UI_DrawBattery();

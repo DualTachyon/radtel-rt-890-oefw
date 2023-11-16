@@ -291,13 +291,14 @@ void UI_DrawTxPriority(void)
 
 void UI_DrawFrequencyStep(uint8_t Index)
 {
-	static const char Mode[14][5] = {
+	static const char Mode[15][5] = {
 			"0.25K",
 			"1.25K",
 			"2.5K ",
 			"5K   ",
 			"6.25K",
 			"10K  ",
+			"12.5K",
 			"20K  ",
 			"25K  ",
 			"50K  ",
@@ -459,6 +460,6 @@ void UI_DrawSettingScanResume(uint8_t Index)
 			"No Resume       ",	// 3
 	};
 	// Values start at 1 instead of 0 for this setting
-	UI_DrawSettingOption(Mode[Index - 1], 0);
-	UI_DrawSettingOption(Mode[(Index) % 3], 1);
+	UI_DrawSettingOption(Mode[Index], 0);
+	UI_DrawSettingOption(Mode[(Index + 1) % 3], 1);
 }

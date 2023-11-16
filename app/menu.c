@@ -463,7 +463,7 @@ void MENU_AcceptSetting(void)
 		break;
 
 	case MENU_SCAN_RESUME:
-		gExtendedSettings.ScanResume = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
+		gExtendedSettings.ScanResume = ((gSettingCurrentValue + gSettingIndex) % gSettingMaxValues) + 1;
 		SETTINGS_SaveGlobals();
 		break;
 
@@ -825,8 +825,9 @@ void MENU_DrawSetting(void)
 		break;
 
 	case MENU_SCAN_RESUME:
-		gSettingCurrentValue = gExtendedSettings.ScanResume;
+		gSettingCurrentValue = gExtendedSettings.ScanResume - 1;
 		gSettingMaxValues = 3;
+		DISPLAY_Fill(0, 159, 1, 55, COLOR_BACKGROUND);
 		UI_DrawSettingScanResume(gSettingCurrentValue);
 		break;
 	
@@ -1097,7 +1098,12 @@ void MENU_SettingKeyHandler(uint8_t Key)
 			if (Key == KEY_MENU) {
 				MENU_AcceptSetting();
 			}
-			if (gMenuIndex == MENU_PERSONAL_ID || gMenuIndex == MENU_CH_NAME || gMenuIndex == MENU_CTCSS_DCS || gMenuIndex == MENU_RX_CTCSS_DCS || gMenuIndex == MENU_TX_CTCSS_DCS) {
+			if (gMenuIndex == MENU_PERSONAL_ID
+					|| gMenuIndex == MENU_CH_NAME
+					|| gMenuIndex == MENU_CTCSS_DCS
+					|| gMenuIndex == MENU_RX_CTCSS_DCS
+					|| gMenuIndex == MENU_TX_CTCSS_DCS
+					|| gMenuIndex == MENU_SCAN_RESUME) {
 				MENU_Redraw(true);
 			} else {
 				MENU_Redraw(false);

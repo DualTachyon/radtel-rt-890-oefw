@@ -431,12 +431,12 @@ void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo)
 
 	case 1: // TX mode
 		gColorForeground = COLOR_RED;
-		UI_DrawSmallString(4, Y, "VO", 2);
+		UI_DrawSmallString(2, Y, " VO", 3);
 		break;
 
 	case 2: // RX mode
 		gColorForeground = COLOR_BLUE;
-		UI_DrawSmallString(4, Y, "SQ", 2);
+		UI_DrawSmallString(2, Y, " SQ", 3);
 		break;
 	}
 }
