@@ -15,7 +15,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sudo apt update && sudo apt install -y build-essential gcc-arm-none-eabi=15:10.3-2021.07-4 && pip install crcmod && git submodule update --init --recursive --depth=1"
+	"postCreateCommand": "sudo apt update && sudo apt install -y build-essential gcc-arm-none-eabi=15:10.3-2021.07-4 && git submodule update --init --recursive --depth=1"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

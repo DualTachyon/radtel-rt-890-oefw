@@ -71,6 +71,27 @@ See __Compiler__, __Building__ and __Flashing__ sections below.
 ## Pre-built firmware
 You can find pre-built firmwares in the [Actions](https://github.com/OEFW-community/RT-890-custom-firmware/actions)
 
+## Building from browser
+
+To build the firmware without installing any software you can run a full featured IDE and compiler in your browser using GitHub Codespace.  
+The preconfigured environment runs Linux Ubuntu 22.04 with gcc-arm-none-eabi 15:10.3-2021.07-4.
+
+### Starting a new Codespace
+
+You just need to clic on the green button `<> Code` -> `Codespace` -> `Create Codespace on ...`  
+After the Codespace is initialized, you can open and edit any file, for example, modify the options in the makefile and build the firmware typing `make` in the terminal panel.
+
+### Starting an existing Codespace
+
+If you started a Codespace less than 7 days ago and have not manually deleted it, then you will be offered to restart it instead of creating a new one.  
+The start-up will be much faster but you will need to update the code before compiling as it will contain the version of the code from the time of its creation.  
+To do this, simply type the following commands in the console: `make clean`, then `git pull`, and finally `make`.
+
+### A word about the free offer
+The most observant users will have noticed this message: `Codespace usage for this repository is paid for by...`  
+Github will never charge you without consent. If you reach the limit of the free offer, which is very unlikely, you will not be able to start your codespaces until the monthly limits reset, that's all.  
+[More informations](https://docs.github.com/en/billing/managing-billing-for-github-codespaces/about-billing-for-github-codespaces)
+
 ## Telegram group
 If you want to discuss this project, you can join the [Telegram group](https://t.me/RT890_OEFW).
 
