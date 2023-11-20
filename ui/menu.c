@@ -172,6 +172,11 @@ void UI_DrawActions(uint8_t Index)
 		"Dual Display",
 		"TX Frequency",
 		"Lock        ",
+#ifdef ENABLE_SPECTRUM
+		"Spectrum    ",
+#else
+		"[DISABLED]  ",
+#endif
 	};
 
 	UI_DrawSettingOptionEx(Actions[Index], 12, 0);

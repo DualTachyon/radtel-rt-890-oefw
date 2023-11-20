@@ -20,6 +20,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define BK4819_REG_30_SHIFT_ENABLE_VCO_CALIB    15
+#define BK4819_REG_30_ENABLE_VCO_CALIB 			( 1u << BK4819_REG_30_SHIFT_ENABLE_VCO_CALIB)
+
 enum BK4819_AF_Type_t {
 	BK4819_AF_MUTE = 0U,
 	BK4819_AF_OPEN = 1U,
@@ -34,6 +37,7 @@ enum BK4819_AF_Type_t {
 
 typedef enum BK4819_AF_Type_t BK4819_AF_Type_t;
 
+void OpenAudio(bool bIsNarrow, uint8_t gModulationType);
 uint16_t BK4819_ReadRegister(uint8_t Reg);
 uint16_t BK4819_GetRSSI();
 void BK4819_WriteRegister(uint8_t Reg, uint16_t Data);
@@ -69,6 +73,9 @@ void BK4819_EnableTX(bool bUseMic);
 void BK4819_StartFrequencyScan(void);
 void BK4819_StopFrequencyScan(void);
 void BK4819_DisableAutoCssBW(void);
+#ifdef ENABLE_SPECTRUM
+void BK4819_set_rf_frequency(const uint32_t frequency, const bool trigger_update);
+#endif
 
 #endif
 

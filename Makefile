@@ -5,6 +5,7 @@ MOTO_STARTUP_TONE		:= 1
 ENABLE_AM_FIX			:= 1
 ENABLE_LTO			:= 0
 ENABLE_NOAA			:= 1
+ENABLE_SPECTRUM			:= 1
 
 OBJS =
 # Startup files
@@ -43,6 +44,9 @@ OBJS += app/fm.o
 OBJS += app/lock.o
 OBJS += app/menu.o
 OBJS += app/radio.o
+ifeq ($(ENABLE_SPECTRUM), 1)
+	OBJS += app/spectrum.o
+endif
 OBJS += app/t9.o
 OBJS += app/uart.o
 
@@ -169,6 +173,9 @@ ifeq ($(ENABLE_LTO),1)
 endif
 ifeq ($(ENABLE_NOAA),1)
 	CFLAGS += -DENABLE_NOAA
+endif
+ifeq ($(ENABLE_SPECTRUM), 1)
+	CFLAGS += -DENABLE_SPECTRUM
 endif
 
 all: $(TARGET)

@@ -44,6 +44,7 @@ enum {
 	ACTION_DUAL_DISPLAY,
 	ACTION_TX_FREQ,
 	ACTION_LOCK,
+	ACTION_SPECTRUM,
 	ACTIONS_COUNT,	// used to count the number of actions, keep this last
 };
 

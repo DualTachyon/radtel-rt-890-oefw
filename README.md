@@ -63,7 +63,27 @@ Scanning:
 - To force the scan to resume when the scanner stops on a signal, use the `up`/`down` keys.  
 - Press any key other than `Freq scanner` to stop scanning.  
 
-
+### Spectrum Key Mappings
+```
+Up   => Normal: Increase frequency range by frequency +/- (number in middle of bottom row)
+        Holding on a frequency: Move up to the next frequency
+Down => Normal: Decrease frequency range by frequency +/- (number in middle of bottom row)
+        Holding on a frequency: Move down to the previous frequency
+1    => Change number of scan steps (16, 32, 64 or 128)
+2    => 
+3    => Change modulation (AM, FM or SSB)
+4    => Change step size (0.25k - 50k)
+5    => 
+6    => Inrease squelch level
+7    => Hold on current frequency
+8    => 
+9    => Decrease squelch level
+0    => Toggle filter (U = unfiltered, F = filtered)
+*    => Change scan delay (0 - 40ms)
+#    => Toggle bandwidth (W = wide, N = narrow)
+Menu => Jump to VFO mode with current frequency and settings (to allow TX)
+Exit => Exit spectrum
+```
 
 ## Update Instructions
 ### SPI memory backup
@@ -80,6 +100,10 @@ ENABLE_AM_FIX       => Experimental port of the great UV-K5 AM fix from OneOfEle
 ENABLE_LTO          => Link Time Optimization
 ENABLE_NOAA         => NOAA weather channels (always re-set the sidekeys actions from menu after modifying the available actions)
 ```
+
+<p float="left">
+<img src="/Images/SpectrumDisplay.png" height=300 />
+</p>
 
 ### Build & Flash
 See __Compiler__, __Building__ and __Flashing__ sections below.

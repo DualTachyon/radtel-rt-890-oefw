@@ -154,7 +154,7 @@ static void DisableAGC(uint32_t Unknown)
 }
 #endif
 
-static void OpenAudio(bool bIsNarrow, uint8_t gModulationType)
+void OpenAudio(bool bIsNarrow, uint8_t gModulationType)
 {
 	switch(gModulationType) {
 		case 0:
@@ -459,6 +459,7 @@ void BK4819_ToggleAGCMode(bool bAuto)
 		// Set bits 14:12 to 110 (AGC index 4) without affecting the other bits
 		Value = (Value & 0x8FFFU) | 0x6000U;
 	}
+	BK4819_WriteRegister(0x7E, Value);
 }
 
 void BK4819_SetToneFrequency(bool Tone2, uint16_t Tone)
@@ -680,3 +681,17 @@ void BK4819_DisableAutoCssBW(void)
 	BK4819_EnableRX();
 }
 
+#ifdef ENABLE_SPECTRUM
+void BK4819_set_rf_frequency(const uint32_t frequency, const bool trigger_update)
+{
+	BK4819_WriteRegister(0x38, (frequency >> 0) & 0xFFFF);
+	BK4819_WriteRegister(0x39, (frequency >> 16) & 0xFFFF);
+
+	if (trigger_update)
+	{ // trigger a PLL/VCO update
+		const uint16_t reg = BK4819_ReadRegister(0x30);
+		BK4819_WriteRegister(0x30, reg & ~BK4819_REG_30_ENABLE_VCO_CALIB);
+		BK4819_WriteRegister(0x30, reg);
+	}
+}
+#endif
