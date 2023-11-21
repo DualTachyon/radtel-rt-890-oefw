@@ -76,4 +76,6 @@ void UI_SetColors(uint8_t DarkMode)
 
 	gColorBackground = COLOR_BACKGROUND;
 	gColorForeground = COLOR_FOREGROUND;
+
+	DISPLAY_FillColor(COLOR_BACKGROUND);
 }

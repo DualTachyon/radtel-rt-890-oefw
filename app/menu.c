@@ -651,6 +651,9 @@ void MENU_AcceptSetting(void)
 	case MENU_DARK_MODE:
 		gExtendedSettings.DarkMode = gSettingIndex;
 		SETTINGS_SaveGlobals();
+		UI_SetColors(gExtendedSettings.DarkMode);
+		DrawStatusBar();
+		MENU_Redraw(true);
 		break;
 
 	case MENU_INITIALIZE:
