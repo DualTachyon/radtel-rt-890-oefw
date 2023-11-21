@@ -123,6 +123,7 @@ void KeypressAction(uint8_t Action) {
 			case ACTION_FREQUENCY_DETECT:
 				if (!gSettings.bFLock) {
 					gInputBoxWriteIndex = 0;
+					KEY_LongPressed = false;
 					RADIO_FrequencyDetect();
 				}
 				break;
