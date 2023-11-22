@@ -423,20 +423,17 @@ void UI_DrawExtra(uint8_t Mode, uint8_t gModulationType, uint8_t Vfo)
 	switch (Mode) {
 	case 0:
 		gColorForeground = COLOR_BLUE;
-		if(gModulationType < 2)
-			UI_DrawSmallString(2, Y, gModulationType ? " AM" : " FM", 3);
-		else
-			UI_DrawSmallString(2, Y, "SSB", 3);
-		break;
+		UI_DrawSmallString(2, Y, gModulationType == 0 ? " FM" : gModulationType == 1 ? " AM" : gModulationType == 2 ? "LSB" : "USB", 3);
+        break;
 
 	case 1: // TX mode
 		gColorForeground = COLOR_RED;
-		UI_DrawSmallString(2, Y, " VO", 3);
+		UI_DrawSmallString(2, Y, " TX", 3);
 		break;
 
 	case 2: // RX mode
 		gColorForeground = COLOR_BLUE;
-		UI_DrawSmallString(2, Y, " SQ", 3);
+		UI_DrawSmallString(2, Y, " RX", 3);
 		break;
 	}
 }
