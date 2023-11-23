@@ -75,6 +75,7 @@ void UI_DrawDcsCodeN(uint16_t Code);
 void UI_DrawDTMFString(void);
 void UI_DrawMuteInfo(bool bIs24Bit, uint32_t Golay);
 void UI_DrawNone(void);
+void UI_DrawScan(void);
 
 #endif
 

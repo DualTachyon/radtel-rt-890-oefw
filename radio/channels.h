@@ -45,7 +45,7 @@ typedef struct __attribute__((packed)) {
 	// 0x11
 	uint8_t _0x11;
 	uint8_t Scramble;
-	uint8_t _0x13;
+	uint8_t IsInscanList;		// 8 lists: 1 bit per list
 	uint8_t _0x14;
 	uint8_t _0x15;
 	char Name[10];
@@ -53,7 +53,7 @@ typedef struct __attribute__((packed)) {
 
 extern uint16_t gFreeChannelsCount;
 
-void CHANNELS_NextChannelMr(uint8_t Key, bool OnlyScan);
+bool CHANNELS_NextChannelMr(uint8_t Key, bool OnlyFromScanlist);
 void CHANNELS_NextChannelVfo(uint8_t Key);
 #ifdef ENABLE_NOAA
 void CHANNELS_NextNOAA(uint8_t Key);

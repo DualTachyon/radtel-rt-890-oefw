@@ -23,6 +23,7 @@
 #include "radio/scheduler.h"
 #include "radio/settings.h"
 #include "task/scanner.h"
+#include "ui/helper.h"
 
 uint16_t SCANNER_Countdown;
 
@@ -39,7 +40,9 @@ void Task_Scanner(void) {
 			RADIO_EndRX();
 		}
 		if (gSettings.WorkMode) {
-			CHANNELS_NextChannelMr(gManualScanDirection ? KEY_DOWN : KEY_UP, !gScanAll);
+			if(!CHANNELS_NextChannelMr(gManualScanDirection ? KEY_DOWN : KEY_UP, !gExtendedSettings.ScanAll)) {
+				Next_ScanList();
+			}
 		} else {
 			CHANNELS_NextChannelVfo(gManualScanDirection ? KEY_DOWN : KEY_UP);
 			RADIO_Tune(gSettings.CurrentVfo);
@@ -49,5 +52,17 @@ void Task_Scanner(void) {
 			gpio_bits_flip(GPIOA, BOARD_GPIOA_LED_GREEN);
 		}
 	}
+}
+
+void Next_ScanList(void) {
+	if (gExtendedSettings.ScanAll) {
+		gExtendedSettings.ScanAll = 0;
+	} else {
+		gExtendedSettings.CurrentScanList = (gExtendedSettings.CurrentScanList + 1) % 8;
+		if (gExtendedSettings.CurrentScanList == 0) {
+			gExtendedSettings.ScanAll = 1;
+		}
+	}
+	UI_DrawScan();
 }
 

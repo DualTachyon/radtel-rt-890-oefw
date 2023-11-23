@@ -26,6 +26,7 @@
 #include "task/keyaction.h"
 #include "task/scanner.h"
 #include "ui/gfx.h"
+#include "ui/helper.h"
 
 Calibration_t gCalibration;
 char gDeviceName[16];
@@ -145,6 +146,7 @@ void SETTINGS_SaveState(void)
 	} else {
 		CHANNELS_SaveChannel(gSettings.CurrentVfo ? 1000 : 999, &gVfoState[gSettings.CurrentVfo]);
 	}
+	UI_DrawScan();
 }
 
 void SETTINGS_SaveDTMF(void)

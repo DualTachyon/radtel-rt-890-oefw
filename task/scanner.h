@@ -22,6 +22,7 @@
 extern uint16_t SCANNER_Countdown;
 
 void Task_Scanner(void);
+void Next_ScanList(void);
 
 #endif
 

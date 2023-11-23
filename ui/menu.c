@@ -167,7 +167,7 @@ void UI_DrawActions(uint8_t Index)
 		"Backlight   ",
 		"Freq Step   ",
 		"Key Beep    ",
-		"Skip Scan   ",
+		"Toggle SList",
 		"DTMF Decode ",
 		"Dual Display",
 		"TX Frequency",
@@ -443,13 +443,7 @@ void UI_DrawSettingBusyLock(uint8_t Index)
 	};
 
 	UI_DrawSettingOptionEx(Mode[Index], 7, 0);
-	UI_DrawSettingOptionEx(Mode[(Index + 1) % 3], 7,1);
-}
-
-void UI_DrawSettingSkipScan(void)
-{
-	UI_DrawSettingOptionEx("Skip", 4, 0);
-	UI_DrawSettingOptionEx("Scan", 4, 1);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 3], 7, 1);
 }
 
 void UI_DrawSettingScanResume(uint8_t Index)
@@ -462,4 +456,22 @@ void UI_DrawSettingScanResume(uint8_t Index)
 	// Values start at 1 instead of 0 for this setting
 	UI_DrawSettingOption(Mode[Index], 0);
 	UI_DrawSettingOption(Mode[(Index + 1) % 3], 1);
+}
+
+void UI_DrawSettingScanlist(uint8_t Index)
+{
+	static const char Mode[9][1] = {
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"*",
+	};
+
+	UI_DrawSettingOptionEx(Mode[Index], 1, 0);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 9], 1, 1);
 }

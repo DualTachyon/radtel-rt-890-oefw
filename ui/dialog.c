@@ -74,11 +74,11 @@ void UI_DrawDialogText(UI_DialogText_t Text, bool bSet)
 		}
 		break;
 
-	case DIALOG_SKIP_SCAN:
+	case DIALOG_TOGGLE_SCANLIST:
 		if (bSet) {
-			UI_DrawString(10, 48, "Skip Scan: Scan", 15);
+			UI_DrawString(10, 48, "SList: Ch Added", 15);
 		} else {
-			UI_DrawString(10, 48, "Skip Scan: Skip", 15);
+			UI_DrawString(10, 48, "SList: Ch Removed", 17);
 		}
 		break;
 

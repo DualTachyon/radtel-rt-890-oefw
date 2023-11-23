@@ -35,6 +35,7 @@ static void DrawBandwidth(bool bIsNarrow, uint8_t Vfo)
 
 void UI_DrawVfo(uint8_t Vfo)
 {
+	// TODO display enabled scan list, maybe using grid or dots
 	UI_DrawName(Vfo, gVfoState[Vfo].Name);
 	gColorForeground = COLOR_FOREGROUND;
 	UI_DrawVfoFrame(Vfo);

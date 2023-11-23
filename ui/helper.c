@@ -528,7 +528,7 @@ void UI_DrawTxPower(bool bIsLow, uint8_t Vfo)
 void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Clear)
 {
 	uint8_t Y = 43 - (Vfo * 41);
-		
+
 	gColorForeground = COLOR_FOREGROUND;
 
 	if (Clear) {
@@ -682,7 +682,7 @@ void UI_DrawBar(uint8_t Level, uint8_t Vfo)
 {
 	uint8_t Y = 44 - (Vfo * 41);
 	uint8_t i;
-	
+
 	// Adjust for 80% bar
 	Level = Level * .8;
 
@@ -962,3 +962,16 @@ void UI_DrawNone(void)
 	UI_DrawString(80, 40, "None", 4);
 }
 
+void UI_DrawScan(void)
+{
+	gColorForeground = COLOR_RED;
+	UI_DrawSmallString(4, 85, !gScannerMode ? "  " :
+								gExtendedSettings.ScanAll ? "SA" :
+								gExtendedSettings.CurrentScanList == 0 ? "S1" :
+								gExtendedSettings.CurrentScanList == 1 ? "S2" :
+								gExtendedSettings.CurrentScanList == 2 ? "S3" :
+								gExtendedSettings.CurrentScanList == 3 ? "S4" :
+								gExtendedSettings.CurrentScanList == 4 ? "S5" :
+								gExtendedSettings.CurrentScanList == 5 ? "S6" :
+								gExtendedSettings.CurrentScanList == 6 ? "S7" : "S8", 2);
+}

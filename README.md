@@ -21,17 +21,51 @@ Use at your own risk and remember to back up your SPI memory before installing a
 - Displaying registers in single VFO mode
 - Displaying dBM when receiving
 - Reworked scanner
+  - 8 Scan lists
   - Faster scanning
   - Resume mode: Time, Carrier, No
-  - Skip flagged channels (default)
-  - Ignore skip flag (launch scan action while scanning)
   - Change scan direction while scanning (up/down keys)
   - Force scan resume (up/down keys)
 - Reworked main menu
 - Ability to disable LED toggling when scanning
 - And much more!
 
-## Instructions
+### Default Shortcut Keys (long press) - Configurable in main menu
+```
+1    => Start/stop scanning memory channels
+2    => Toggle AM fix
+3    => Toggle VOX
+4    => Change TX power on current channel
+5    => Change squelch level
+6    => Toggle dual watch
+7    => Toggle backlight
+8    => Change frequency step
+9    => Go to Preset Channel
+0    => Launch broadcast FM mode
+*    => Edit TX frequency on current channel
+#    => Toggle key lock
+Menu => DTMF decoder
+Exit => Single/dual VFO display
+```
+
+### Scanning guide
+Scan list management:
+- This firmware has 8 scanlists.  
+- The current channel can be added to any scanlist using the `Ch In List X` menus.  
+- The scanlist to be used can be selected in the `List To Scan` menu.  
+- To ignore scanlists and scan all channels, select `*` in the `List To Scan` menu.  
+- To add/remove current channel to current scanlist, use the `Toggle SList` shortcut.
+
+Scanning:
+- To start scanning, press a key mapped to the `Freq scanner` shortcut (default: long press on key `1`).  
+- When scanning is in progress, use the `Freq scanner` key to change the scan list, this action will move to the next non-empty scanlist, or switch to scan all mode if all subsequent lists are empty.  
+- To change the direction of current scan, use the `up`/`down` keys.  
+- To force the scan to resume when the scanner stops on a signal, use the `up`/`down` keys.  
+- Press any key other than `Freq scanner` to stop scanning.  
+
+
+
+## Update Instructions
 ### SPI memory backup
 Use [RT-890-Flasher](https://github.com/DualTachyon/radtel-rt-890-flasher)
 
@@ -45,24 +79,6 @@ MOTO_STARTUP_TONE   => Moto XPS startup beeps
 ENABLE_AM_FIX       => Experimental port of the great UV-K5 AM fix from OneOfEleven
 ENABLE_LTO          => Link Time Optimization
 ENABLE_NOAA         => NOAA weather channels (always re-set the sidekeys actions from menu after modifying the available actions)
-```
-
-### Default Shortcut Keys (long press) - Configurable in main menu
-```
-1    => Start/stop scanning memory channels
-2    => Toggle AM fix
-3    => Toggle VOX
-4    => Change TX power on current channel
-5    => Change squelch level
-6    => Toggle dual watch
-7    => Toggle backlight
-8    => Change frequency step
-9    => Toggle scan skip for current channel
-0    => Launch broadcast FM mode
-*    => Edit TX frequency on current channel
-#    => Toggle key lock
-Menu => DTMF decoder
-Exit => Single/dual VFO display
 ```
 
 ### Build & Flash

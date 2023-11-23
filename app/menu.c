@@ -69,7 +69,15 @@ static const char Menu[][14] = {
 	"TX Power      ",
 	"Modulation    ",
 	"Band Width    ",
-	"Skip Scan     ",
+	"List To Scan  ",
+	"Ch In List 1  ",
+	"Ch In List 2  ",
+	"Ch In List 3  ",
+	"Ch In List 4  ",
+	"Ch In List 5  ",
+	"Ch In List 6  ",
+	"Ch In List 7  ",
+	"Ch In List 8  ",
 	"Busy Lock     ",
 	"Scrambler     ",
 	"DCS Encrypt   ",
@@ -125,7 +133,7 @@ static const ChannelInfo_t EmptyChannel = {
 
 	._0x11 = 0xFF,
 	.Scramble = 0xFF,
-	._0x13 = 0xFF,
+	.IsInscanList = 0xFF,
 	._0x14 = 0xFF,
 	._0x15 = 0xFF,
 	.Name = "          ",
@@ -507,10 +515,28 @@ void MENU_AcceptSetting(void)
 		CHANNELS_SaveVfo();
 		break;
 
-	case MENU_SKIP_SCAN:
-		gVfoState[gSettings.CurrentVfo].ScanAdd = gSettingIndex;
+	case MENU_LIST_TO_SCAN:
+		gExtendedSettings.ScanAll = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues == 8;
+		if (!gExtendedSettings.ScanAll) {
+			gExtendedSettings.CurrentScanList = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
+		}
+		SETTINGS_SaveGlobals();
+		break;
+
+	case MENU_SCANLIST_1:
+	case MENU_SCANLIST_2:
+	case MENU_SCANLIST_3:
+	case MENU_SCANLIST_4:
+	case MENU_SCANLIST_5:
+	case MENU_SCANLIST_6:
+	case MENU_SCANLIST_7:
+	case MENU_SCANLIST_8:
+		gVfoState[gSettings.CurrentVfo].IsInscanList =
+				(gVfoState[gSettings.CurrentVfo].IsInscanList & ~(1 << (gMenuIndex - MENU_SCANLIST_1)))	// cleaning the bit corresponding to the scanlist
+				| (gSettingIndex << (gMenuIndex - MENU_SCANLIST_1));									// set the bit to 1 if gSettingIndex = "On"
 		CHANNELS_SaveVfo();
 		break;
+
 
 	case MENU_BUSY_LOCK:
 		gVfoState[gSettings.CurrentVfo].BCL = (gSettingCurrentValue + gSettingIndex) % gSettingMaxValues;
@@ -879,10 +905,23 @@ void MENU_DrawSetting(void)
 		UI_DrawSettingBandwidth();
 		break;
 
-	case MENU_SKIP_SCAN:
-		gSettingIndex = gVfoState[gSettings.CurrentVfo].ScanAdd;
+	case MENU_LIST_TO_SCAN:
+		gSettingCurrentValue = gExtendedSettings.ScanAll ? 8 : gExtendedSettings.CurrentScanList;
+		gSettingMaxValues = 9;
 		DISPLAY_Fill(0, 159, 1, 55, COLOR_BACKGROUND);
-		UI_DrawSettingSkipScan();
+		UI_DrawSettingScanlist(gSettingCurrentValue);
+		break;
+
+	case MENU_SCANLIST_1:
+	case MENU_SCANLIST_2:
+	case MENU_SCANLIST_3:
+	case MENU_SCANLIST_4:
+	case MENU_SCANLIST_5:
+	case MENU_SCANLIST_6:
+	case MENU_SCANLIST_7:
+	case MENU_SCANLIST_8:
+		gSettingIndex = ((gVfoState[gSettings.CurrentVfo].IsInscanList >> (gMenuIndex - MENU_SCANLIST_1)) & 1);	// pick the bit corresponding to the scanlist
+		UI_DrawToggle();
 		break;
 
 	case MENU_BUSY_LOCK:
@@ -1240,8 +1279,8 @@ void MENU_ScrollSetting(uint8_t Key)
 		UI_DrawSettingBandwidth();
 		break;
 
-	case MENU_SKIP_SCAN:
-		UI_DrawSettingSkipScan();
+	case MENU_LIST_TO_SCAN:
+		UI_DrawSettingScanlist(gSettingCurrentValue);
 		break;
 
 	case MENU_BUSY_LOCK:
