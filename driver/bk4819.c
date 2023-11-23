@@ -395,14 +395,14 @@ void BK4819_EnableFilter(bool bEnable)
 	BK4819_WriteRegister(0x33, Value);
 }
 
-void BK4819_EnableScramble(bool bIsNarrow)
+void BK4819_EnableScramble(uint8_t Scramble)
 {
 	uint16_t Value;
 
-	BK4819_WriteRegister(0x71, 0x68DC | (bIsNarrow ? 0x0400 : 0x0000));
+	BK4819_WriteRegister(0x71, 0x68DC | (Scramble * 1032));
 
 	Value = BK4819_ReadRegister(0x31);
-	if (bIsNarrow) {
+	if (Scramble) {
 		Value |= 2;
 	} else {
 		Value &= ~2;
@@ -496,10 +496,10 @@ void BK4819_StartAudio(void)
 		BK4819_WriteRegister(0x4D, 0xA080);
 		BK4819_WriteRegister(0x4E, 0x6F7C);
 	}
-	
+
 	if (gMainVfo->gModulationType > 0) {
 		// AM, SSB
-		BK4819_EnableScramble(false);
+		BK4819_EnableScramble(0);
 		BK4819_EnableCompander(false);
 		// Set bit 4 of register 73 (Auto Frequency Control Disable)
 		uint16_t reg_73 = BK4819_ReadRegister(0x73);
@@ -593,7 +593,7 @@ void BK4819_EnableTone1(bool bEnable)
 		} else {
 			OpenAudio(gMainVfo->bIsNarrow, gMainVfo->gModulationType);
 			if (gMainVfo->gModulationType > 0) {
-				BK4819_EnableScramble(false); // AM, SSB
+				BK4819_EnableScramble(0); // AM, SSB
 			} else {
 				BK4819_EnableScramble(gMainVfo->Scramble); // FM
 			}
