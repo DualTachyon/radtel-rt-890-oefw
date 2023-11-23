@@ -191,7 +191,7 @@ static void TuneNOAA(void)
 	BK4819_SetSquelchGlitch(false);
 	BK4819_SetSquelchNoise(false);
 	BK4819_SetSquelchRSSI(false);
-	BK4819_EnableScramble(false);
+	BK4819_EnableScramble(0);
 	BK4819_EnableCompander(false);
 	BK4819_EnableRX();
 	BK4819_SetFilterBandwidth(false);

@@ -45,7 +45,7 @@ void BK4819_SetSquelchNoise(bool bIsNarrow);
 void BK4819_SetSquelchRSSI(bool bIsNarrow);
 void BK4819_SetFilterBandwidth(bool bIsNarrow);
 void BK4819_EnableFilter(bool bEnable);
-void BK4819_EnableScramble(bool bIsNarrow);
+void BK4819_EnableScramble(uint8_t Scramble);
 void BK4819_EnableCompander(bool bIsNarrow);
 void BK4819_EnableVox(bool bEnable);
 void BK4819_SetToneFrequency(uint16_t Tone);
