@@ -412,7 +412,7 @@ void UI_DrawVfoFrame(uint8_t Y)
 
 void UI_DrawName(uint8_t Vfo, const char *pName)
 {
-	gColorForeground = COLOR_GREY;
+	gColorForeground = COLOR_FOREGROUND;
 	UI_DrawString(34, 83 - (Vfo * 41), pName, 10);
 }
 
