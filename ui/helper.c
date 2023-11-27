@@ -878,7 +878,7 @@ void UI_DrawChannelNumber(const char *pString)
 			gString[i] = '0' + pString[i];
 		}
 	}
-	UI_DrawString(128, 76, gString, 3);
+	UI_DrawString(132, 48, gString, 3);
 }
 
 void UI_DrawBand(void)

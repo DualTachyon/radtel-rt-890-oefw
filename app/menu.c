@@ -273,7 +273,7 @@ static void DrawEditChannel(void)
 	}
 	gInputBoxWriteIndex = 0;
 	INPUTBOX_Pad(0, 10);
-	UI_DrawString(128, 76, "   ", 3);
+	UI_DrawString(132, 48, "   ", 3);
 	if (Channel && Channel < 1000) {
 		gSettingCurrentValue = Channel - 1;
 		UI_DrawChannelName(gSettingCurrentValue);
@@ -1106,7 +1106,9 @@ void MENU_SettingKeyHandler(uint8_t Key)
 					|| gMenuIndex == MENU_CTCSS_DCS
 					|| gMenuIndex == MENU_RX_CTCSS_DCS
 					|| gMenuIndex == MENU_TX_CTCSS_DCS
-					|| gMenuIndex == MENU_SCAN_RESUME) {
+					|| gMenuIndex == MENU_SCAN_RESUME
+					|| gMenuIndex == MENU_SAVE_CH
+					|| gMenuIndex == MENU_DELETE_CH) {
 				MENU_Redraw(true);
 			} else {
 				MENU_Redraw(false);
