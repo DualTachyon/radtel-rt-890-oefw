@@ -965,13 +965,18 @@ void UI_DrawNone(void)
 void UI_DrawScan(void)
 {
 	gColorForeground = COLOR_RED;
-	UI_DrawSmallString(4, 85, !gScannerMode ? "  " :
-								gExtendedSettings.ScanAll ? "SA" :
-								gExtendedSettings.CurrentScanList == 0 ? "S1" :
-								gExtendedSettings.CurrentScanList == 1 ? "S2" :
-								gExtendedSettings.CurrentScanList == 2 ? "S3" :
-								gExtendedSettings.CurrentScanList == 3 ? "S4" :
-								gExtendedSettings.CurrentScanList == 4 ? "S5" :
-								gExtendedSettings.CurrentScanList == 5 ? "S6" :
-								gExtendedSettings.CurrentScanList == 6 ? "S7" : "S8", 2);
+	if (!gScannerMode) {
+		UI_DrawSmallString(4, 85, "  ", 2);
+	} else if (gSettings.WorkMode) {
+		UI_DrawSmallString(4, 85, gExtendedSettings.ScanAll ? "SA" :
+								  gExtendedSettings.CurrentScanList == 0 ? "S1" :
+								  gExtendedSettings.CurrentScanList == 1 ? "S2" :
+								  gExtendedSettings.CurrentScanList == 2 ? "S3" :
+								  gExtendedSettings.CurrentScanList == 3 ? "S4" :
+								  gExtendedSettings.CurrentScanList == 4 ? "S5" :
+								  gExtendedSettings.CurrentScanList == 5 ? "S6" :
+								  gExtendedSettings.CurrentScanList == 6 ? "S7" : "S8", 2);
+	} else {
+		UI_DrawSmallString(4, 85, "S", 1);
+	}
 }

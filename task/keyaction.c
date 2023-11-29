@@ -93,7 +93,7 @@ void KeypressAction(uint8_t Action) {
 	}
 
 	if (gScannerMode) {
-		if (Action == ACTION_SCAN) {
+		if (Action == ACTION_SCAN && gSettings.WorkMode) {
 			Next_ScanList();
 		} else {
 			SETTINGS_SaveState();
