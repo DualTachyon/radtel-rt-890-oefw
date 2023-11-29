@@ -63,7 +63,10 @@ Scanning:
 - To force the scan to resume when the scanner stops on a signal, use the `up`/`down` keys.  
 - Press any key other than `Freq scanner` to stop scanning.  
 
-### Spectrum Key Mappings
+### Spectrum Usage
+Start spectrum by mapping a key (side key or keypad) to the Spectrum action using the main menu.  Spectrum will launch, centered on the frequency from the active VFO/Memory Channel.
+
+Spectrum keys:
 ```
 Up   => Normal: Increase frequency range by frequency +/- (number in middle of bottom row)
         Holding on a frequency: Move up to the next frequency
@@ -85,6 +88,11 @@ Menu => Jump to VFO mode with current frequency and settings (to allow TX)
 Exit => Exit spectrum
 ```
 
+Spectrum display:
+<p float="left">
+<img src="/Images/SpectrumDisplay.png" height=300 />
+</p>
+
 ## Update Instructions
 ### SPI memory backup
 Use [RT-890-Flasher](https://github.com/DualTachyon/radtel-rt-890-flasher)
@@ -100,10 +108,6 @@ ENABLE_AM_FIX       => Experimental port of the great UV-K5 AM fix from OneOfEle
 ENABLE_LTO          => Link Time Optimization
 ENABLE_NOAA         => NOAA weather channels (always re-set the sidekeys actions from menu after modifying the available actions)
 ```
-
-<p float="left">
-<img src="/Images/SpectrumDisplay.png" height=300 />
-</p>
 
 ### Build & Flash
 See __Compiler__, __Building__ and __Flashing__ sections below.
