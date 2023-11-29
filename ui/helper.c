@@ -99,9 +99,9 @@ static const uint16_t Icons[] = {
 	// 0x00 Lock
 	0x03F0, 0x03FE, 0x03F1, 0x03F1, 0x03F1, 0x03F1, 0x03FE, 0x03F0,
 	// 0x08 Bell
-	0x0080, 0x00C0, 0x00FC, 0x01FE, 0x02FF, 0x02FF, 0x01FE, 0x00FC,
-	// 0x10 ???
-	0x00C0, 0x0080, 0x0040, 0x0080, 0x01FC, 0x0282, 0x0241, 0x0201, 0x0201, 0x0201, 0x0209, 0x0104, 0x00FE, 0x0004, 0x0008,
+	0x0080, 0x00C0, 0x00FC, 0x01FE, 0x02FF, 0x02FF, 0x01FE, 0x00FC, 0x00C0, 0x0080,
+	// 0x12 Scan
+	0x0040, 0x0080, 0x01FC, 0x0282, 0x0241, 0x0201, 0x0201, 0x0201, 0x0209, 0x0104, 0x00FE, 0x0004, 0x0008,
 	// 0x1F Dual Watch
 	0x03FF, 0x0201, 0x0201, 0x0201, 0x0201, 0x0102, 0x00FC, 0x0000, 0x00FF, 0x0100, 0x0200, 0x0100, 0x00FF, 0x0100, 0x0200, 0x0100, 0x00FF,
 	// 0x30 Battery
@@ -309,25 +309,10 @@ void UI_DrawStatusIcon(uint8_t X, UI_Icon_t Icon, bool bDraw, uint16_t Color)
 void UI_DrawRoger(void)
 {
 	gColorForeground = COLOR_FOREGROUND;
-
-	switch (gSettings.RogerBeep) {
-	case 0:
-		UI_DrawStatusIcon(20, ICON_BELL, false, COLOR_FOREGROUND);
-		UI_DrawSmallString(32, 85, "  ", 2);
-		break;
-	case 1:
-		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_FOREGROUND);
-		UI_DrawSmallString(32, 86, " 1", 2);
-		break;
-	case 2:
-		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_FOREGROUND);
-		UI_DrawSmallString(32, 86, " 2", 2);
-		break;
-	case 3:
-		UI_DrawStatusIcon(20, ICON_BELL, true, COLOR_FOREGROUND);
-		UI_DrawSmallString(32, 86, "ID", 2);
-		break;
-	}
+	UI_DrawStatusIcon(28, ICON_BELL, gSettings.RogerBeep != 0, COLOR_FOREGROUND);
+	UI_DrawSmallString(40, 86, gSettings.RogerBeep == 0 ? "  " :
+							   gSettings.RogerBeep == 1 ? "1 " :
+							   gSettings.RogerBeep == 2 ? "2 " : "ID", 2);
 }
 
 void UI_DrawVoltage(uint8_t Vfo)
@@ -965,18 +950,19 @@ void UI_DrawNone(void)
 void UI_DrawScan(void)
 {
 	gColorForeground = COLOR_RED;
+	UI_DrawStatusIcon(4, ICON_SCAN, gScannerMode, gColorForeground);
 	if (!gScannerMode) {
-		UI_DrawSmallString(4, 85, "  ", 2);
-	} else if (gSettings.WorkMode) {
-		UI_DrawSmallString(4, 85, gExtendedSettings.ScanAll ? "SA" :
-								  gExtendedSettings.CurrentScanList == 0 ? "S1" :
-								  gExtendedSettings.CurrentScanList == 1 ? "S2" :
-								  gExtendedSettings.CurrentScanList == 2 ? "S3" :
-								  gExtendedSettings.CurrentScanList == 3 ? "S4" :
-								  gExtendedSettings.CurrentScanList == 4 ? "S5" :
-								  gExtendedSettings.CurrentScanList == 5 ? "S6" :
-								  gExtendedSettings.CurrentScanList == 6 ? "S7" : "S8", 2);
+		UI_DrawSmallString(18, 86, " ", 1);
 	} else {
-		UI_DrawSmallString(4, 85, "S", 1);
+		if (gSettings.WorkMode) {
+			UI_DrawSmallString(18, 86, gExtendedSettings.ScanAll ? "A" :
+									   gExtendedSettings.CurrentScanList == 0 ? "1" :
+									   gExtendedSettings.CurrentScanList == 1 ? "2" :
+									   gExtendedSettings.CurrentScanList == 2 ? "3" :
+									   gExtendedSettings.CurrentScanList == 3 ? "4" :
+									   gExtendedSettings.CurrentScanList == 4 ? "5" :
+									   gExtendedSettings.CurrentScanList == 5 ? "6" :
+									   gExtendedSettings.CurrentScanList == 6 ? "7" : "8", 1);
+		}
 	}
 }

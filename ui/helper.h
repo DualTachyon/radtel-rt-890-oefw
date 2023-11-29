@@ -23,6 +23,7 @@
 enum UI_Icon_t {
 	ICON_LOCK       = 0x0008U,
 	ICON_BELL       = 0x080AU,
+	ICON_SCAN       = 0x120DU,
 	ICON_DUAL_WATCH = 0x1F11U,
 	ICON_BATTERY    = 0x3013U,
 	ICON_VOX        = 0x4318U,
