@@ -363,6 +363,13 @@ void KeypressAction(uint8_t Action) {
 				SETTINGS_SaveGlobals();
 				UI_DrawDialogText(DIALOG_KEY_BEEP, gSettings.KeyBeep);
 				break;
+
+            case ACTION_DARK_MODE:
+                gExtendedSettings.DarkMode ^= 1;
+		        SETTINGS_SaveGlobals();
+		        UI_SetColors(gExtendedSettings.DarkMode);
+                UI_DrawMain(FALSE);
+                break;
 			
 #ifdef ENABLE_SPECTRUM
 			case ACTION_SPECTRUM:
