@@ -82,7 +82,7 @@ Down => Normal: Decrease frequency range by frequency +/- (number in middle of b
 8    => 
 9    => Decrease squelch level
 0    => Toggle filter (U = unfiltered, F = filtered)
-*    => Change scan delay (0 - 40ms)
+*    => Change scan delay (0 - 10ms)
 #    => Toggle bandwidth (W = wide, N = narrow)
 Menu => Jump to VFO mode with current frequency and settings (to allow TX)
 Exit => Exit spectrum

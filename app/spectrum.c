@@ -175,7 +175,7 @@ void IncrementFreqStepIndex(void) {
 }
 
 void IncrementScanDelay(void) {
-	CurrentScanDelay = (CurrentScanDelay + 5) % 45;
+	CurrentScanDelay = (CurrentScanDelay + 2) % 12;
 	DrawLabels();
 }
 
@@ -533,7 +533,7 @@ void APP_Spectrum(void) {
 	CurrentFreqStepIndex = gSettings.FrequencyStep;
 	CurrentFreqStep = FREQUENCY_GetStep(CurrentFreqStepIndex);
 	CurrentStepCountIndex = STEPS_64;
-	CurrentScanDelay = 5;
+	CurrentScanDelay = 4;
 	bFilterEnabled = TRUE;
 	SquelchLevel = 0;
 	BarScale = 40;
