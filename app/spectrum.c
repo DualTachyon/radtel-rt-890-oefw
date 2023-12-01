@@ -524,6 +524,8 @@ void Spectrum_Loop(void) {
 }
 
 void APP_Spectrum(void) {
+	RADIO_EndAudio();  // Just in case audio is open when spectrum starts
+
 	bExit = FALSE;
 	bRXMode = FALSE;
 
