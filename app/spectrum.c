@@ -270,6 +270,8 @@ void DrawSpectrum(uint16_t ActiveBarColor) {
 	uint8_t BarLow;
 	uint8_t BarHigh;
 	uint16_t Power;
+	uint16_t SquelchPower;
+	uint8_t BarX;
 
 	BarLow = RssiLow - 2;
 	if ((RssiHigh - RssiLow) < 40) {
@@ -280,9 +282,18 @@ void DrawSpectrum(uint16_t ActiveBarColor) {
 
 	//Bars
 	for (uint8_t i = 0; i < CurrentStepCount; i++) {
+		BarX = 16 + (i * BarWidth);
 		Power = GetAdjustedLevel(RssiValue[i], BarLow, BarHigh, BarScale);
-		DISPLAY_DrawRectangle1(16 + (i * BarWidth), BarY, Power, BarWidth, (i == CurrentFreqIndex) ? ActiveBarColor : COLOR_FOREGROUND);
-		DISPLAY_DrawRectangle1(16 + (i * BarWidth), BarY + Power + 1, BarScale - Power, BarWidth, COLOR_BACKGROUND);
+		SquelchPower = GetAdjustedLevel(SquelchLevel, BarLow, BarHigh, BarScale);
+		if (Power < SquelchPower) {
+			DISPLAY_DrawRectangle1(BarX, BarY, Power, BarWidth, (i == CurrentFreqIndex) ? ActiveBarColor : COLOR_FOREGROUND);
+			DISPLAY_DrawRectangle1(BarX, BarY + Power, SquelchPower - Power, BarWidth, COLOR_BACKGROUND);
+			DISPLAY_DrawRectangle1(BarX, BarY + SquelchPower + 1, BarScale - SquelchPower, BarWidth, COLOR_BACKGROUND);
+		} else { 
+			DISPLAY_DrawRectangle1(BarX, BarY, SquelchPower, BarWidth, (i == CurrentFreqIndex) ? ActiveBarColor : COLOR_FOREGROUND);
+			DISPLAY_DrawRectangle1(BarX, BarY + SquelchPower + 1, Power - SquelchPower, BarWidth, (i == CurrentFreqIndex) ? ActiveBarColor : COLOR_FOREGROUND);
+			DISPLAY_DrawRectangle1(BarX, BarY + Power + 1, BarScale - Power, BarWidth, COLOR_BACKGROUND);
+		} 
 	}
 
 	//Squelch Line
