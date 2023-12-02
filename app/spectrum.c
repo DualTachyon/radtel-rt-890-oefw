@@ -266,12 +266,15 @@ uint16_t GetAdjustedLevel(uint16_t Level, uint16_t Low, uint16_t High, uint16_t 
 	uint16_t Value = 0;
 
 	//		Valid range 72-330, converted to 0-100, scaled to % based on Scale to fit on screen.
-	Value = (((((Level - Low) * 100) / (High - Low)) * 100) * Scale) / 10000;
+	if (Level < Low) {
+		Level = Low;
+	}
+
+	Value = ((((((Level - Low) * 100) / (High - Low)) * 100) * Scale) / 10000);
+	
 	if (Value > Scale) {
 		Value = Scale;
-	} else if (Value < 0) {
-		Value = 0;
-	}
+	} 
 
 	return Value; 
 }
