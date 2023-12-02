@@ -90,7 +90,7 @@ static const char Mode[3][2] = {
 
 void ShiftShortStringRight(uint8_t Start, uint8_t End) {
 	for (uint8_t i = End; i > Start; i--){
-		gShortString[i+1] = gShortString[i];
+		gShortString[i] = gShortString[i-1];
 	}
 }
 
@@ -103,6 +103,43 @@ void DrawCurrentFreq(uint16_t Color) {
 	UI_DrawString(40, 92, gShortString, 8);
 
 	UI_DrawSmallString(108, 82, Mode[CurrentModulation], 2);
+}
+
+
+void ConvertRssiToDbm(uint16_t Rssi) {
+		int16_t RXdBM;
+		uint16_t uRXdBM;
+		uint8_t bNeg;
+		uint16_t len;
+		
+		RXdBM = (Rssi >> 1) - 160; 
+
+		if (RXdBM < 0) {
+			uRXdBM = -RXdBM;
+			bNeg = TRUE;
+		} else {
+			uRXdBM = RXdBM;
+			bNeg = FALSE;
+		}
+		
+		for (int i = 0; i < 8; i++) {
+			gShortString[i] = ' ';
+		}
+
+		if (uRXdBM < 10) {
+			len = 1;
+		} else if (uRXdBM < 100) {
+			len = 2;
+		} else {
+			len = 3;
+		}
+
+		Int2Ascii(uRXdBM, len);
+
+		if (bNeg) {
+			ShiftShortStringRight(0, len);
+			gShortString[0] = '-';
+		}	
 }
 
 void DrawLabels(void) {
@@ -143,7 +180,7 @@ void DrawLabels(void) {
 	Int2Ascii(CurrentFreqChangeStep / 10, 5);
 	ShiftShortStringRight(0, 4);
 	gShortString[1] = '.';
-	UI_DrawSmallString(64, 2, gShortString, 6);
+	UI_DrawSmallString(64, 2, gShortString, 5);
 }
 
 void SetFreqMinMax(void) {
@@ -301,14 +338,12 @@ void DrawSpectrum(uint16_t ActiveBarColor) {
 	DISPLAY_DrawRectangle1(16, BarY + Power, 1, 128, COLOR_RED);
 
 	gColorForeground = ActiveBarColor;
-	gShortString[2] = ' ';
-	Int2Ascii(RssiValue[CurrentFreqIndex], (RssiValue[CurrentFreqIndex] < 100) ? 2 : 3);
-	UI_DrawSmallString(56, 62, gShortString, 3);
+	ConvertRssiToDbm(RssiValue[CurrentFreqIndex]);
+	UI_DrawSmallString(52, 62, gShortString, 4);
 
 	gColorForeground = COLOR_RED;
-	gShortString[2] = ' ';
-	Int2Ascii(SquelchLevel, (SquelchLevel < 100) ? 2 : 3);
-	UI_DrawSmallString(80, 62, gShortString, 3);
+	ConvertRssiToDbm(SquelchLevel);
+	UI_DrawSmallString(82, 62, gShortString, 4);
 }
 
 void StopSpectrum(void) {
