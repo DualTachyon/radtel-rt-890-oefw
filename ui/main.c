@@ -18,6 +18,7 @@
 #include "driver/battery.h"
 #include "helper/dtmf.h"
 #include "helper/inputbox.h"
+#include "helper/helper.h"
 #include "misc.h"
 #include "radio/settings.h"
 #include "ui/gfx.h"
@@ -82,16 +83,9 @@ void UI_DrawMain(bool bSkipStatus)
 
 void UI_DrawRepeaterMode(void)
 {
-	switch (gSettings.RepeaterMode) {
-	case 1:
-		UI_DrawStatusIcon(109, ICON_RR, true, COLOR_FOREGROUND);
-		break;
-	case 2:
-		UI_DrawStatusIcon(109, ICON_TR, true, COLOR_FOREGROUND);
-		break;
-	default:
-		UI_DrawStatusIcon(109, ICON_TR, false, COLOR_FOREGROUND);
-		break;
+	if (gSettings.RepeaterMode) {
+		DISPLAY_DrawRectangle0(109, 86, 30, 8, gColorBackground);
+		UI_DrawStatusIcon(109, gSettings.RepeaterMode == 1 ? ICON_TR : ICON_RR, true, COLOR_FOREGROUND);
 	}
 }
 
@@ -114,5 +108,16 @@ void UI_DrawBattery(void)
 	}
 	DISPLAY_DrawRectangle0(142, 86, 15 - i, 8, gColorBackground);
 	DISPLAY_DrawRectangle0(157 - i, 86, i, 8, Color);
+
+	// Battery voltage
+	if (!gSettings.RepeaterMode){
+		UI_DrawStatusIcon(109, ICON_RR, false, 0);	// Clear Repeater icon
+		gColorForeground = COLOR_FOREGROUND;
+		Int2Ascii(gBatteryVoltage, 2);
+		gShortString[2] = gShortString[1];
+		gShortString[1] = '.';
+		gShortString[3] = 'V';
+		UI_DrawSmallString(109, 86, gShortString, 4);
+	}
 }
 
