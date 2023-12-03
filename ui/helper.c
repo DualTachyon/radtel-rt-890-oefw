@@ -510,7 +510,45 @@ void UI_DrawTxPower(bool bIsLow, uint8_t Vfo)
 	}
 }
 
-void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Clear)
+void ConvertRssiToDbm(uint16_t Rssi) {
+		int16_t RXdBM;
+		uint16_t uRXdBM;
+		uint8_t bNeg;
+		uint16_t len;
+		
+		RXdBM = (Rssi >> 1) - 160; 
+
+		if (RXdBM < 0) {
+			uRXdBM = -RXdBM;
+			bNeg = true;
+		} else {
+			uRXdBM = RXdBM;
+			bNeg = false;
+		}
+		
+		for (int i = 0; i < 8; i++) {
+			gShortString[i] = ' ';
+		}
+
+		if (uRXdBM < 10) {
+			len = 1;
+		} else if (uRXdBM < 100) {
+			len = 2;
+		} else {
+			len = 3;
+		}
+
+		Int2Ascii(uRXdBM, len);
+
+		if (bNeg) {
+			for (uint8_t i = len; i > 0; i--){
+				gShortString[i] = gShortString[i-1];
+			}
+			gShortString[0] = '-';
+		}	
+}
+
+void UI_DrawRxDBM(uint8_t Vfo, bool Clear)
 {
 	uint8_t Y = 43 - (Vfo * 41);
 
@@ -519,17 +557,7 @@ void UI_DrawRxDBM(uint16_t RXdBM, bool isNeg, uint16_t len, uint8_t Vfo, bool Cl
 	if (Clear) {
 		UI_DrawSmallString(105, Y, "    ", 4);
 	} else {
-		for (int i = len; i < 3; i++) {
-			gShortString[i] = ' ';
-		}
-		Int2Ascii(RXdBM, len);
-
-		if (isNeg) {
-			UI_DrawSmallString(105, Y, "-", 1);
-		} else {
-			UI_DrawSmallString(105, Y, " ", 1);
-		}
-		UI_DrawSmallString(111, Y, gShortString, 3);
+		UI_DrawSmallString(105, Y, gShortString, 4);
 	}
 }
 
@@ -717,7 +745,8 @@ void UI_DrawSomething(void)
 		}
 		UI_DrawRX(gCurrentVfo);
 		UI_DrawBar(0, gCurrentVfo);
-		UI_DrawRxDBM(0, false, 0, gCurrentVfo, true);
+		ConvertRssiToDbm(0);
+		UI_DrawRxDBM(gCurrentVfo, true);
 	}
 	UI_DrawMainBitmap(true, gSettings.CurrentVfo);
 }

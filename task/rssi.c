@@ -94,16 +94,10 @@ static void CheckRSSI(void)
 {
 	if (gVoxRssiUpdateTimer == 0 && !gDataDisplay && !gDTMF_InputMode && !gFrequencyDetectMode && !gReceptionMode && !gFskDataReceived && gScreenMode == SCREEN_MAIN) {
 		uint16_t RSSI;
-		int16_t RXdBM;
-		uint16_t uRXdBM;
 		uint16_t Power;
-		bool isNeg;
-		uint16_t len;
 
 		gVoxRssiUpdateTimer = 100;
 		RSSI = BK4819_GetRSSI();
-		
-		RXdBM = (RSSI>>1)-160;  // Using same rssi to dBM conversion as uv-k5.  Don't know if this is right.
 
 		//Valid range is 72 - 330
 		if (RSSI < 72) {
@@ -113,26 +107,10 @@ static void CheckRSSI(void)
 		} else {
 			Power = ((RSSI-72)*100)/258;
 		}
-
-		// Convert to pos number to work with string funcs that require uint
-		if (RXdBM < 0) {
-			uRXdBM = -RXdBM;
-			isNeg = true;
-		} else {
-			uRXdBM = RXdBM;
-			isNeg = false;
-		}
-		
-		if (uRXdBM < 10) {
-			len = 1;
-		} else if (uRXdBM < 100) {
-			len = 2;
-		} else {
-			len = 3;
-		}
 		
 		UI_DrawBar(Power, gCurrentVfo);
-		UI_DrawRxDBM(uRXdBM, isNeg, len, gCurrentVfo, false);
+		ConvertRssiToDbm(RSSI);
+		UI_DrawRxDBM(gCurrentVfo, false);
 		gCurrentRssi[gCurrentVfo] = Power;
 	}
 }

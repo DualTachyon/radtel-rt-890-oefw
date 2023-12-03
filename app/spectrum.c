@@ -105,43 +105,6 @@ void DrawCurrentFreq(uint16_t Color) {
 	UI_DrawSmallString(108, 82, Mode[CurrentModulation], 2);
 }
 
-
-void ConvertRssiToDbm(uint16_t Rssi) {
-		int16_t RXdBM;
-		uint16_t uRXdBM;
-		uint8_t bNeg;
-		uint16_t len;
-		
-		RXdBM = (Rssi >> 1) - 160; 
-
-		if (RXdBM < 0) {
-			uRXdBM = -RXdBM;
-			bNeg = TRUE;
-		} else {
-			uRXdBM = RXdBM;
-			bNeg = FALSE;
-		}
-		
-		for (int i = 0; i < 8; i++) {
-			gShortString[i] = ' ';
-		}
-
-		if (uRXdBM < 10) {
-			len = 1;
-		} else if (uRXdBM < 100) {
-			len = 2;
-		} else {
-			len = 3;
-		}
-
-		Int2Ascii(uRXdBM, len);
-
-		if (bNeg) {
-			ShiftShortStringRight(0, len);
-			gShortString[0] = '-';
-		}	
-}
-
 void DrawLabels(void) {
 
 	gColorForeground = COLOR_FOREGROUND;
@@ -271,7 +234,7 @@ uint16_t GetAdjustedLevel(uint16_t Level, uint16_t Low, uint16_t High, uint16_t 
 	}
 
 	Value = ((((((Level - Low) * 100) / (High - Low)) * 100) * Scale) / 10000);
-	
+
 	if (Value > Scale) {
 		Value = Scale;
 	} 
