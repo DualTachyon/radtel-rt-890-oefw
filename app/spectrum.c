@@ -110,12 +110,12 @@ void DrawLabels(void) {
 	gColorForeground = COLOR_FOREGROUND;
 
 	Int2Ascii(FreqMin / 10, 7);
-	ShiftShortStringRight(2, 6);
+	ShiftShortStringRight(2, 7);
 	gShortString[3] = '.';
 	UI_DrawSmallString(2, 2, gShortString, 8);
 
 	Int2Ascii(FreqMax / 10, 7);
-	ShiftShortStringRight(2, 6);
+	ShiftShortStringRight(2, 7);
 	gShortString[3] = '.';
 	UI_DrawSmallString(112, 2, gShortString, 8);
 
@@ -141,9 +141,9 @@ void DrawLabels(void) {
 	gColorForeground = COLOR_GREY;
 
 	Int2Ascii(CurrentFreqChangeStep / 10, 5);
-	ShiftShortStringRight(0, 4);
+	ShiftShortStringRight(0, 5);
 	gShortString[1] = '.';
-	UI_DrawSmallString(64, 2, gShortString, 5);
+	UI_DrawSmallString(64, 2, gShortString, 6);
 }
 
 void SetFreqMinMax(void) {
