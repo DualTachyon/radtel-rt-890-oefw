@@ -73,10 +73,10 @@ Up   => Normal: Increase frequency range by frequency +/- (number in middle of b
 Down => Normal: Decrease frequency range by frequency +/- (number in middle of bottom row)
         Holding on a frequency: Move down to the previous frequency
 1    => Change number of scan steps (16, 32, 64 or 128)
-2    => 
+2    => Switch up to next preset
 3    => Change modulation (AM, FM or SSB)
 4    => Change step size (0.25k - 50k)
-5    => 
+5    => Switch down to previous preset
 6    => Inrease squelch level
 7    => Hold on current frequency
 8    => 

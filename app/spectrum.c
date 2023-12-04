@@ -64,29 +64,11 @@ uint16_t KeyHoldTimer = 0;
 uint8_t bHold;
 KEY_t Key;
 KEY_t LastKey = KEY_NONE;
-
-static const char StepStrings[][5] = {
-	"0.25K",
-	"1.25K",
-	"2.5K ",
-	"5K   ",
-	"6.25K",
-	"10K  ",
-	"12.5K",
-	"20K  ",
-	"25K  ",
-	"50K  ",
-	"100K ",
-	"500K ",
-	"1M   ",
-	"5M   "
-};
-
-static const char Mode[3][2] = {
-	"FM",
-	"AM",
-	"SB",
-};
+#ifdef ENABLE_SPECTRUM_PRESETS
+FreqPreset CurrentBandInfo;
+uint8_t CurrentBandIndex;
+uint8_t bInBand = FALSE;
+#endif
 
 void ShiftShortStringRight(uint8_t Start, uint8_t End) {
 	for (uint8_t i = End; i > Start; i--){
@@ -100,10 +82,29 @@ void DrawCurrentFreq(uint16_t Color) {
 	Int2Ascii(CurrentFreq, 8);
 	ShiftShortStringRight(2, 6);
 	gShortString[3] = '.';
-	UI_DrawString(40, 92, gShortString, 8);
+	UI_DrawString(30, 78, gShortString, 8);
 
-	UI_DrawSmallString(108, 82, Mode[CurrentModulation], 2);
+	UI_DrawSmallString(98, 68, Mode[CurrentModulation], 2);
 }
+
+#ifdef ENABLE_SPECTRUM_PRESETS
+void GetCurrentBand(void) {
+	uint8_t PresetCount;
+
+	PresetCount = sizeof(FreqPresets) / sizeof(FreqPresets[0]);
+
+	for (uint8_t i = 0; i < PresetCount; i++) {
+        if (FreqCenter >= FreqPresets[i].StartFreq && FreqCenter < FreqPresets[i].EndFreq) {
+			bInBand = TRUE;
+        	CurrentBandInfo = FreqPresets[i];
+			CurrentBandIndex = i;
+        } else if (FreqCenter >= FreqPresets[i].EndFreq && FreqCenter >= FreqPresets[i+1].StartFreq) {
+			bInBand = FALSE;
+			CurrentBandIndex = i;
+		}
+      }
+}
+#endif
 
 void DrawLabels(void) {
 
@@ -119,11 +120,17 @@ void DrawLabels(void) {
 	gShortString[3] = '.';
 	UI_DrawSmallString(112, 2, gShortString, 8);
 
+#ifdef ENABLE_SPECTRUM_PRESETS
+	if (bInBand) {
+		UI_DrawSmallString(2, 84, CurrentBandInfo.Name, 14);
+	}
+#endif
+
 	gShortString[2] = ' ';
 	Int2Ascii(CurrentStepCount, (CurrentStepCount < 100) ? 2 : 3);
-	UI_DrawSmallString(2, 82, gShortString, 3);
+	UI_DrawSmallString(2, 72, gShortString, 3);
 
-	UI_DrawSmallString(2, 70, StepStrings[CurrentFreqStepIndex], 5);
+	UI_DrawSmallString(2, 60, StepStrings[CurrentFreqStepIndex], 5);
 
 	Int2Ascii(CurrentScanDelay, (CurrentScanDelay < 10) ? 1 : 2);
 	if (CurrentScanDelay < 10) {
@@ -150,6 +157,9 @@ void SetFreqMinMax(void) {
 	CurrentFreqChangeStep = CurrentFreqStep*(CurrentStepCount >> 1);
 	FreqMin = FreqCenter - CurrentFreqChangeStep;
 	FreqMax = FreqCenter + CurrentFreqChangeStep;
+#ifdef ENABLE_SPECTRUM_PRESETS
+	GetCurrentBand();
+#endif
 	FREQUENCY_SelectBand(FreqCenter);
 	BK4819_EnableFilter(bFilterEnabled);
 	RssiValue[CurrentFreqIndex] = 0; // Force a rescan
@@ -205,6 +215,41 @@ void ChangeSquelchLevel(uint8_t Up) {
 		SquelchLevel -= 2;
 	}
 }
+
+#ifdef ENABLE_SPECTRUM_PRESETS
+void ChangeBandPreset(uint8_t Up) {
+	uint8_t PresetCount;
+
+	PresetCount = sizeof(FreqPresets) / sizeof(FreqPresets[0]);
+
+	if (Up) {
+		CurrentBandIndex = (CurrentBandIndex + 1) % PresetCount;
+	} else {
+		CurrentBandIndex = (CurrentBandIndex + PresetCount -1) % PresetCount;
+	}
+
+	bInBand = TRUE;
+
+	CurrentStepCountIndex = FreqPresets[CurrentBandIndex].StepCountIndex;
+	SetStepCount();
+
+	FreqCenter = FreqPresets[CurrentBandIndex].EndFreq - ((FreqPresets[CurrentBandIndex].EndFreq - FreqPresets[CurrentBandIndex].StartFreq) >> 1);
+	CurrentFreqStepIndex = FreqPresets[CurrentBandIndex].StepSizeIndex;
+	CurrentFreqStep = FREQUENCY_GetStep(CurrentFreqStepIndex);
+	SetFreqMinMax();
+
+	CurrentModulation = FreqPresets[CurrentBandIndex].ModulationType;
+
+	bNarrow = FreqPresets[CurrentBandIndex].bNarrow;
+	BK4819_WriteRegister(0x43, (bNarrow) ? 0x4048 : 0x3028);
+
+	bRestartScan = TRUE;
+	bResetSquelch = TRUE;
+
+	DrawCurrentFreq((bRXMode) ? COLOR_GREEN : COLOR_BLUE);
+	DrawLabels();
+}
+#endif
 
 void ToggleFilter(void) {
 	bFilterEnabled ^= 1;
@@ -305,11 +350,11 @@ void DrawSpectrum(uint16_t ActiveBarColor) {
 
 	gColorForeground = ActiveBarColor;
 	ConvertRssiToDbm(RssiValue[CurrentFreqIndex]);
-	UI_DrawSmallString(52, 62, gShortString, 4);
+	UI_DrawSmallString(118, 72, gShortString, 4);
 
 	gColorForeground = COLOR_RED;
 	ConvertRssiToDbm(SquelchLevel);
-	UI_DrawSmallString(82, 62, gShortString, 4);
+	UI_DrawSmallString(118, 60, gShortString, 4);
 }
 
 void StopSpectrum(void) {
@@ -366,6 +411,9 @@ void CheckKeys(void) {
 				IncrementStepIndex();
 				break;
 			case KEY_2:
+#ifdef ENABLE_SPECTRUM_PRESETS
+				ChangeBandPreset(TRUE);
+#endif
 				break;
 			case KEY_3:
 				IncrementModulation();
@@ -374,6 +422,9 @@ void CheckKeys(void) {
 				IncrementFreqStepIndex();
 				break;
 			case KEY_5:
+#ifdef ENABLE_SPECTRUM_PRESETS
+				ChangeBandPreset(FALSE);
+#endif
 				break;
 			case KEY_6:
 				ChangeSquelchLevel(TRUE);
@@ -535,6 +586,7 @@ void APP_Spectrum(void) {
 	CurrentModulation = gVfoState[gSettings.CurrentVfo].gModulationType;
 	CurrentFreqStepIndex = gSettings.FrequencyStep;
 	CurrentFreqStep = FREQUENCY_GetStep(CurrentFreqStepIndex);
+	//Defaults
 	CurrentStepCountIndex = STEPS_64;
 	CurrentScanDelay = 4;
 	bFilterEnabled = TRUE;
