@@ -466,7 +466,7 @@ void Spectrum_Loop(void) {
 	bRestartScan = FALSE;
 
 	UI_DrawStatusIcon(139, ICON_BATTERY, true, COLOR_FOREGROUND);
-	UI_DrawBattery();
+	UI_DrawBattery(false);
 
 	DrawLabels();
 

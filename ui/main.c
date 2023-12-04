@@ -42,7 +42,7 @@ void DrawStatusBar(void)
 	UI_DrawRoger();
 	UI_DrawRepeaterMode();
 	UI_DrawStatusIcon(139, ICON_BATTERY, true, COLOR_FOREGROUND);
-	UI_DrawBattery();
+	UI_DrawBattery(!gSettings.RepeaterMode);
 }
 
 void UI_DrawMain(bool bSkipStatus)
@@ -89,7 +89,7 @@ void UI_DrawRepeaterMode(void)
 	}
 }
 
-void UI_DrawBattery(void)
+void UI_DrawBattery(bool bDisplayVoltage)
 {
 	uint8_t i;
 	uint16_t Color;
@@ -110,7 +110,7 @@ void UI_DrawBattery(void)
 	DISPLAY_DrawRectangle0(157 - i, 86, i, 8, Color);
 
 	// Battery voltage
-	if (!gSettings.RepeaterMode){
+	if (bDisplayVoltage){
 		UI_DrawStatusIcon(109, ICON_RR, false, 0);	// Clear Repeater icon
 		gColorForeground = COLOR_FOREGROUND;
 		Int2Ascii(gBatteryVoltage, 2);
