@@ -316,7 +316,7 @@ void UI_DrawFrequencyStep(uint8_t Index)
 	};
 
 	UI_DrawSettingOptionEx(Mode[Index], 5, 0);
-	UI_DrawSettingOptionEx(Mode[(Index + 1) % 14], 5, 1);
+	UI_DrawSettingOptionEx(Mode[(Index + 1) % 15], 5, 1);
 }
 
 void UI_DrawTimer(uint8_t Index)
