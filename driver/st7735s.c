@@ -180,3 +180,53 @@ void ST7735S_Init(void)
 	ST7735S_SendCommand(ST7735S_CMD_DISPON);
 }
 
+void ST7735S_SetAddrWindow(uint8_t x0, uint8_t y0, uint8_t x1, uint8_t y1)
+{
+	ST7735S_SendCommand(ST7735_RASET);
+	ST7735S_SendData(0x00);
+	ST7735S_SendData(x0);
+	ST7735S_SendData(0x00);
+	ST7735S_SendData(x1);
+
+	ST7735S_SendCommand(ST7735_CASET);
+	ST7735S_SendData(0x00);
+	ST7735S_SendData(y0);
+	ST7735S_SendData(0x00);
+	ST7735S_SendData(y1);
+
+	ST7735S_SendCommand(ST7735_RAMWR);
+}
+
+
+void ST7735S_defineScrollArea(uint16_t x, uint16_t x2)
+{
+
+	/* tfa: top fixed area: nr of line from top of the frame mem and display) */
+	uint16_t tfa = 160 - x2 + 1;
+	/* vsa: height of the vertical scrolling area in nr of line of the frame mem
+	   (not the display) from the vertical scrolling address. the first line appears
+	   immediately after the bottom most line of the top fixed area. */
+	uint16_t vsa = x2 - x + 1;
+	/* bfa: bottom fixed are in nr of lines from bottom of the frame memory and display */
+	uint16_t bfa = x + 1;
+
+	if (tfa + vsa + bfa < 162)
+		return;
+
+	/* reset mv */
+
+	ST7735S_SendCommand(ST7735_MADCTL);
+	ST7735S_SendData(0xC8 & ~(1 << 5));
+
+	ST7735S_SendCommand(ST7735_SCRLAR);
+
+	ST7735S_SendU16(tfa);
+	ST7735S_SendU16(vsa);
+	ST7735S_SendU16(bfa);
+}
+
+void ST7735S_scroll(uint8_t line)
+{
+	ST7735S_SendCommand(ST7735_VSCSAD);
+	ST7735S_SendU16(line);
+}

@@ -79,7 +79,7 @@ Down => Normal: Decrease frequency range by frequency +/- (number in middle of b
 5    => Switch down to previous preset
 6    => Inrease squelch level
 7    => Hold on current frequency
-8    => 
+8    => Toggle between bars and waterfall views
 9    => Decrease squelch level
 0    => Toggle filter (U = unfiltered, F = filtered)
 *    => Change scan delay (0 - 10ms)
