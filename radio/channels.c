@@ -519,10 +519,10 @@ void CHANNELS_UpdateVFO(void)
 	uint8_t i;
 
 	RADIO_CancelMode();
-	for (i = 0; i < 6; i++) {
+	for (i = 0; i < 7; i++) {
 		Frequency = (Frequency * 10) + gInputBox[i];
 	}
-	Frequency *= 100;
+	Frequency *= 10;
 
 	gInputBoxWriteIndex = 0;
 	INPUTBOX_Pad(0, 10);

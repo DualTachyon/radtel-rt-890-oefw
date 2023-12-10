@@ -77,7 +77,7 @@ static void VFO_AppendDigit(char Digit)
 		INPUTBOX_Pad(0, 10);
 	}
 	gInputBox[gInputBoxWriteIndex++] = Digit;
-	gInputBoxWriteIndex %= 6U;
+	gInputBoxWriteIndex %= 7U;
 	UI_DrawFrequencyEx(gInputBox, gSettings.CurrentVfo, gFrequencyReverse);
 	if (gInputBoxWriteIndex == 0) {
 		CHANNELS_UpdateVFO();
