@@ -28,7 +28,8 @@ void UI_DrawVersion(void)
 		memcpy(Version, GIT_HASH, sizeof(GIT_HASH) - 1);
 	}
 	DISPLAY_Fill(0, 159, 1, 55, COLOR_BACKGROUND);
-	UI_DrawString(24, 48, "V1.34 OEFW", 10);
-	UI_DrawString(24, 24, Version, 10);
+	UI_DrawString(24, 48, "OEFW Community", 14);
+	UI_DrawString(24, 24, "V0.0", 4);
+	UI_DrawString(80, 24, Version, 10);
 }
 
