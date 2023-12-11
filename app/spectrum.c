@@ -80,7 +80,7 @@ void DrawCurrentFreq(uint16_t Color) {
 
 	gColorForeground = Color;
 	Int2Ascii(CurrentFreq, 8);
-	ShiftShortStringRight(2, 6);
+	ShiftShortStringRight(2, 7);
 	gShortString[3] = '.';
 	UI_DrawString(30, 78, gShortString, 8);
 
