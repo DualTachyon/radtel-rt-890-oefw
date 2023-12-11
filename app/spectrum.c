@@ -94,15 +94,15 @@ void GetCurrentBand(void) {
 	PresetCount = sizeof(FreqPresets) / sizeof(FreqPresets[0]);
 
 	for (uint8_t i = 0; i < PresetCount; i++) {
-        if (FreqCenter >= FreqPresets[i].StartFreq && FreqCenter < FreqPresets[i].EndFreq) {
+		if (FreqCenter >= FreqPresets[i].StartFreq && FreqCenter < FreqPresets[i].EndFreq) {
 			bInBand = TRUE;
-        	CurrentBandInfo = FreqPresets[i];
+			CurrentBandInfo = FreqPresets[i];
 			CurrentBandIndex = i;
-        } else if (FreqCenter >= FreqPresets[i].EndFreq && FreqCenter >= FreqPresets[i+1].StartFreq) {
+		} else if (FreqCenter >= FreqPresets[i].EndFreq && FreqCenter >= FreqPresets[i+1].StartFreq) {
 			bInBand = FALSE;
 			CurrentBandIndex = i;
 		}
-      }
+	}
 }
 #endif
 
@@ -154,7 +154,7 @@ void DrawLabels(void) {
 }
 
 void SetFreqMinMax(void) {
-	CurrentFreqChangeStep = CurrentFreqStep*(CurrentStepCount >> 1);
+	CurrentFreqChangeStep = CurrentFreqStep * (CurrentStepCount >> 1);
 	FreqMin = FreqCenter - CurrentFreqChangeStep;
 	FreqMax = FreqCenter + CurrentFreqChangeStep;
 #ifdef ENABLE_SPECTRUM_PRESETS
@@ -225,7 +225,7 @@ void ChangeBandPreset(uint8_t Up) {
 	if (Up) {
 		CurrentBandIndex = (CurrentBandIndex + 1) % PresetCount;
 	} else {
-		CurrentBandIndex = (CurrentBandIndex + PresetCount -1) % PresetCount;
+		CurrentBandIndex = (CurrentBandIndex + PresetCount - 1) % PresetCount;
 	}
 
 	bInBand = TRUE;
@@ -233,9 +233,9 @@ void ChangeBandPreset(uint8_t Up) {
 	CurrentStepCountIndex = FreqPresets[CurrentBandIndex].StepCountIndex;
 	SetStepCount();
 
-	FreqCenter = FreqPresets[CurrentBandIndex].EndFreq - ((FreqPresets[CurrentBandIndex].EndFreq - FreqPresets[CurrentBandIndex].StartFreq) >> 1);
 	CurrentFreqStepIndex = FreqPresets[CurrentBandIndex].StepSizeIndex;
 	CurrentFreqStep = FREQUENCY_GetStep(CurrentFreqStepIndex);
+	FreqCenter = FreqPresets[CurrentBandIndex].StartFreq + (CurrentFreqStep * (CurrentStepCount >> 1));
 	SetFreqMinMax();
 
 	CurrentModulation = FreqPresets[CurrentBandIndex].ModulationType;
