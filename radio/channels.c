@@ -526,13 +526,19 @@ void CHANNELS_UpdateVFO(void)
 
 	gInputBoxWriteIndex = 0;
 	INPUTBOX_Pad(0, 10);
+
+	CHANNELS_UpdateVFOFreq(Frequency);
+}
+
+void CHANNELS_UpdateVFOFreq(uint32_t Frequency)
+{
 	if (
-		(!gSettings.bFLock && (Frequency >= 1000000  && Frequency <= 130000000)) ||
-		(gSettings.bFLock && (
-			(Frequency >= 14400000 && Frequency <= 14600000) ||
-			(Frequency >= 43000000 && Frequency <= 44000000) ||
-			(Frequency >= 10800000 && Frequency <= 13600000)))
-	   ) {
+			(!gSettings.bFLock && (Frequency >= 1000000  && Frequency <= 130000000)) ||
+			(gSettings.bFLock && (
+					(Frequency >= 14400000 && Frequency <= 14600000) ||
+					(Frequency >= 43000000 && Frequency <= 44000000) ||
+					(Frequency >= 10800000 && Frequency <= 13600000)))
+			) {
 		if (!gFrequencyReverse) {
 			gVfoState[gSettings.CurrentVfo].RX.Frequency = Frequency;
 			// if (Frequency < 13600000) {

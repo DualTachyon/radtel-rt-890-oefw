@@ -62,6 +62,7 @@ void CHANNELS_NextFM(uint8_t Key);
 
 void CHANNELS_UpdateChannel(void);
 void CHANNELS_UpdateVFO(void);
+void CHANNELS_UpdateVFOFreq(uint32_t Frequency);
 
 bool CHANNELS_LoadChannel(uint16_t ChNo, uint8_t Vfo);
 void CHANNELS_CheckFreeChannels(void);

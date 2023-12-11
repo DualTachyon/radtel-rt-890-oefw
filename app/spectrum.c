@@ -288,16 +288,6 @@ uint16_t GetAdjustedLevel(uint16_t Level, uint16_t Low, uint16_t High, uint16_t 
 }
 
 void JumpToVFO(void) {
-	uint32_t Divider = 10000000U;
-	uint8_t i;
-
-	Int2Ascii(CurrentFreq, 8);
-
-	for (i = 0; i < 6; i++) {
-		gInputBox[i] = (CurrentFreq / Divider) % 10U;
-		Divider /= 10;
-	}
-
 	gSettings.WorkMode = FALSE;
 
 #ifdef UART_DEBUG
@@ -309,7 +299,8 @@ void JumpToVFO(void) {
 
 	SETTINGS_SaveGlobals();
 	gVfoState[gSettings.CurrentVfo].bIsNarrow = bNarrow;
-	CHANNELS_UpdateVFO();
+	// fixme: when previously in channel mode, the VFO name is overrided by the channel name
+	CHANNELS_UpdateVFOFreq(CurrentFreq);
 
 	bExit = TRUE;
 }
