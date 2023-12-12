@@ -15,10 +15,14 @@
  */
 
 #include "app/flashlight.h"
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/lock.h"
 #include "app/radio.h"
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/menu.h"
 #ifdef ENABLE_SPECTRUM
 	#include "app/spectrum.h"
@@ -225,7 +229,7 @@ void KeypressAction(uint8_t Action) {
 				}
 				break;
 
-
+#ifdef ENABLE_FM_RADIO
 			case ACTION_FM_RADIO:
 				if (gFM_Mode == FM_MODE_OFF) {
 					RADIO_DisableSaveMode();
@@ -238,6 +242,7 @@ void KeypressAction(uint8_t Action) {
 					FM_Disable(FM_MODE_OFF);
 				}
 				break;
+#endif
 
 			case ACTION_AM_FIX:
 #ifdef ENABLE_AM_FIX
@@ -312,9 +317,11 @@ void KeypressAction(uint8_t Action) {
 				break;
 
 			case ACTION_DTMF_DECODE:
+#ifdef ENABLE_FM_RADIO
 				if (gFM_Mode != FM_MODE_OFF) {
 					return;
 				}
+#endif
 				if (!gDTMF_InputMode) {
 					if (gRadioMode == RADIO_MODE_RX) {
 						return;
@@ -336,9 +343,11 @@ void KeypressAction(uint8_t Action) {
 				break;
 
 			case ACTION_DUAL_DISPLAY:
+#ifdef ENABLE_FM_RADIO
 				if (gFM_Mode != FM_MODE_OFF) {
 					return;
 				}
+#endif
 				gSettings.DualDisplay ^= 1;
 				SETTINGS_SaveGlobals();
 				VOX_Timer = 0;

@@ -7,6 +7,8 @@ ENABLE_LTO			:= 0
 ENABLE_NOAA			:= 1
 ENABLE_SPECTRUM			:= 1
 ENABLE_SPECTRUM_PRESETS		:= 1
+# FM radio = 2.6 kB
+ENABLE_FM_RADIO			:= 1
 
 OBJS =
 # Startup files
@@ -26,7 +28,9 @@ OBJS += bsp/tmr.o
 OBJS += driver/audio.o
 OBJS += driver/battery.o
 OBJS += driver/beep.o
-OBJS += driver/bk1080.o
+ifeq ($(ENABLE_FM_RADIO), 1)
+	OBJS += driver/bk1080.o
+endif
 OBJS += driver/bk4819.o
 OBJS += driver/crm.o
 OBJS += driver/delay.o
@@ -41,7 +45,9 @@ OBJS += driver/uart.o
 # "App" logic
 OBJS += app/css.o
 OBJS += app/flashlight.o
-OBJS += app/fm.o
+ifeq ($(ENABLE_FM_RADIO), 1)
+	OBJS += app/fm.o
+endif
 OBJS += app/lock.o
 OBJS += app/menu.o
 OBJS += app/radio.o
@@ -76,7 +82,9 @@ endif
 OBJS += task/battery.o
 OBJS += task/cursor.o
 OBJS += task/encrypt.o
-OBJS += task/fmscanner.o
+ifeq ($(ENABLE_FM_RADIO), 1)
+	OBJS += task/fmscanner.o
+endif
 OBJS += task/keyaction.o
 OBJS += task/keys.o
 OBJS += task/idle.o
@@ -180,6 +188,9 @@ ifeq ($(ENABLE_SPECTRUM), 1)
 endif
 ifeq ($(ENABLE_SPECTRUM_PRESETS), 1)
 	CFLAGS += -DENABLE_SPECTRUM_PRESETS
+endif
+ifeq ($(ENABLE_FM_RADIO), 1)
+	CFLAGS += -DENABLE_FM_RADIO
 endif
 
 all: $(TARGET)

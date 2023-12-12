@@ -16,7 +16,9 @@
 
 #include <string.h>
 #include "app/css.h"
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/radio.h"
 #include "driver/audio.h"
 #include "driver/key.h"
@@ -483,7 +485,9 @@ void CHANNELS_NextFM(uint8_t Key)
 	}
 	SETTINGS_SaveGlobals();
 	UI_DrawFMFrequency(gSettings.FmFrequency);
+#ifdef ENABLE_FM_RADIO
 	FM_Play();
+#endif
 }
 
 void CHANNELS_UpdateChannel(void)

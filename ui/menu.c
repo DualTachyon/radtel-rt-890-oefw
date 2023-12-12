@@ -152,7 +152,11 @@ void UI_DrawActions(uint8_t Index)
 #endif
 		"Send Tone   ",
 		"Roger Beep  ",
+#ifdef ENABLE_FM_RADIO
 		"FM Radio    ",
+#else
+		"[DISABLED]  ",
+#endif
 		"Freq Scanner",
 		"Flashlight  ",
 #ifdef ENABLE_AM_FIX

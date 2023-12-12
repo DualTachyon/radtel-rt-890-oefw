@@ -32,7 +32,9 @@
 #include "task/battery.h"
 #include "task/cursor.h"
 #include "task/encrypt.h"
-#include "task/fmscanner.h"
+#ifdef ENABLE_FM_RADIO
+	#include "task/fmscanner.h"
+#endif
 #include "task/idle.h"
 #include "task/incoming.h"
 #include "task/keys.h"
@@ -92,7 +94,9 @@ void Main(void)
 				Task_VoxUpdate();
 				Task_Idle();
 				Task_CheckBattery();
+#ifdef ENABLE_FM_RADIO
 				Task_CheckScannerFM();
+#endif
 #ifdef ENABLE_NOAA
 				Task_CheckNOAA();
 #endif

@@ -14,7 +14,9 @@
  *     limitations under the License.
  */
 
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "driver/speaker.h"
 #include "misc.h"
 #include "radio/scheduler.h"
@@ -34,7 +36,6 @@ void Task_CheckScannerFM(void)
 		FM_Play();
 		return;
 	}
-
 	if (gFM_Mode == FM_MODE_SCROLL_UP) {
 		gSettings.FmFrequency++;
 		if (gSettings.FmFrequency > 1080) {

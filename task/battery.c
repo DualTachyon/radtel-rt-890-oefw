@@ -14,7 +14,9 @@
  *     limitations under the License.
  */
 
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "driver/battery.h"
 #include "misc.h"
 #include "radio/hardware.h"
@@ -41,7 +43,9 @@ void Task_CheckBattery(void)
 
 	if (gRadioMode != RADIO_MODE_RX
 			&& VOX_Timer == 0
+#ifdef ENABLE_FM_RADIO
 			&& gFM_Mode == FM_MODE_OFF
+#endif
 			&& gScreenMode == SCREEN_MAIN
 			&& !gDTMF_InputMode
 			&& !gFlashlightMode) {

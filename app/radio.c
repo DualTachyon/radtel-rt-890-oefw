@@ -15,7 +15,9 @@
  */
 
 #include "app/css.h"
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/radio.h"
 #include "driver/beep.h"
 #include "driver/bk4819.h"
@@ -269,7 +271,9 @@ void RADIO_Tune(uint8_t Vfo)
 
 void RADIO_StartRX(void)
 {
+#ifdef ENABLE_FM_RADIO
 	FM_Disable(FM_MODE_STANDBY);
+#endif
 	BK4819_StartAudio();
 	if (!gFrequencyDetectMode) {
 		DTMF_ClearString();
@@ -347,9 +351,11 @@ void RADIO_EndRX(void)
 		gIdleTimer = 10000;
 		PTT_ClearLock(PTT_LOCK_INCOMING);
 		PTT_ClearLock(PTT_LOCK_BUSY);
+#ifdef ENABLE_FM_RADIO
 		if (!gRedrawScreen) {
 			FM_Resume();
 		}
+#endif
 		gIncomingTimer = 100;
 	} else {
 		gSignalFound = true;

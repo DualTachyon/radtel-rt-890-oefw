@@ -14,7 +14,9 @@
  *     limitations under the License.
  */
 
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/radio.h"
 #include "driver/speaker.h"
 #include "misc.h"
@@ -25,7 +27,11 @@
 
 void Task_Idle(void)
 {
-	if (gRadioMode != RADIO_MODE_RX && gRadioMode != RADIO_MODE_TX && VOX_Counter == 0 && gRxLinkCounter == 0 && !gScannerMode && !gReceptionMode && !gMonitorMode && !gEnableLocalAlarm && gFM_Mode == FM_MODE_OFF && gSaveModeTimer == 0 && SPEAKER_State == 0) {
+	if (gRadioMode != RADIO_MODE_RX && gRadioMode != RADIO_MODE_TX && VOX_Counter == 0 && gRxLinkCounter == 0 && !gScannerMode && !gReceptionMode && !gMonitorMode && !gEnableLocalAlarm && gSaveModeTimer == 0 && SPEAKER_State == 0
+#ifdef ENABLE_FM_RADIO
+		&& gFM_Mode == FM_MODE_OFF
+#endif
+			) {
 		switch (gIdleMode) {
 		case IDLE_MODE_OFF:
 #ifdef ENABLE_NOAA

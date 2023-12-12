@@ -16,7 +16,9 @@
 
 #include "app/flashlight.h"
 #include "app/radio.h"
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "driver/beep.h"
 #include "driver/key.h"
 #include "driver/pins.h"

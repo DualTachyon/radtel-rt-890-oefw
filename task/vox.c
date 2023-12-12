@@ -14,7 +14,9 @@
  *     limitations under the License.
  */
 
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/radio.h"
 #include "driver/bk4819.h"
 #include "helper/helper.h"
@@ -75,7 +77,11 @@ void VOX_Update(void)
 void Task_VoxUpdate(void)
 {
 	if (gSettings.Vox && gPttLock == 0 && !gSaveMode && gScreenMode == SCREEN_MAIN && VOX_Timer == 0) {
-		if (SCHEDULER_CheckTask(TASK_VOX) && gFM_Mode == FM_MODE_OFF && !gDTMF_InputMode) {
+		if (SCHEDULER_CheckTask(TASK_VOX)
+#ifdef ENABLE_FM_RADIO
+			&& gFM_Mode == FM_MODE_OFF
+#endif
+			&& !gDTMF_InputMode) {
 			bool bFlag;
 
 			SCHEDULER_ClearTask(TASK_VOX);

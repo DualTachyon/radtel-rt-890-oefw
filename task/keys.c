@@ -15,7 +15,9 @@
  */
 
 #include "app/flashlight.h"
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/menu.h"
 #include "app/radio.h"
 #include "driver/audio.h"
@@ -41,6 +43,7 @@
 
 bool bBeep740;
 
+#ifdef ENABLE_FM_RADIO
 static void FM_AppendDigit(char Digit)
 {
 	if (gInputBoxWriteIndex == 0) {
@@ -57,6 +60,7 @@ static void FM_AppendDigit(char Digit)
 		FM_UpdateFrequency();
 	}
 }
+#endif
 
 static void CHANNEL_AppendDigit(char Digit)
 {
@@ -99,32 +103,42 @@ static void MAIN_KeyHandler(KEY_t Key)
 	case KEY_0: case KEY_1: case KEY_2: case KEY_3:
 	case KEY_4: case KEY_5: case KEY_6: case KEY_7:
 	case KEY_8: case KEY_9:
+#ifdef ENABLE_FM_RADIO
 		if (gFM_Mode < FM_MODE_SCROLL_UP) {
 			if (gFM_Mode == FM_MODE_PLAY) {
 				FM_AppendDigit(Key);
-			} else if (gSettings.WorkMode && !gFrequencyReverse) {
+			} else
+#endif
+			if (gSettings.WorkMode && !gFrequencyReverse) {
 				CHANNEL_AppendDigit(Key);
 			} else {
 				VFO_AppendDigit(Key);
 			}
 			AUDIO_PlayDigit(Key);
 			BEEP_Play(740, 2, 100);
+#ifdef ENABLE_FM_RADIO
 		}
+#endif
 		break;
 
 	case KEY_MENU:
 		if (gInputBoxWriteIndex == 0) {
+#ifdef ENABLE_FM_RADIO
 			if (gFM_Mode > FM_MODE_STANDBY) {
 				break;
 			}
+#endif
 			gFrequencyReverse = false;
 			MENU_Redraw(true);
 		} else {
 			INPUTBOX_Pad(gInputBoxWriteIndex, 0);
+#ifdef ENABLE_FM_RADIO
 			if (gFM_Mode == FM_MODE_PLAY) {
 				FM_UpdateFrequency();
 				UI_DrawFMFrequency(gSettings.FmFrequency);
-			} else if (gSettings.WorkMode && !gFrequencyReverse) {
+			} else
+#endif
+			if (gSettings.WorkMode && !gFrequencyReverse) {
 				CHANNELS_UpdateChannel();
 			} else {
 				CHANNELS_UpdateVFO();
@@ -136,7 +150,9 @@ static void MAIN_KeyHandler(KEY_t Key)
 	case KEY_UP:
 	case KEY_DOWN:
 		if (gInputBoxWriteIndex == 0) {
+#ifdef ENABLE_FM_RADIO
 			if (gFM_Mode < FM_MODE_PLAY) {
+#endif
 				if (!gReceptionMode) {
 					if (!gScannerMode) {
 						RADIO_CancelMode();
@@ -166,20 +182,25 @@ static void MAIN_KeyHandler(KEY_t Key)
 					NOAA_NextChannelCountdown = 3000;
 #endif
 				}
+#ifdef ENABLE_FM_RADIO
 			} else if (gFM_Mode == FM_MODE_PLAY) {
 				CHANNELS_NextFM(Key);
 			} else {
 				FM_Play();
 			}
+#endif
 		}
 		BEEP_Play(740, 2, 100);
 		break;
 
 	case KEY_EXIT:
 		if (gInputBoxWriteIndex) {
+#ifdef ENABLE_FM_RADIO
 			if (gFM_Mode == FM_MODE_PLAY) {
 				RADIO_DrawFmMode();
-			} else if (gSettings.WorkMode) {
+			} else
+#endif
+			if (gSettings.WorkMode) {
 				RADIO_DrawWorkMode();
 			} else {
 				RADIO_DrawFrequencyMode();
@@ -187,7 +208,9 @@ static void MAIN_KeyHandler(KEY_t Key)
 			BEEP_Play(440, 4, 80);
 			break;
 		}
+#ifdef ENABLE_FM_RADIO
 		if (gFM_Mode < FM_MODE_PLAY) {
+#endif
 			if (gFrequencyReverse) {
 				gFrequencyReverse = false;
 				UI_DrawVfo(gSettings.CurrentVfo);
@@ -213,14 +236,18 @@ static void MAIN_KeyHandler(KEY_t Key)
 			} else {
 				BEEP_Play(440, 4, 80);
 			}
+#ifdef ENABLE_FM_RADIO
 		}
+#endif
 		break;
 
 	case KEY_STAR:
 		break;
 
 	case KEY_HASH:
+#ifdef ENABLE_FM_RADIO
 		if (gFM_Mode < FM_MODE_PLAY) {
+#endif
 			gFrequencyReverse = false;
 			RADIO_CancelMode();
 			if (gFreeChannelsCount == 0) {
@@ -248,7 +275,9 @@ static void MAIN_KeyHandler(KEY_t Key)
 			} else {
 				BEEP_Play(440, 4, 80);
 			}
+#ifdef ENABLE_FM_RADIO
 		}
+#endif
 		break;
 
 	default:
@@ -298,14 +327,20 @@ static void HandlerLong(KEY_t Key)
 	}
 
 	bBeep740 = true;
-	if (!gReceptionMode && (gFM_Mode == FM_MODE_OFF || Key == KEY_0 || Key == KEY_HASH || Key == KEY_UP || Key == KEY_DOWN)) {
+	if (!gReceptionMode && (
+#ifdef ENABLE_FM_RADIO
+			gFM_Mode == FM_MODE_OFF ||
+#endif
+			Key == KEY_0 || Key == KEY_HASH || Key == KEY_UP || Key == KEY_DOWN)) {
 		SCREEN_TurnOn();
 		if (gScreenMode == SCREEN_MAIN) {
 			switch (Key) {
 			case KEY_UP:
 			case KEY_DOWN:
 				if (gInputBoxWriteIndex == 0) {
+#ifdef ENABLE_FM_RADIO
 					if (gFM_Mode == FM_MODE_OFF) {
+#endif
 						RADIO_CancelMode();
 						if (gSettings.WorkMode) {
 							do {
@@ -322,6 +357,7 @@ static void HandlerLong(KEY_t Key)
 							CHANNELS_LoadChannel(gSettings.CurrentVfo ? 1000 : 999, gSettings.CurrentVfo);
 						}
 						RADIO_Tune(gSettings.CurrentVfo);
+#ifdef ENABLE_FM_RADIO
 					} else {
 						if (Key == KEY_UP) {
 							gFM_Mode = FM_MODE_SCROLL_UP;
@@ -339,6 +375,7 @@ static void HandlerLong(KEY_t Key)
 						UI_DrawFMFrequency(gSettings.FmFrequency);
 						FM_SetVolume(0);
 					}
+#endif
 					bBeep740 = Key - KEY_UP;
 				}
 				break;

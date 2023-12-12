@@ -442,11 +442,12 @@ void MENU_AcceptSetting(void)
 		SETTINGS_SaveGlobals();
 		break;
 #endif
+#ifdef ENABLE_FM_RADIO
 	case MENU_FM_STANDBY:
 		gSettings.FmStandby = gSettingIndex;
 		SETTINGS_SaveGlobals();
 		break;
-
+#endif
 	case MENU_TAIL_TONE:
 		gSettings.TailTone = gSettingIndex;
 		SETTINGS_SaveGlobals();
@@ -816,11 +817,12 @@ void MENU_DrawSetting(void)
 		UI_DrawToggle();
 		break;
 #endif
+#ifdef ENABLE_FM_RADIO
 	case MENU_FM_STANDBY:
 		gSettingIndex = gSettings.FmStandby;
 		UI_DrawToggle();
 		break;
-
+#endif
 	case MENU_TAIL_TONE:
 		gSettingIndex = gSettings.TailTone;
 		UI_DrawToggle();
@@ -1368,7 +1370,9 @@ void MENU_PlayAudio(uint8_t MenuID)
 #ifdef ENABLE_NOAA
 	case MENU_NOAA_MONITOR:  ID = 0x1C; break;
 #endif
+#ifdef ENABLE_FM_RADIO
 	case MENU_FM_STANDBY:    ID = 0x1D; break;
+#endif
 	case MENU_TAIL_TONE:     ID = 0x1F; break;
 	case MENU_SCAN_DIR:      ID = 0x20; break;
 	case MENU_PERSONAL_ID:   ID = 0x21; break;

@@ -15,7 +15,9 @@
  */
 
 #include "app/flashlight.h"
-#include "app/fm.h"
+#ifdef ENABLE_FM_RADIO
+	#include "app/fm.h"
+#endif
 #include "app/radio.h"
 #include "driver/beep.h"
 #include "driver/pins.h"
@@ -56,7 +58,9 @@ void Task_CheckPTT(void)
 				return;
 			}
 			SCREEN_TurnOn();
+#ifdef ENABLE_FM_RADIO
 			if (gFM_Mode == FM_MODE_OFF) {
+#endif
 				if (!gScannerMode) {
 					if (!gReceptionMode) {
 						if (!gEnableLocalAlarm) {
@@ -92,10 +96,12 @@ void Task_CheckPTT(void)
 					SETTINGS_SaveState();
 					gPttPressed = true;
 				}
+#ifdef ENABLE_FM_RADIO
 			} else {
 				FM_Disable(FM_MODE_OFF);
 				gPttPressed = true;
 			}
+#endif
 			if (gPttPressed) {
 				BEEP_Play(440, 4, 80);
 				return;
