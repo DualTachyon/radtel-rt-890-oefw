@@ -288,7 +288,10 @@ uint16_t GetAdjustedLevel(uint16_t Level, uint16_t Low, uint16_t High, uint16_t 
 }
 
 void JumpToVFO(void) {
-	gSettings.WorkMode = FALSE;
+	if (gSettings.WorkMode) {
+		gSettings.WorkMode = FALSE;
+		CHANNELS_LoadVfoMode();
+	}
 
 #ifdef UART_DEBUG
 	Int2Ascii(gSettings.WorkMode, 1);
@@ -299,7 +302,6 @@ void JumpToVFO(void) {
 
 	SETTINGS_SaveGlobals();
 	gVfoState[gSettings.CurrentVfo].bIsNarrow = bNarrow;
-	// fixme: when previously in channel mode, the VFO name is overrided by the channel name
 	CHANNELS_UpdateVFOFreq(CurrentFreq);
 
 	bExit = TRUE;
