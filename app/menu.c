@@ -1347,7 +1347,7 @@ void MENU_ScrollSetting(uint8_t Key)
 
 void MENU_PlayAudio(uint8_t MenuID)
 {
-	uint8_t ID;
+	uint8_t ID = 0;
 
 	switch (MenuID) {
 	case MENU_STARTUP_LOGO:  ID = 0x09; break;
@@ -1397,7 +1397,7 @@ void MENU_PlayAudio(uint8_t MenuID)
 	case MENU_VERSION:       ID = 0x3B; break;
 	}
 
-	if (MenuID != MENU_DTMF_DELAY && MenuID != MENU_DTMF_INTERVAL && MenuID != MENU_DTMF_MODE && MenuID != MENU_DTMF_SELECT && MenuID != MENU_DTMF_DISPLAY) {
+	if (ID) {
 		AUDIO_PlaySampleOptional(ID);
 	}
 }
