@@ -47,7 +47,7 @@ void Task_CheckBattery(void)
 			&& !gFlashlightMode) {
 		UI_DrawVoltage(!gSettings.CurrentVfo);
 	}
-	UI_DrawBattery(!gSettings.RepeaterMode);
+	UI_DrawBattery(!(gSettings.RepeaterMode || gFlashlightMode));
 
 	if (BatteryLevel && ChargeTimer++ >= 30) {
 		ChargeTimer = 0;
