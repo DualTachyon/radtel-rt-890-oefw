@@ -90,8 +90,8 @@ void ST7735S_Init(void)
 {
 	// Not used?
 	//DAT_20001118 = 0xFFFF;
-	gColorBackground = COLOR_RGB(0, 0, 0);
-	gColorForeground = COLOR_RGB(31, 63, 31);
+	//gColorBackground = COLOR_RGB(0, 0, 0);
+	//gColorForeground = COLOR_RGB(31, 63, 31);
 
 	gpio_bits_set(GPIOF, GPIO_PINS_0);
 	DELAY_WaitMS(1);
@@ -176,7 +176,7 @@ void ST7735S_Init(void)
 	ST7735S_SendData(0x13);
 	ST7735S_SendCommand(ST7735S_CMD_COLMOD);
 	ST7735S_SendData(0x05);
-	DISPLAY_FillColor(COLOR_RGB(0, 0, 0));
+	DISPLAY_FillColor(COLOR_BACKGROUND);
 	ST7735S_SendCommand(ST7735S_CMD_DISPON);
 }
 
