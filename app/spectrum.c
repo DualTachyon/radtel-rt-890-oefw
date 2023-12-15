@@ -43,44 +43,38 @@
 #define SCROLL_LEFT_MARGIN 55
 #define SCROLL_RIGHT_MARGIN 160
 
-uint32_t CurrentFreq;
-uint8_t CurrentFreqIndex;
-uint8_t CurrentFreqIndex_old;
-uint32_t FreqCenter;
-uint32_t FreqMin;
-uint32_t FreqMax;
-uint8_t CurrentModulation;
-uint8_t CurrentFreqStepIndex;
-uint32_t CurrentFreqStep;
-uint32_t CurrentFreqChangeStep;
-uint8_t CurrentStepCountIndex;
-uint8_t CurrentStepCount;
-uint16_t CurrentScanDelay;
-uint16_t RssiValue[160] = {0};
-uint16_t SquelchLevel;
-uint8_t bExit;
-uint8_t bRXMode;
-uint8_t bResetSquelch;
-uint8_t bRestartScan;
-uint8_t bFilterEnabled;
-uint8_t bNarrow;
-uint16_t RssiLow;
-uint16_t RssiHigh;
-uint16_t BarScale;
-uint8_t BarY;
-uint8_t BarWidth;
-uint16_t KeyHoldTimer = 0;
-uint8_t bHold;
-KEY_t Key;
-KEY_t LastKey = KEY_NONE;
+static uint32_t CurrentFreq;
+static uint8_t CurrentFreqIndex;
+static uint32_t FreqCenter;
+static uint32_t FreqMin;
+static uint32_t FreqMax;
+static uint8_t CurrentModulation;
+static uint8_t CurrentFreqStepIndex;
+static uint32_t CurrentFreqStep;
+static uint32_t CurrentFreqChangeStep;
+static uint8_t CurrentStepCountIndex;
+static uint8_t CurrentStepCount;
+static uint16_t CurrentScanDelay;
+static uint16_t RssiValue[160] = {0};
+static uint16_t SquelchLevel;
+static uint8_t bExit;
+static uint8_t bRXMode;
+static uint8_t bResetSquelch;
+static uint8_t bRestartScan;
+static uint8_t bFilterEnabled;
+static uint8_t bNarrow;
+static uint16_t RssiLow;
+static uint16_t RssiHigh;
+static uint8_t bHold;
 #ifdef ENABLE_SPECTRUM_PRESETS
 FreqPreset CurrentBandInfo;
 uint8_t CurrentBandIndex;
 uint8_t bInBand = FALSE;
 #endif
-uint8_t DisplayMode;
-uint8_t WaterfallOffset;
-uint8_t scroll;
+static uint8_t DisplayMode;
+
+static const uint8_t BarScale = 40;
+static const uint8_t BarY = 15;
 
 void ShiftShortStringRight(uint8_t Start, uint8_t End) {
 	for (uint8_t i = End; i > Start; i--){
@@ -226,7 +220,6 @@ void SetFreqMinMax(void) {
 void SetStepCount(void) {
 	if (!DisplayMode) {
 		CurrentStepCount = 160 >> CurrentStepCountIndex;	
-		BarWidth = 160 / CurrentStepCount;
 	} else {
 		CurrentStepCount = 128 >> CurrentStepCountIndex;
 	}
@@ -391,6 +384,7 @@ void DrawSpectrum(uint16_t ActiveBarColor) {
 	uint16_t Power;
 	uint16_t SquelchPower;
 	uint8_t BarX;
+	uint8_t BarWidth;
 
 	BarLow = RssiLow - 2;
 	if ((RssiHigh - RssiLow) < 40) {
@@ -398,6 +392,8 @@ void DrawSpectrum(uint16_t ActiveBarColor) {
 	} else {
 		BarHigh = RssiHigh + 5;
 	}
+
+	BarWidth = 160 / CurrentStepCount;
 
 	//Bars
 	for (uint8_t i = 0; i < CurrentStepCount; i++) {
@@ -456,6 +452,7 @@ uint16_t MapColor(uint16_t Level){
 
 void DrawWaterfall()
 {
+	static uint8_t scroll;
 	uint16_t High;
 
 	if ((RssiHigh - RssiLow) < 60) {
@@ -481,15 +478,8 @@ void DrawWaterfall()
 		ST7735S_SendU16(wf); // write to screen using waterfall color from palette
 	}
 
-	ST7735S_SetPixel(54, CurrentFreqIndex_old, COLOR_BACKGROUND);
-	ST7735S_SetPixel(53, CurrentFreqIndex_old, COLOR_BACKGROUND);
-	ST7735S_SetPixel(52, CurrentFreqIndex_old, COLOR_BACKGROUND);
-
-	CurrentFreqIndex_old = CurrentFreqIndex;
-
-	ST7735S_SetPixel(54, CurrentFreqIndex, COLOR_GREY);
-	ST7735S_SetPixel(53, CurrentFreqIndex, COLOR_GREY);
-	ST7735S_SetPixel(52, CurrentFreqIndex, COLOR_GREY);
+	DISPLAY_DrawRectangle1(52, 0, 128, 3, COLOR_BACKGROUND);
+	DISPLAY_DrawRectangle1(52, CurrentFreqIndex, 1, 3, COLOR_FOREGROUND);
 }
 
 void StopSpectrum(void) {
@@ -510,6 +500,10 @@ void StopSpectrum(void) {
 }
 
 void CheckKeys(void) {
+	static uint8_t KeyHoldTimer;
+	static KEY_t Key;
+	static KEY_t LastKey;
+
 	Key = KEY_GetButton();
 	if (Key == LastKey && Key != KEY_NONE) {
 		if (bRXMode) {
@@ -651,11 +645,9 @@ void RunRX(void) {
 void Spectrum_Loop(void) {
 	uint32_t FreqToCheck;
 	CurrentFreqIndex = 0;
-	CurrentFreqIndex_old = 0;
 	CurrentFreq = FreqMin;
 	bResetSquelch = TRUE;
 	bRestartScan = FALSE;
-	scroll = 0;
 
 	//UI_DrawStatusIcon(139, ICON_BATTERY, true, COLOR_FOREGROUND);
 	//UI_DrawBattery(false);
@@ -737,11 +729,8 @@ void APP_Spectrum(void) {
 	CurrentScanDelay = 4;
 	bFilterEnabled = TRUE;
 	SquelchLevel = 0;
-	BarScale = 40;
-	BarY = 15;
 	bHold = 0;
 	DisplayMode = 0;
-	WaterfallOffset = 0;
 
 	SetStepCount();
 	SetFreqMinMax(); 
