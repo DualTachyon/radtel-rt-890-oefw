@@ -356,7 +356,7 @@ void RADIO_EndRX(void)
 			FM_Resume();
 		}
 #endif
-		gIncomingTimer = 100;
+		gIncomingTimer = 1;
 	} else {
 		gSignalFound = true;
 		gDetectorTimer = 500;
@@ -378,7 +378,7 @@ void RADIO_EndAudio(void)
 	SPEAKER_TurnOff(SPEAKER_OWNER_RX);
 	gRxLinkCounter = 0;
 	gNoToneCounter = 0;
-	gIncomingTimer = 250;
+	gIncomingTimer = 1;
 #ifdef ENABLE_NOAA
 	NOAA_NextChannelCountdown = 3000;
 #endif

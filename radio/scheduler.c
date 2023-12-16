@@ -154,15 +154,21 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 	if (gBlinkGreen) {
 		gGreenLedTimer++;
 	}
-	SetTask(TASK_CHECK_SIDE_KEYS | TASK_CHECK_KEY_PAD | TASK_CHECK_PTT);
+	SetTask(TASK_CHECK_SIDE_KEYS | TASK_CHECK_KEY_PAD | TASK_CHECK_PTT | TASK_CHECK_INCOMING);
 	if ((SCHEDULER_Counter & 1) == 0) {
-		SetTask(TASK_CHECK_RSSI | TASK_CHECK_INCOMING);
+	//	SetTask(TASK_CHECK_RSSI | TASK_CHECK_INCOMING);
+		SetTask(TASK_CHECK_RSSI);
 	}
 	if ((SCHEDULER_Counter & 15) == 0) {
-		SetTask(TASK_VOX);
+		// SetTask(TASK_VOX);
+		SetTask(TASK_VOX | TASK_SCANNER);
 	}
+	//if ((SCHEDULER_Counter & 60) == 0) {
+	//	SetTask(TASK_SCANNER);
+	//}
 	if ((SCHEDULER_Counter & 127) == 0) {
-		SetTask(TASK_FM_SCANNER | TASK_SCANNER);
+		//SetTask(TASK_FM_SCANNER | TASK_SCANNER);
+		SetTask(TASK_FM_SCANNER);
 	}
 	if ((SCHEDULER_Counter & 0x3FF) == 0) {
 		SetTask(TASK_1024_c | TASK_AM_FIX | TASK_CHECK_BATTERY);

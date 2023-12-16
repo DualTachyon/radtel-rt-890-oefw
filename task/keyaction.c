@@ -219,7 +219,7 @@ void KeypressAction(uint8_t Action) {
 				gManualScanDirection = gSettings.ScanDirection;
 				gScannerMode ^= 1;
 				bBeep740 = gScannerMode;
-				SCANNER_Countdown = 50;
+				SCANNER_Countdown = 15;
 				UI_DrawScan();
 				break;
 
