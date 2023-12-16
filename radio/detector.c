@@ -305,6 +305,7 @@ static void DETECTOR_Loop(void)
 			Task_CheckIncoming();
 			Task_CheckRSSI();
 			if (bCtdcScan && gSignalFound && gRadioMode != RADIO_MODE_QUIET && gDetectorTimer == 0) {
+				CtdcScan();
 				break;
 			}
 			if (Key == KEY_NONE) {
@@ -326,13 +327,13 @@ static void DETECTOR_Loop(void)
 						KEY_CurrentKey = KEY_NONE;
 						RADIO_EndRX();
 						BEEP_Play(740, 2, 100);
-						continue;
+						break;
 					}
 					if (KEY_CurrentKey == KEY_HASH && !bCtdcScan) {
 						KEY_CurrentKey = KEY_NONE;
 						RADIO_EndRX();
 						UpdateBand(true);
-						continue;
+						break;
 					}
 					if (KEY_CurrentKey == KEY_STAR) {
 						KEY_CurrentKey = KEY_NONE;
@@ -344,7 +345,7 @@ static void DETECTOR_Loop(void)
 							UpdateBand(false);
 							bCtdcScan = false;
 						}
-						continue;
+						break;
 					}
 				}
 				KEY_KeyCounter = 0;
@@ -352,7 +353,6 @@ static void DETECTOR_Loop(void)
 				Key = KEY_CurrentKey;
 			}
 		}
-		CtdcScan();
 	}
 }
 
