@@ -437,6 +437,7 @@ void BK4819_EnableVox(bool bEnable)
 
 void BK4819_RestoreGainSettings()
 {
+	/*  This section left here as reference, it will be useful when someone writes a register editor
 	const uint8_t orig_lna_short = 2;
             const uint8_t orig_lna = 5;
             const uint8_t orig_mixer = 2;
@@ -444,6 +445,9 @@ void BK4819_RestoreGainSettings()
 			if(BK4819_ReadRegister(0x13) != ((orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0))) {
             	BK4819_WriteRegister(0x13, (orig_lna_short << 8) | (orig_lna << 5) | (orig_mixer << 3) | (orig_pga << 0));
 			}
+	*/
+	
+	BK4819_WriteRegister(0x13, 0x03de);
 }
 
 void BK4819_ToggleAGCMode(bool bAuto)
