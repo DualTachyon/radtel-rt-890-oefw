@@ -3,12 +3,14 @@ TARGET = firmware
 UART_DEBUG			:= 0
 MOTO_STARTUP_TONE		:= 1
 ENABLE_AM_FIX			:= 1
-ENABLE_LTO			:= 0
 ENABLE_NOAA			:= 1
 ENABLE_SPECTRUM			:= 1
 ENABLE_SPECTRUM_PRESETS		:= 1
 # FM radio = 2.6 kB
 ENABLE_FM_RADIO			:= 1
+# Space saving options
+ENABLE_LTO			:= 0
+ENABLE_OPTIMIZED	:= 1
 
 OBJS =
 # Startup files
@@ -152,6 +154,18 @@ CFLAGS += -DPRINTF_INCLUDE_CONFIG_H
 CFLAGS += -DGIT_HASH=\"$(GIT_HASH)\"
 LDFLAGS = -mcpu=cortex-m4 -nostartfiles -Wl,-T,firmware.ld
 
+ifeq ($(ENABLE_OPTIMIZED),1)
+CFLAGS += --specs=nano.specs
+LDFLAGS += --specs=nano.specs
+
+CFLAGS += -ffunction-sections
+LDFLAGS += -Wl,--gc-sections
+
+CFLAGS += -finline-limit=0
+
+CFLAGS += -fmerge-all-constants
+endif
+ 
 ifeq ($(DEBUG),1)
 ASFLAGS += -g
 CFLAGS += -g
