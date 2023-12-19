@@ -6,3 +6,5 @@ firmware.bin
 
 external/SDK
 .vscode/
+.cache
+compile_commands.json

@@ -27,10 +27,6 @@
 
 #ifdef ENABLE_AM_FIX
 
-#ifndef ARRAY_SIZE
-	#define ARRAY_SIZE(x) (sizeof(x) / sizeof(x[0]))
-#endif
-
 	typedef struct
 	{
 		uint16_t reg_val;

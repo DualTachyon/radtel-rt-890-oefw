@@ -1,16 +1,16 @@
 TARGET = firmware
 
-UART_DEBUG			:= 0
-MOTO_STARTUP_TONE		:= 1
-ENABLE_AM_FIX			:= 1
-ENABLE_NOAA			:= 1
-ENABLE_SPECTRUM			:= 1
-ENABLE_SPECTRUM_PRESETS		:= 1
+UART_DEBUG			?= 0
+MOTO_STARTUP_TONE		?= 1
+ENABLE_AM_FIX			?= 1
+ENABLE_NOAA			?= 1
+ENABLE_SPECTRUM			?= 1
+ENABLE_SPECTRUM_PRESETS		?= 1
 # FM radio = 2.6 kB
-ENABLE_FM_RADIO			:= 1
+ENABLE_FM_RADIO			?= 1
 # Space saving options
-ENABLE_LTO			:= 0
-ENABLE_OPTIMIZED	:= 1
+ENABLE_LTO			?= 0
+ENABLE_OPTIMIZED	?= 1
 
 OBJS =
 # Startup files
@@ -148,7 +148,7 @@ GIT_HASH := $(GIT_HASH_TMP)
 endif
 
 ASFLAGS = -mcpu=cortex-m4
-CFLAGS = -Os -Wall -Werror -mcpu=cortex-m4 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c11 -MMD
+CFLAGS = -Os -Wall -Werror -mcpu=cortex-m4 -fno-builtin -fshort-enums -fno-delete-null-pointer-checks -std=c2x -MMD
 CFLAGS += -DAT32F421C8T7
 CFLAGS += -DPRINTF_INCLUDE_CONFIG_H
 CFLAGS += -DGIT_HASH=\"$(GIT_HASH)\"
@@ -192,7 +192,7 @@ ifeq ($(ENABLE_AM_FIX),1)
 	CFLAGS += -DENABLE_AM_FIX
 endif
 ifeq ($(ENABLE_LTO),1)
-	CFLAGS += -flto
+	CFLAGS += -flto=auto
 endif
 ifeq ($(ENABLE_NOAA),1)
 	CFLAGS += -DENABLE_NOAA
@@ -231,4 +231,3 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -f $(TARGET).bin $(TARGET) $(OBJS) $(DEPS)
-

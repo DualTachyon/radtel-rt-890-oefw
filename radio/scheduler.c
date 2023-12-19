@@ -55,11 +55,7 @@ static void SetTask(uint16_t Task)
 
 bool SCHEDULER_CheckTask(uint16_t Task)
 {
-	if (SCHEDULER_Tasks & Task) {
-		return true;
-	}
-
-	return false;
+	return SCHEDULER_Tasks & Task;
 }
 
 void SCHEDULER_ClearTask(uint16_t Task)
@@ -175,4 +171,3 @@ void HandlerTMR1_BRK_OVF_TRG_HALL(void)
 		SCHEDULER_Counter = 0;
 	}
 }
-
