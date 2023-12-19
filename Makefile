@@ -10,7 +10,7 @@ ENABLE_SPECTRUM_PRESETS		?= 1
 ENABLE_FM_RADIO			?= 1
 # Space saving options
 ENABLE_LTO			?= 0
-ENABLE_OPTIMIZED	?= 1
+ENABLE_OPTIMIZED		?= 1
 
 OBJS =
 # Startup files
