@@ -182,7 +182,7 @@ void DrawLabels(void) {
 
 		UI_DrawSmallString(152, 60, (bNarrow) ? "N" : "W", 1);	
 
-		UI_DrawSmallString(2, 14, (bHold) ? "H" : " ", 1);
+		UI_DrawSmallString(136, 84, (bHold) ? "H" : " ", 1);
 	} else {
 		UI_DrawSmallString(32, 72, gShortString, 2);
 
