@@ -14,6 +14,8 @@
  *     limitations under the License.
  */
 
+#include <string.h>
+
 #include "app/radio.h"
 #include "driver/beep.h"
 #include "driver/bk4819.h"
@@ -35,105 +37,63 @@ bool gDTMF_Playing;
 
 static void Init(void)
 {
-	BK4819_WriteRegister(0x09, 0x006F);
-	BK4819_WriteRegister(0x09, 0x106B);
-	BK4819_WriteRegister(0x09, 0x2067);
-	BK4819_WriteRegister(0x09, 0x3062);
-	BK4819_WriteRegister(0x09, 0x4050);
-	BK4819_WriteRegister(0x09, 0x5047);
-	BK4819_WriteRegister(0x09, 0x603A);
-	BK4819_WriteRegister(0x09, 0x702C);
-	BK4819_WriteRegister(0x09, 0x8041);
-	BK4819_WriteRegister(0x09, 0x9037);
-	BK4819_WriteRegister(0x09, 0xA025);
-	BK4819_WriteRegister(0x09, 0xB017);
-	BK4819_WriteRegister(0x09, 0xC0E4);
-	BK4819_WriteRegister(0x09, 0xD0CB);
-	BK4819_WriteRegister(0x09, 0xE0B5);
-	BK4819_WriteRegister(0x09, 0xF09F);
-	BK4819_WriteRegister(0x21, 0x06D8);
+	uint16_t init_0x9_values[] = {
+		0x006F, 0x106B, 0x2067, 0x3062, 0x4050, 0x5047, 0x603A, 0x702C,
+		0x8041, 0x9037, 0xA025, 0xB017, 0xC0E4, 0xD0CB, 0xE0B5, 0xF09F,
+	};
+
+
+	for (int i = 0; i < ARRAY_SIZE(init_0x9_values); i++) {
+		BK4819_WriteRegister(0x09, init_0x9_values[i]);
+	}
+
 	BK4819_WriteRegister(0x24, 0x807E | (gDTMF_Settings.DecodeThreshold << 7));
 	BK4819_WriteRegister(0x70, ((0x80 + gDTMF_Settings.EncodeGain) << 8) | (0x80 + gDTMF_Settings.EncodeGain));
 }
 
 static void PlayDTMF(uint8_t Code)
 {
-	switch (Code) {
-	case 0:
-		BK4819_WriteRegister(0x71, 0x25F3);
-		BK4819_WriteRegister(0x72, 0x35E1);
-		break;
-	case 1:
-		BK4819_WriteRegister(0x71, 0x1C1C);
-		BK4819_WriteRegister(0x72, 0x30C2);
-		break;
-	case 2:
-		BK4819_WriteRegister(0x71, 0x1C1C);
-		BK4819_WriteRegister(0x72, 0x35E1);
-		break;
-	case 3:
-		BK4819_WriteRegister(0x71, 0x1C1C);
-		BK4819_WriteRegister(0x72, 0x3B91);
-		break;
-	case 4:
-		BK4819_WriteRegister(0x71, 0x1F0E);
-		BK4819_WriteRegister(0x72, 0x30C2);
-		break;
-	case 5:
-		BK4819_WriteRegister(0x71, 0x1F0E);
-		BK4819_WriteRegister(0x72, 0x35E1);
-		break;
-	case 6:
-		BK4819_WriteRegister(0x71, 0x1F0E);
-		BK4819_WriteRegister(0x72, 0x3B91);
-		break;
-	case 7:
-		BK4819_WriteRegister(0x71, 0x225C);
-		BK4819_WriteRegister(0x72, 0x30C2);
-		break;
-	case 8:
-		BK4819_WriteRegister(0x71, 0x225C);
-		BK4819_WriteRegister(0x72, 0x35E1);
-		break;
-	case 9:
-		BK4819_WriteRegister(0x71, 0x225C);
-		BK4819_WriteRegister(0x72, 0x3B91);
-		break;
-	case 10:
-		BK4819_WriteRegister(0x71, 0x1C1C);
-		BK4819_WriteRegister(0x72, 0x41DC);
-		break;
-	case 11:
-		BK4819_WriteRegister(0x71, 0x1F0E);
-		BK4819_WriteRegister(0x72, 0x41DC);
-		break;
-	case 12:
-		BK4819_WriteRegister(0x71, 0x225C);
-		BK4819_WriteRegister(0x72, 0x41DC);
-		break;
-	case 13:
-		BK4819_WriteRegister(0x71, 0x25F3);
-		BK4819_WriteRegister(0x72, 0x41DC);
-		break;
-	case 14:
-		BK4819_WriteRegister(0x71, 0x25F3);
-		BK4819_WriteRegister(0x72, 0x30C2);
-		break;
-	case 15:
-		BK4819_WriteRegister(0x71, 0x25F3);
-		BK4819_WriteRegister(0x72, 0x3B91);
-		break;
+	struct  data{
+		uint16_t reg_71;
+		uint16_t reg_72;
+	};
+
+	struct data DTMF_tones_register_values [16]={
+		{.reg_71 = 0x25F3,  .reg_72 = 0x35E1,},
+		{.reg_71 = 0x1C1C, .reg_72 = 0x30C2,},
+		{.reg_71 = 0x1C1C, .reg_72 = 0x35E1,},
+		{.reg_71 = 0x1C1C, .reg_72 = 0x3B91,},
+		{.reg_71 = 0x1F0E, .reg_72 = 0x30C2,},
+		{.reg_71 = 0x1F0E, .reg_72 = 0x35E1,},
+		{.reg_71 = 0x1F0E, .reg_72 = 0x3B91,},
+		{.reg_71 = 0x225C, .reg_72 = 0x30C2,},
+		{.reg_71 = 0x225C, .reg_72 = 0x35E1,},
+		{.reg_71 = 0x225C, .reg_72 = 0x3B91,},
+		{.reg_71 = 0x1C1C, .reg_72 = 0x41DC,},
+		{.reg_71 = 0x1F0E, .reg_72 = 0x41DC,},
+		{.reg_71 = 0x225C, .reg_72 = 0x41DC,},
+		{.reg_71 = 0x25F3, .reg_72 = 0x41DC,},
+		{.reg_71 = 0x25F3, .reg_72 = 0x30C2,},
+		{.reg_71 = 0x25F3, .reg_72 = 0x3B91,},
+	};
+
+
+	if (Code < 16) {
+		BK4819_WriteRegister(0x71, DTMF_tones_register_values[Code].reg_71);
+		BK4819_WriteRegister(0x72, DTMF_tones_register_values[Code].reg_72);
 	}
+
 	if (!gDTMF_Playing) {
 		DELAY_WaitMS(60);
 	}
 }
 
-void DTMF_FSK_InitReceive(uint8_t Unused)
+void DTMF_FSK_InitReceive(__attribute__((unused)) uint8_t Unused)
 {
 	BK4819_WriteRegister(0x3F, 0x2800); // Enable Interrupts for DTMF/5TONE Found and FSK RX
 	BK4819_WriteRegister(0x59, 0x4028); // Clear RX FIFO
 	BK4819_WriteRegister(0x59, 0x3028); // Enable FSK Scramble, FSK RX, 2 byte preamble, 4 sync bytes
+
 	if (gMainVfo->Scramble) {
 		DTMF_Disable();
 	} else {
@@ -162,11 +122,17 @@ char DTMF_GetCharacterFromKey(uint8_t Code)
 void DTMF_PlayTone(uint8_t Code)
 {
 	BK4819_SetAfGain(0xB32A);
+
 	Init();
-	if(!gStartupSoundPlaying)
+
+	if(!gStartupSoundPlaying) {
 		BK4819_EnableTone1(true);
+	}
+
 	SPEAKER_TurnOn(SPEAKER_OWNER_SYSTEM);
+
 	PlayDTMF(Code);
+
 	if (!gDTMF_Playing) {
 		DTMF_Disable();
 	}
@@ -174,36 +140,25 @@ void DTMF_PlayTone(uint8_t Code)
 
 void DTMF_PlayContact(const DTMF_String_t *pContact)
 {
-	uint8_t i;
-
 	if (pContact->Length == 0 || pContact->Length > 14) {
 		return;
 	}
 
-	for (i = 0; i < pContact->Length; i++) {
+	for (uint8_t i = 0; i < pContact->Length; i++) {
 		const char c = pContact->String[i];
 
 		switch (c) {
 		case '0' ... '9':
 			DTMF_PlayTone(c - '0');
 			break;
-		case '#':
-			DTMF_PlayTone(15);
+		case 'A' ... 'D':
+			DTMF_PlayTone(10 + c - 'A');
 			break;
 		case '*':
 			DTMF_PlayTone(14);
 			break;
-		case 'A':
-			DTMF_PlayTone(10);
-			break;
-		case 'B':
-			DTMF_PlayTone(11);
-			break;
-		case 'C':
-			DTMF_PlayTone(12);
-			break;
-		case 'D':
-			DTMF_PlayTone(13);
+		case '#':
+			DTMF_PlayTone(15);
 			break;
 		}
 		DELAY_WaitMS((gDTMF_Settings.Interval + 3) * 10);
@@ -214,11 +169,7 @@ void DTMF_PlayContact(const DTMF_String_t *pContact)
 
 void DTMF_ResetString(void)
 {
-	uint8_t i;
-
-	for (i = 0; i < 14; i++) {
-		gDTMF_Input.String[i] = '-';
-	}
+	memset(gDTMF_Input.String, '-', sizeof(gDTMF_Input.String));
 	gDTMF_Input.Padding = 0xFF;
 	gDTMF_Input.Length = 0;
 }
@@ -232,20 +183,14 @@ void DTMF_Pad(uint8_t i, char c)
 
 void DTMF_ClearString(void)
 {
-	uint8_t i;
-
 	gDTMF_WriteIndex = 0;
 	gDataDisplay = false;
-	for (i = 0; i < 14; i++) {
-		gDTMF_String[i] = ' ';
-	}
+	memset(gDTMF_String,' ' , sizeof(gDTMF_String));
 }
 
 bool DTMF_strcmp(const DTMF_String_t *pDtmf, const char *pString)
 {
-	uint8_t i;
-
-	for (i = 0; i < pDtmf->Length; i++) {
+	for (uint8_t i = 0; i < pDtmf->Length; i++) {
 		if (pDtmf->String[i] != pString[i]) {
 			return false;
 		}
@@ -259,4 +204,3 @@ void DTMF_Disable(void)
 	BK4819_WriteRegister(0x24, 0x0000);
 	BK4819_WriteRegister(0x70, 0x0000);
 }
-
