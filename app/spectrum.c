@@ -205,12 +205,14 @@ void DrawLabels(void) {
 	}
 }
 
-void SetFreqMinMax(void) {
+void SetFreqMinMax(bool getCurrentBand) {
 	CurrentFreqChangeStep = CurrentFreqStep * (CurrentStepCount >> 1);
 	FreqMin = FreqCenter - CurrentFreqChangeStep;
 	FreqMax = FreqCenter + CurrentFreqChangeStep;
 #ifdef ENABLE_SPECTRUM_PRESETS
-	GetCurrentBand();
+	if (getCurrentBand) {
+		GetCurrentBand();
+	}
 #endif
 	FREQUENCY_SelectBand(FreqCenter);
 	BK4819_EnableFilter(bFilterEnabled);
@@ -228,14 +230,14 @@ void SetStepCount(void) {
 void IncrementStepIndex(void) {
 	CurrentStepCountIndex = (CurrentStepCountIndex + 1) % STEPS_COUNT;
 	SetStepCount();
-	SetFreqMinMax();
+	SetFreqMinMax(true);
 	DrawLabels();
 }
 
 void IncrementFreqStepIndex(void) {
 	CurrentFreqStepIndex = (CurrentFreqStepIndex + 1) % 10;
 	CurrentFreqStep = FREQUENCY_GetStep(CurrentFreqStepIndex);
-	SetFreqMinMax();
+	SetFreqMinMax(true);
 	DrawLabels();
 }
 
@@ -250,7 +252,7 @@ void ChangeCenterFreq(uint8_t Up) {
 	} else {
 		FreqCenter -= CurrentFreqChangeStep;
 	}
-	SetFreqMinMax();
+	SetFreqMinMax(true);
 	DrawLabels();
 }
 
@@ -290,8 +292,9 @@ void ChangeBandPreset(uint8_t Up) {
 
 	CurrentFreqStepIndex = FreqPresets[CurrentBandIndex].StepSizeIndex;
 	CurrentFreqStep = FREQUENCY_GetStep(CurrentFreqStepIndex);
+	CurrentBandInfo = FreqPresets[CurrentBandIndex];
 	FreqCenter = FreqPresets[CurrentBandIndex].StartFreq + (CurrentFreqStep * (CurrentStepCount >> 1));
-	SetFreqMinMax();
+	SetFreqMinMax(false);
 
 	CurrentModulation = FreqPresets[CurrentBandIndex].ModulationType;
 
@@ -314,7 +317,7 @@ void ChangeDisplayMode(void) {
 
 	CurrentStepCountIndex = 0;
 	SetStepCount();
-	SetFreqMinMax();
+	SetFreqMinMax(true);
 	if (DisplayMode) {
 		ST7735S_defineScrollArea(SCROLL_LEFT_MARGIN, SCROLL_RIGHT_MARGIN);
 	}
@@ -733,7 +736,7 @@ void APP_Spectrum(void) {
 	DisplayMode = 0;
 
 	SetStepCount();
-	SetFreqMinMax(); 
+	SetFreqMinMax(true);
 
 	for (int i = 0; i < 8; i++) {
 		gShortString[i] = ' ';
