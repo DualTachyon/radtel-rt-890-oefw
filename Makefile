@@ -5,6 +5,7 @@ MOTO_STARTUP_TONE		?= 1
 ENABLE_AM_FIX			?= 1
 ENABLE_NOAA			?= 1
 ENABLE_SPECTRUM			?= 1
+# Spectrum presets - 1.4 kB
 ENABLE_SPECTRUM_PRESETS		?= 1
 # FM radio = 2.6 kB
 ENABLE_FM_RADIO			?= 1
